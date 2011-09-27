@@ -1,0 +1,247 @@
+Linea 1 - int func1(int a[], char b[], float m[]) {
+Linea 2 - int swsw;
+Linea 3 - 
+Linea 4 - }
+	 Error 37: Falta return
+Linea 5 - 
+>ts[0]:
+>entrada_TS:
+	nombre de identificador: void
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[1]:
+>entrada_TS:
+	nombre de identificador: char
+	clase computacional: CLASTYPE
+	cantidad de bytes: 1
+>ts[2]:
+>entrada_TS:
+	nombre de identificador: int
+	clase computacional: CLASTYPE
+	cantidad de bytes: 4
+>ts[3]:
+>entrada_TS:
+	nombre de identificador: float
+	clase computacional: CLASTYPE
+	cantidad de bytes: 4
+>ts[4]:
+>entrada_TS:
+	nombre de identificador: TIPOARREGLO
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[5]:
+>entrada_TS:
+	nombre de identificador: TIPOERROR
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[6]:
+>entrada_TS:
+	nombre de identificador: ARRINT
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[7]:
+>entrada_TS:
+	nombre de identificador: ARRCHAR
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[8]:
+>entrada_TS:
+	nombre de identificador: ARRFLOAT
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[9]:
+>entrada_TS:
+	nombre de identificador: func1
+	clase computacional: CLASFUNC
+		>Tipo:
+			nombre de identificador: int
+			clase computacional: CLASTYPE
+			cantidad de bytes: 4
+	cantidad de bytes: 0
+		>stc_TS:
+		nivel lexicogr�ico: 0
+		desplazamiento: 0
+		>funcin:
+		direccin del cdigo: 0
+		cantidad de par�etros: 3
+			>Lista de parametros:
+			parametro nro: 1
+			tipo de pasaje: r
+				>Tipo:
+					nombre de identificador: ARRINT
+					clase computacional: CLASTYPE
+					cantidad de bytes: 0
+			parametro nro: 2
+			tipo de pasaje: r
+				>Tipo:
+					nombre de identificador: ARRCHAR
+					clase computacional: CLASTYPE
+					cantidad de bytes: 0
+			parametro nro: 3
+			tipo de pasaje: r
+				>Tipo:
+					nombre de identificador: ARRFLOAT
+					clase computacional: CLASTYPE
+					cantidad de bytes: 0
+>ts[10]:
+>entrada_TS:
+	nombre de identificador: a
+	clase computacional: CLASPAR
+		>Tipo:
+			nombre de identificador: TIPOARREGLO
+			clase computacional: CLASTYPE
+			cantidad de bytes: 0
+	cantidad de bytes: 0
+		>stc_TS:
+		nivel lexicogr�ico: 0
+		desplazamiento: 0
+		>Par�etro:
+		tipo de pasaje: r
+>ts[11]:
+>entrada_TS:
+	nombre de identificador: b
+	clase computacional: CLASPAR
+		>Tipo:
+			nombre de identificador: TIPOARREGLO
+			clase computacional: CLASTYPE
+			cantidad de bytes: 0
+	cantidad de bytes: 0
+		>stc_TS:
+		nivel lexicogr�ico: 0
+		desplazamiento: 0
+		>Par�etro:
+		tipo de pasaje: r
+>ts[12]:
+>entrada_TS:
+	nombre de identificador: m
+	clase computacional: CLASPAR
+		>Tipo:
+			nombre de identificador: TIPOARREGLO
+			clase computacional: CLASTYPE
+			cantidad de bytes: 0
+	cantidad de bytes: 0
+		>stc_TS:
+		nivel lexicogr�ico: 0
+		desplazamiento: 0
+		>Par�etro:
+		tipo de pasaje: r
+>ts[13]:
+>entrada_TS:
+	nombre de identificador: swsw
+	clase computacional: CLASVAR
+		>Tipo:
+			nombre de identificador: int
+			clase computacional: CLASTYPE
+			cantidad de bytes: 4
+	cantidad de bytes: 0
+		>stc_TS:
+		nivel lexicogr�ico: 0
+		desplazamiento: 0
+		>arreglo:
+		tipo de elementos:
+			>Tipo:
+				nombre de identificador: void
+				clase computacional: CLASTYPE
+				cantidad de bytes: 0
+		cantidad de elementos: 0
+Linea 6 - void main()
+Linea 7 - {
+Linea 8 - ;
+Linea 9 - }
+>ts[0]:
+>entrada_TS:
+	nombre de identificador: void
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[1]:
+>entrada_TS:
+	nombre de identificador: char
+	clase computacional: CLASTYPE
+	cantidad de bytes: 1
+>ts[2]:
+>entrada_TS:
+	nombre de identificador: int
+	clase computacional: CLASTYPE
+	cantidad de bytes: 4
+>ts[3]:
+>entrada_TS:
+	nombre de identificador: float
+	clase computacional: CLASTYPE
+	cantidad de bytes: 4
+>ts[4]:
+>entrada_TS:
+	nombre de identificador: TIPOARREGLO
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[5]:
+>entrada_TS:
+	nombre de identificador: TIPOERROR
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[6]:
+>entrada_TS:
+	nombre de identificador: ARRINT
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[7]:
+>entrada_TS:
+	nombre de identificador: ARRCHAR
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[8]:
+>entrada_TS:
+	nombre de identificador: ARRFLOAT
+	clase computacional: CLASTYPE
+	cantidad de bytes: 0
+>ts[9]:
+>entrada_TS:
+	nombre de identificador: func1
+	clase computacional: CLASFUNC
+		>Tipo:
+			nombre de identificador: int
+			clase computacional: CLASTYPE
+			cantidad de bytes: 4
+	cantidad de bytes: 0
+		>stc_TS:
+		nivel lexicogr�ico: 0
+		desplazamiento: 0
+		>funcin:
+		direccin del cdigo: 0
+		cantidad de par�etros: 3
+			>Lista de parametros:
+			parametro nro: 1
+			tipo de pasaje: r
+				>Tipo:
+					nombre de identificador: ARRINT
+					clase computacional: CLASTYPE
+					cantidad de bytes: 0
+			parametro nro: 2
+			tipo de pasaje: r
+				>Tipo:
+					nombre de identificador: ARRCHAR
+					clase computacional: CLASTYPE
+					cantidad de bytes: 0
+			parametro nro: 3
+			tipo de pasaje: r
+				>Tipo:
+					nombre de identificador: ARRFLOAT
+					clase computacional: CLASTYPE
+					cantidad de bytes: 0
+>ts[10]:
+>entrada_TS:
+	nombre de identificador: main
+	clase computacional: CLASFUNC
+		>Tipo:
+			nombre de identificador: void
+			clase computacional: CLASTYPE
+			cantidad de bytes: 0
+	cantidad de bytes: 0
+		>stc_TS:
+		nivel lexicogr�ico: 0
+		desplazamiento: 0
+		>funcin:
+		direccin del cdigo: 0
+		cantidad de par�etros: 0
+			>Lista de parametros:
+			Sin par�etros.
+Linea 9 - }

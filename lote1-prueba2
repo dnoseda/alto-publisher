@@ -1,0 +1,23 @@
+Linea 1 - int k(int &a, int j, char q[]) {
+Linea 2 - return a;
+Linea 3 - }
+Linea 4 - 
+Linea 5 - int func1() {
+Linea 6 -  return 1;
+Linea 7 - }
+Linea 8 - 
+Linea 9 - int func2(int parvalor, int &pardi) {
+Linea 10 - 
+Linea 11 - return parvalor;
+Linea 12 - }
+Linea 13 - 
+Linea 14 - int func3(char arr[]) {
+Linea 15 - 
+Linea 16 - }
+	 Error 37: Falta return
+Linea 17 - 
+Linea 18 - int func4(int sinret) {
+Linea 19 - 
+Linea 20 - return 65;
+Linea 21 - }
+Linea 22 - 
