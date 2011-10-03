@@ -1,0 +1,165 @@
+########## Ejecucion del compilador ########
+
+
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p1pe.c ##############
+
+Linea 1 - int a,b;
+Linea 2 - char b; 
+	 Error 9: Identificador ya declarado
+Linea 3 - 
+Linea 4 - void main(){
+Linea 5 -  noesta = 4 ; 
+	 Error 33: Identificador no declarado
+Linea 6 -  b = 4 + 10;
+Linea 7 -  b = noesta + 1; 
+Linea 8 -  noesta = 18 * b; 
+Linea 9 -  b = noesta[1];
+	 Error 32: La variable no es de tipo arreglo 
+Linea 10 - }
+Linea 11 - 
+Linea 12 - 
+Linea 12 - }
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p2pe.c ##############
+
+Linea 1 - 
+Linea 2 - int double (int x){
+Linea 3 -  
+Linea 4 -  return x*2;
+Linea 5 - 
+Linea 6 - }
+Linea 7 - 
+Linea 8 - 
+Linea 9 - 
+Linea 9 - }
+	 Error 15: Falta declarar la funcion main
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p3pe.c ##############
+
+Linea 1 - char main () {
+Linea 2 - 
+Linea 3 -  int c; 
+Linea 4 -  a=1;
+	 Error 33: Identificador no declarado
+Linea 5 - }
+	 Error 37: Falta return
+Linea 6 - 
+Linea 7 - 
+Linea 7 - }
+	 Error 35: El tipo de la funcion main() debe ser void
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p4pe.c ##############
+
+Linea 1 - void main (int argv[]) {
+Linea 2 - 
+Linea 3 -  int a; 
+Linea 4 -  a = 1;
+Linea 5 - }
+Linea 6 - 
+Linea 7 - 
+Linea 7 - }
+	 Error 36: La funcion main() no lleva argumento
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p5pe.c ##############
+
+Linea 1 - float double (int x){
+Linea 2 -  
+Linea 3 -  x = x*2;
+Linea 4 - 
+Linea 5 - } 
+	 Error 37: Falta return
+Linea 6 - 
+Linea 7 - 
+Linea 8 - void main () {
+Linea 9 - 
+Linea 10 - }
+Linea 11 - 
+Linea 12 - 
+Linea 12 - }
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p6pe.c ##############
+
+Linea 1 - float double (int x){
+Linea 2 - 
+Linea 3 -  return x*2;
+Linea 4 - 
+Linea 5 - }
+Linea 6 - 
+Linea 7 - 
+Linea 8 - void main () {
+Linea 9 - 
+Linea 10 -  int c;
+Linea 11 - 
+Linea 12 -  c = 3 * double ); 
+	 Error 19: Falta (
+Linea 13 - }
+Linea 14 - 
+Linea 15 - 
+Linea 15 - }
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p7pe.c ##############
+
+Linea 1 - void main() {
+Linea 2 -  float r;
+Linea 3 - 
+Linea 4 -  r = noesta[12]; 
+	 Error 33: Identificador no declarado
+Linea 5 - 
+Linea 6 -  noesta[1]=r;
+	 Error 33: Identificador no declarado
+Linea 7 - 
+Linea 8 - }
+Linea 8 - }
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p8pe.c ##############
+
+Linea 1 - int ;
+	 Error 16: Falta identificador
+Linea 2 - char ='3';
+	 Error 16: Falta identificador
+	 Error 9: Identificador ya declarado
+Linea 3 - 
+Linea 4 - float a[ ;
+	 Error 41: La cantidad de elementos debe estar especificada por un entero
+	 Error 21: Falta ]
+Linea 5 - 
+Linea 6 - int double ( 
+Linea 7 - 
+Linea 8 - }
+	 Error 20: Falta )
+	 Error 23: Falta {
+	 Error 37: Falta return
+Linea 9 - 
+Linea 10 - void main () {
+Linea 11 - 
+Linea 12 -  int double;
+Linea 13 - 
+Linea 14 - }
+Linea 14 - }
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p9pe.c ##############
+
+Linea 1 - 
+Linea 2 - int double (int b, float a[, ) {
+	 Error 21: Falta ]
+	 Error 17: Tipo no definido 
+	 Error 16: Falta identificador
+Linea 3 -  int c[2];
+Linea 4 - 
+Linea 5 -  while () { 
+	 Error 31: En factor
+Linea 6 -  if (b == (c = 2 + b)) { 
+	 Error 40: En una expresion, los arreglos deben ser accedidos por sus elementos
+Linea 7 -  
+Linea 8 -  b = b - ; 
+	 Error 31: En factor
+Linea 9 -  cout b << c 
+	 Error 28: Falta >>
+Linea 10 -  } 
+	 Error 40: En una expresion, los arreglos deben ser accedidos por sus elementos
+	 Error 22: Falta ;
+	 Error 37: Falta return
+Linea 11 -  }
+	 Error 37: Falta return
+Linea 12 -  
+     ############  /home/elegar/Documentos/Docencia/2011/Compiladores/Practico_de_maquina/Entrega_alumnos/lotes-primer-entrega/lote1/p10pe.c ##############
+
+Linea 1 - 
+Linea 2 - char a, b, c;
+Linea 3 - int x;
+Linea 4 - 
+Linea 5 - 
+Linea 5 -  main
+	 Error 15: Falta declarar la funcion main
