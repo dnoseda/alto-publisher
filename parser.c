@@ -377,8 +377,10 @@ void declarador_init(){
 
                           if (sbol->codigo == CCONS_ENT)
                               constante();
+                          /** /
                           else
                               error_handler(41); // la cantidad de elementos debe estar especificada como constante entera
+                          /**/
 
                           if (sbol->codigo == CCOR_CIE)
                               scanner();
