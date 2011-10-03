@@ -87,6 +87,7 @@ token *sbol;
 
 extern FILE *yyin;
 
+int inInvocation = FALSE;
 
 void scanner() {
     int i;
@@ -347,8 +348,10 @@ void declaracion_variable(){
             error_handler(9);
         lista_declaraciones_init();
     }else{
-        if (!insertarTS())
+        if(strlen(inf_id->nbre) > 0 &&
+                !insertarTS()){
             error_handler(9);
+        }
     }
 
     if (sbol->codigo == CPYCOMA)
@@ -789,7 +792,7 @@ void variable(){
 
 }
 
-int inInvocation = FALSE;
+
 void llamada_funcion() {
     
     if (sbol->codigo == CIDENT)
