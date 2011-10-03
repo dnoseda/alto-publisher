@@ -770,7 +770,8 @@ void variable(){
         else
             error_handler(21); // falta ]
     }else{
-        if(inf_id->ptr_tipo != en_tabla("TIPOERROR") && Tipo_Ident(str_aux) == en_tabla("TIPOARREGLO")){/*&*/
+        if(inf_id->ptr_tipo != en_tabla("TIPOERROR") && Tipo_Ident(str_aux) == en_tabla("TIPOARREGLO")
+                || !inInvocation){// checkeo no estar en una invocacion
             error_handler(40); // en una expresiòn las variables deben ser accedidas por sus elementos
         }
     }
@@ -788,14 +789,14 @@ void variable(){
 
 }
 
-
+int inInvocation = FALSE;
 void llamada_funcion() {
-
+    
     if (sbol->codigo == CIDENT)
         scanner();
     else
         error_handler(34); // se esperaba identificador de funcion
-
+    inInvocation  = TRUE;
     if (sbol->codigo == CPAR_ABR)
         scanner();
     else
@@ -809,11 +810,12 @@ void llamada_funcion() {
 
         lista_expresiones();
 
-    if (sbol->codigo == CPAR_CIE)
+    if (sbol->codigo == CPAR_CIE){
         scanner();
-    else
+    }else{
         error_handler(20); // falta )
-
+    }
+    inInvocation  = FALSE;
 }
 
 void lista_expresiones() {
