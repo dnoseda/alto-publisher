@@ -711,8 +711,7 @@ void factor() {
                 }
             }else{
                 // no esta en la tabla
-                error_handler(33); // identificador no declarado
-                imprimir_ts();
+                error_handler(33); // identificador no declarado                
                 inf_id->ptr_tipo = en_tabla("TIPOERROR");
                 variable();
             }
@@ -771,16 +770,21 @@ void variable(){
         else
             error_handler(21); // falta ]
     }else{
-        if(inf_id->ptr_tipo != en_tabla("TIPOERROR") && Tipo_Ident(str_aux) == en_tabla("TIPOARREGLO"))/*&*/
+        if(inf_id->ptr_tipo != en_tabla("TIPOERROR") && Tipo_Ident(str_aux) == en_tabla("TIPOARREGLO")){/*&*/
             error_handler(40); // en una expresiòn las variables deben ser accedidas por sus elementos
+        }
     }
-    if(inf_id->ptr_tipo == en_tabla("TIPOERROR")) if (!insertarTS())
-        error_handler(9);
-    else
-        if(inf_id->ptr_tipo == en_tabla("TIPOARREGLO") && (inf_id->desc.part_var.arr.ptero_tipo_base == en_tabla("TIPOERROR")))
-            if (!insertarTS())
+    if(inf_id->ptr_tipo == en_tabla("TIPOERROR")){
+        if (!insertarTS()){
+            error_handler(9);
+        }
+    }else{
+        if(inf_id->ptr_tipo == en_tabla("TIPOARREGLO") && (inf_id->desc.part_var.arr.ptero_tipo_base == en_tabla("TIPOERROR"))){
+            if (!insertarTS()){
                 error_handler(9);
-
+            }
+        }
+    }
 
 }
 

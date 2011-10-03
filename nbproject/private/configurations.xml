@@ -12,7 +12,7 @@
         <configurationname>GizmoSimple</configurationname>
       </gizmo_options>
       <runprofile version="6">
-        <args>-c prog4se.c</args>
+        <args>-c 1loteerr/p7pe.c</args>
         <rundir>/home/dnoseda/dev/Comp/v1ra/.</rundir>
         <buildfirst>true</buildfirst>
         <console-type>0</console-type>

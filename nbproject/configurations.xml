@@ -2,6 +2,18 @@
 <configurationDescriptor version="62">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <df name="v1ra" root=".">
+      <df name="1loteerr">
+        <in>p10pe.c</in>
+        <in>p1pe.c</in>
+        <in>p2pe.c</in>
+        <in>p3pe.c</in>
+        <in>p4pe.c</in>
+        <in>p5pe.c</in>
+        <in>p6pe.c</in>
+        <in>p7pe.c</in>
+        <in>p8pe.c</in>
+        <in>p9pe.c</in>
+      </df>
       <df name="respuesta">
       </df>
       <in>codigos.h</in>
@@ -13,6 +25,10 @@
       <in>print_ts.c</in>
       <in>print_ts.h</in>
       <in>prog4se.c</in>
+      <in>prog5se.c</in>
+      <in>prog6se.c</in>
+      <in>prog7se.c</in>
+      <in>prog8se.c</in>
       <in>scanner.token.lex</in>
       <in>ts.c</in>
       <in>ts.h</in>
