@@ -332,6 +332,7 @@ void lista_declaraciones_init(){
 
 void declaracion_variable(){
 
+
     inf_id->clase = CLASVAR;
 
     declarador_init();
@@ -425,6 +426,7 @@ void proposicion_compuesta(){
     else
         error_handler(23); // falta llave que abre
 
+    
     if (sbol->codigo == CVOID || sbol->codigo == CCHAR || sbol->codigo == CINT || sbol->codigo == CFLOAT)
 
         lista_declaraciones();
@@ -534,7 +536,7 @@ void proposicion_iteracion() {
         scanner();
     else
         error_handler(20); // falta parentesis que cierra
-
+    pushTB();
     proposicion();
 
 }
@@ -558,12 +560,12 @@ void proposicion_seleccion() {
         scanner();
     else
         error_handler(20); // falta parentesis que cierra
-
+    pushTB();
     proposicion();
 
     if (sbol->codigo == CELSE){
         scanner();
-
+        pushTB();
         proposicion();
     }
 
@@ -710,6 +712,7 @@ void factor() {
             }else{
                 // no esta en la tabla
                 error_handler(33); // identificador no declarado
+                imprimir_ts();
                 inf_id->ptr_tipo = en_tabla("TIPOERROR");
                 variable();
             }
