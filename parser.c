@@ -57,6 +57,7 @@ void scanner ();
 int punteroFuncion;  // donde apunto a la funciòn donde estoy metido
 int tipo_global;     // donde guardo en el caso     int a,b,c;    el tipo para b y c
 int flag_hay_return; // dice si hay return en la declaraciòn de funciòn
+int void_flag;
 
 /****************************/
 
@@ -206,6 +207,7 @@ void definicion_funcion(){
         error_handler(19); // falta parentesis que abre
 
     inf_id->clase = CLASFUNC;
+     void_flag = (inf_id->ptr_tipo == en_tabla("void"));
     if (!(punteroFuncion = insertarTS()))
         error_handler(9);  // guardo el puntero a esta funciòn /*IsTs*/
     pushTB();  // nuevo bloque
@@ -227,6 +229,9 @@ void definicion_funcion(){
     flag_hay_return = FALSE;
 
     proposicion_compuesta();
+    if (!void_flag && !flag_hay_return){
+        error_handler(37);  // falta return
+    }
 
 }
 
@@ -448,8 +453,6 @@ void proposicion_compuesta(){
         lista_proposiciones();
 
 
-    if ((ts[punteroFuncion].ets->ptr_tipo != en_tabla("void")) && !flag_hay_return)
-        error_handler(37);  // falta return
     if (sbol->codigo == CLLA_CIE)
         scanner();
     else
@@ -599,7 +602,7 @@ void proposicion_e_s() {
                        if (sbol->codigo == CSHL)
                            scanner();
                        else
-                           error_handler(28); // falta <<
+                           error_handler(29); // falta <<
                        expresion();
                        while (sbol->codigo == CSHL) {
                            scanner();
@@ -776,7 +779,7 @@ void variable(){
             error_handler(21); // falta ]
     }else{
         if(inf_id->ptr_tipo != en_tabla("TIPOERROR") && Tipo_Ident(str_aux) == en_tabla("TIPOARREGLO")
-                || !inInvocation){// checkeo no estar en una invocacion
+                && !inInvocation){// checkeo no estar en una invocacion
             error_handler(40); // en una expresiòn las variables deben ser accedidas por sus elementos
         }
     }
