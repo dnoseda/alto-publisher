@@ -1,3 +1,4 @@
+*.orig
 *.tar.gz
 *.o
 ucc
