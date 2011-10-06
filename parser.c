@@ -64,14 +64,17 @@ int void_flag;
 /*************************** check_main() *******************************/
 void check_main() {
     if (en_tabla("main") != NIL) {
-        if (en_tabla("void") != Tipo_Ident("main"))
-            error_handler(35); // main debe ser void/*&*/
+        if (en_tabla("void") != Tipo_Ident("main")) {
+            error_handler(35);    // main debe ser void/*&*/
+        }
 
-        if(ts[en_tabla("main")].ets->desc.part_var.sub.cant_par != 0)
-            error_handler(36);// funcion main no lleva argumentos/*&*/
+        if(ts[en_tabla("main")].ets->desc.part_var.sub.cant_par != 0) {
+            error_handler(36);    // funcion main no lleva argumentos/*&*/
+        }
 
-    } else
-        error_handler(15);// falta funcion main/*&*/
+    } else {
+        error_handler(15);    // falta funcion main/*&*/
+    }
     error_handler(COD_IMP_ERRORES);
 
 }
@@ -91,7 +94,9 @@ void scanner() {
     int i;
 
     for (; (i=yylex())!= NADA && sbol->codigo == SEGUIR;);
-    if (i == NADA) sbol->codigo = CEOF;
+    if (i == NADA) {
+        sbol->codigo = CEOF;
+    }
     /* yylex retorna 0 si llego a fin de archivo */
 
     liberar = linea;
@@ -130,8 +135,9 @@ int main( int argc,char *argv[]) {
                 error_handler(COD_IMP_ERRORES);
                 exit(1);
             }
-        } else
+        } else {
             printf("falta el -c\n");
+        }
     }
 
     sbol=&token1 ;/* la variable token */
@@ -141,8 +147,9 @@ int main( int argc,char *argv[]) {
     check_main();
     //
 
-    if (sbol->codigo != CEOF)
+    if (sbol->codigo != CEOF) {
         error_handler(8);
+    }
 
 }
 
@@ -152,8 +159,9 @@ int main( int argc,char *argv[]) {
 void unidad_traduccion() {
 
     while (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
-            sbol->codigo == CINT || sbol->codigo == CFLOAT)
+            sbol->codigo == CINT || sbol->codigo == CFLOAT) {
         declaraciones();
+    }
 }
 
 void declaraciones() {
@@ -162,8 +170,9 @@ void declaraciones() {
     if (sbol->codigo == CIDENT) {
         strcpy(inf_id->nbre,sbol->lexema); //especifica el nombre del identificador
         scanner();
-    } else
+    } else {
         error_handler(16);    // falta identificador
+    }
 
     especificador_declaracion();
 }
@@ -212,25 +221,29 @@ void especificador_declaracion() {
 
 void definicion_funcion() {
 
-    if (sbol->codigo == CPAR_ABR)
+    if (sbol->codigo == CPAR_ABR) {
         scanner();
-    else
-        error_handler(19); // falta parentesis que abre
+    } else {
+        error_handler(19);    // falta parentesis que abre
+    }
 
     inf_id->clase = CLASFUNC;
     void_flag = (inf_id->ptr_tipo == en_tabla("void"));
-    if (!(punteroFuncion = insertarTS()))
-        error_handler(9);  // guardo el puntero a esta funciòn /*IsTs*/
+    if (!(punteroFuncion = insertarTS())) {
+        error_handler(9);    // guardo el puntero a esta funciòn /*IsTs*/
+    }
     pushTB();  // nuevo bloque
 
     if (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
-            sbol->codigo == CINT || sbol->codigo == CFLOAT)
+            sbol->codigo == CINT || sbol->codigo == CFLOAT) {
         lista_declaraciones_param();
+    }
 
-    if (sbol->codigo == CPAR_CIE)
+    if (sbol->codigo == CPAR_CIE) {
         scanner();
-    else
-        error_handler(20); // falta parentesis que cierra
+    } else {
+        error_handler(20);    // falta parentesis que cierra
+    }
 
     // ligamos lista de par�etros con funcin de turno
     ts[punteroFuncion].ets->desc.part_var.sub.cant_par = lista_param.cant;
@@ -264,8 +277,9 @@ void declaracion_parametro() {
     if (sbol->codigo == CAMPER) {
         scanner();
         nodo_a_ins->tipo_pje = REF;
-    } else
+    } else {
         nodo_a_ins->tipo_pje = VALOR;
+    }
 
     nodo_a_ins->ptero_tipo = inf_id->ptr_tipo;
 
@@ -274,8 +288,9 @@ void declaracion_parametro() {
     if (sbol->codigo == CIDENT) {
         strcpy(inf_id->nbre,sbol->lexema);
         scanner();
-    } else
+    } else {
         error_handler(16);    // falta identificador /&
+    }
 
 
 
@@ -283,25 +298,30 @@ void declaracion_parametro() {
 
         scanner();
 
-        if (sbol->codigo == CCOR_CIE)
+        if (sbol->codigo == CCOR_CIE) {
             scanner();
-        else
-            error_handler(21); // falta corchete que cierra
+        } else {
+            error_handler(21);    // falta corchete que cierra
+        }
 
         inf_id->desc.part_var.arr.ptero_tipo_base = inf_id->ptr_tipo;
         inf_id->ptr_tipo = en_tabla("TIPOARREGLO");
         nodo_a_ins->tipo_pje = REF;
         // Control para colocar el tipo base correspondiente.
-        if (nodo_a_ins->ptero_tipo == en_tabla("char"))
+        if (nodo_a_ins->ptero_tipo == en_tabla("char")) {
             nodo_a_ins->ptero_tipo = en_tabla("ARRCHAR");
-        else if (nodo_a_ins->ptero_tipo == en_tabla("int")) nodo_a_ins->ptero_tipo = en_tabla("ARRINT");
-        else if (nodo_a_ins->ptero_tipo == en_tabla("float")) nodo_a_ins->ptero_tipo = en_tabla("ARRFLOAT");
+        } else if (nodo_a_ins->ptero_tipo == en_tabla("int")) {
+            nodo_a_ins->ptero_tipo = en_tabla("ARRINT");
+        } else if (nodo_a_ins->ptero_tipo == en_tabla("float")) {
+            nodo_a_ins->ptero_tipo = en_tabla("ARRFLOAT");
+        }
     }
     inf_id->clase = CLASPAR;
     inf_id->desc.part_var.tipo_pje = nodo_a_ins->tipo_pje;
     insertar_lista_param();
-    if (!insertarTS())
+    if (!insertarTS()) {
         error_handler(9);
+    }
 }
 
 void lista_declaraciones_init() {
@@ -309,14 +329,16 @@ void lista_declaraciones_init() {
     if (sbol->codigo == CIDENT) {
         strcpy(inf_id->nbre,sbol->lexema);
         scanner();
-    } else
-        error_handler(16);// falta identificador
+    } else {
+        error_handler(16);    // falta identificador
+    }
     tipo_global = inf_id->ptr_tipo;
     inf_id->clase = CLASVAR;
 
     declarador_init();
-    if (!insertarTS())
+    if (!insertarTS()) {
         error_handler(9);
+    }
 
     while (sbol->codigo == CCOMA) {
 
@@ -327,12 +349,14 @@ void lista_declaraciones_init() {
             inf_id->ptr_tipo = tipo_global;
             inf_id->clase = CLASVAR;
             scanner();
-        } else
-            error_handler(16);// falta identificador
+        } else {
+            error_handler(16);    // falta identificador
+        }
 
         declarador_init();
-        if (!insertarTS())
+        if (!insertarTS()) {
             error_handler(9);
+        }
     }
 
 }
@@ -347,12 +371,14 @@ void declaracion_variable() {
 
     if (sbol->codigo == CCOMA) {
         scanner();
-        if(inf_id->ptr_tipo == en_tabla("TIPOARREGLO"))
+        if(inf_id->ptr_tipo == en_tabla("TIPOARREGLO")) {
             tipo_global = inf_id->desc.part_var.arr.ptero_tipo_base;
-        else
+        } else {
             tipo_global = inf_id->ptr_tipo;
-        if (!insertarTS())
+        }
+        if (!insertarTS()) {
             error_handler(9);
+        }
         lista_declaraciones_init();
     } else {
         if(strlen(inf_id->nbre) > 0 &&
@@ -361,10 +387,11 @@ void declaracion_variable() {
         }
     }
 
-    if (sbol->codigo == CPYCOMA)
+    if (sbol->codigo == CPYCOMA) {
         scanner();
-    else
-        error_handler(22); // falta ;
+    } else {
+        error_handler(22);    // falta ;
+    }
 
 }
 
@@ -382,34 +409,38 @@ void declarador_init() {
         inf_id->ptr_tipo = en_tabla("TIPOARREGLO"); 		  // y el tipo es ahora TIPOARREGLO
         scanner();
 
-        if (sbol->codigo == CCONS_ENT)
+        if (sbol->codigo == CCONS_ENT) {
             constante();
+        }
         /** /
           else
           error_handler(41); // la cantidad de elementos debe estar especificada como constante entera
         /**/
 
-        if (sbol->codigo == CCOR_CIE)
+        if (sbol->codigo == CCOR_CIE) {
             scanner();
-        else
-            error_handler(21); // falta ]
+        } else {
+            error_handler(21);    // falta ]
+        }
 
 
 
         if (sbol->codigo == CASIGNAC) {
             scanner();
 
-            if (sbol->codigo == CLLA_ABR)
+            if (sbol->codigo == CLLA_ABR) {
                 scanner();
-            else
-                error_handler(23); // falta llave que abre
+            } else {
+                error_handler(23);    // falta llave que abre
+            }
 
             lista_inicializadores();
 
-            if (sbol->codigo == CLLA_CIE)
+            if (sbol->codigo == CLLA_CIE) {
                 scanner();
-            else
-                error_handler(24); // falta llave que cierra
+            } else {
+                error_handler(24);    // falta llave que cierra
+            }
 
         }
 
@@ -433,15 +464,18 @@ void lista_inicializadores() {
 
 void proposicion_compuesta() {
 
-    if (sbol->codigo == CLLA_ABR)
+    if (sbol->codigo == CLLA_ABR) {
         scanner();
-    else
-        error_handler(23); // falta llave que abre
+    } else {
+        error_handler(23);    // falta llave que abre
+    }
 
 
     if (sbol->codigo == CVOID || sbol->codigo == CCHAR || sbol->codigo == CINT || sbol->codigo == CFLOAT)
 
+    {
         lista_declaraciones();
+    }
 
     if (sbol->codigo == CLLA_ABR || sbol->codigo == CMAS ||
             sbol->codigo == CMENOS || sbol->codigo == CIDENT ||
@@ -452,13 +486,16 @@ void proposicion_compuesta() {
             sbol->codigo == CIN || sbol->codigo == COUT ||
             sbol->codigo == CPYCOMA || sbol->codigo == CRETURN)
 
+    {
         lista_proposiciones();
+    }
 
 
-    if (sbol->codigo == CLLA_CIE)
+    if (sbol->codigo == CLLA_CIE) {
         scanner();
-    else
-        error_handler(24); // falta llave que cierra
+    } else {
+        error_handler(24);    // falta llave que cierra
+    }
 
     //imprimir_ts();
     pop_nivel();
@@ -471,7 +508,9 @@ void lista_declaraciones() {
     while (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
             sbol->codigo == CINT || sbol->codigo == CFLOAT)
 
+    {
         declaracion();
+    }
 
 }
 
@@ -481,10 +520,11 @@ void declaracion() {
 
     lista_declaraciones_init();
 
-    if (sbol->codigo == CPYCOMA)
+    if (sbol->codigo == CPYCOMA) {
         scanner();
-    else
-        error_handler(22); // falta ;
+    } else {
+        error_handler(22);    // falta ;
+    }
 
 }
 
@@ -501,7 +541,9 @@ void lista_proposiciones() {
             sbol->codigo == CIN || sbol->codigo == COUT ||
             sbol->codigo == CPYCOMA || sbol->codigo == CRETURN)
 
+    {
         proposicion();
+    }
 
 }
 
@@ -543,22 +585,25 @@ void proposicion() {
 
 void proposicion_iteracion() {
 
-    if (sbol->codigo == CWHILE)
+    if (sbol->codigo == CWHILE) {
         scanner();
-    else
-        error_handler(26); // falta while
+    } else {
+        error_handler(26);    // falta while
+    }
 
-    if (sbol->codigo == CPAR_ABR)
+    if (sbol->codigo == CPAR_ABR) {
         scanner();
-    else
-        error_handler(19); // falta parentesis que abre
+    } else {
+        error_handler(19);    // falta parentesis que abre
+    }
 
     expresion();
 
-    if (sbol->codigo == CPAR_CIE)
+    if (sbol->codigo == CPAR_CIE) {
         scanner();
-    else
-        error_handler(20); // falta parentesis que cierra
+    } else {
+        error_handler(20);    // falta parentesis que cierra
+    }
     pushTB();
     proposicion();
 
@@ -567,22 +612,25 @@ void proposicion_iteracion() {
 
 void proposicion_seleccion() {
 
-    if (sbol->codigo == CIF)
+    if (sbol->codigo == CIF) {
         scanner();
-    else
-        error_handler(27); // falta if
+    } else {
+        error_handler(27);    // falta if
+    }
 
-    if (sbol->codigo == CPAR_ABR)
+    if (sbol->codigo == CPAR_ABR) {
         scanner();
-    else
-        error_handler(19); // falta parentesis que abre
+    } else {
+        error_handler(19);    // falta parentesis que abre
+    }
 
     expresion();
 
-    if (sbol->codigo == CPAR_CIE)
+    if (sbol->codigo == CPAR_CIE) {
         scanner();
-    else
-        error_handler(20); // falta parentesis que cierra
+    } else {
+        error_handler(20);    // falta parentesis que cierra
+    }
     pushTB();
     proposicion();
 
@@ -599,36 +647,40 @@ void proposicion_e_s() {
     switch(sbol->codigo) {
     case CIN: {
         scanner();
-        if (sbol->codigo == CSHR)
+        if (sbol->codigo == CSHR) {
             scanner();
-        else
-            error_handler(28); // falta  >>
+        } else {
+            error_handler(28);    // falta  >>
+        }
         variable();
         while (sbol->codigo == CSHR) {
             scanner();
             variable();
         }
-        if (sbol->codigo == CPYCOMA)
+        if (sbol->codigo == CPYCOMA) {
             scanner();
-        else
-            error_handler(22); // falta ;
+        } else {
+            error_handler(22);    // falta ;
+        }
         break;
     }
     case COUT: {
         scanner();
-        if (sbol->codigo == CSHL)
+        if (sbol->codigo == CSHL) {
             scanner();
-        else
-            error_handler(29); // falta <<
+        } else {
+            error_handler(29);    // falta <<
+        }
         expresion();
         while (sbol->codigo == CSHL) {
             scanner();
             expresion();
         }
-        if (sbol->codigo == CPYCOMA)
+        if (sbol->codigo == CPYCOMA) {
             scanner();
-        else
-            error_handler(22); // falta ;
+        } else {
+            error_handler(22);    // falta ;
+        }
         break;
     }
     default:
@@ -642,10 +694,11 @@ void proposicion_retorno() {
     flag_hay_return = TRUE;
     scanner();
     expresion();
-    if (sbol->codigo == CPYCOMA)
+    if (sbol->codigo == CPYCOMA) {
         scanner();
-    else
-        error_handler(22); // falta ;
+    } else {
+        error_handler(22);    // falta ;
+    }
 
 }
 
@@ -658,12 +711,15 @@ void proposicion_expresion() {
             sbol->codigo == CCONS_ENT || sbol->codigo == CCONS_FLO ||
             sbol->codigo == CCONS_CAR || sbol->codigo == CCONS_STR)
 
+    {
         expresion();
+    }
 
-    if (sbol->codigo == CPYCOMA)
+    if (sbol->codigo == CPYCOMA) {
         scanner();
-    else
-        error_handler(22); // falta ;
+    } else {
+        error_handler(22);    // falta ;
+    }
 }
 
 
@@ -693,8 +749,9 @@ void expresion() {
 
 void expresion_simple() {
 
-    if (sbol->codigo == CMAS || sbol->codigo == CMENOS)
+    if (sbol->codigo == CMAS || sbol->codigo == CMENOS) {
         scanner();
+    }
 
     termino();
 
@@ -754,10 +811,11 @@ void factor() {
     case CPAR_ABR: {
         scanner();
         expresion();
-        if (sbol->codigo == CPAR_CIE)
+        if (sbol->codigo == CPAR_CIE) {
             scanner();
-        else
-            error_handler(20);// falta )
+        } else {
+            error_handler(20);    // falta )
+        }
         break;
     }
     case CNEG: {
@@ -780,7 +838,9 @@ void variable() {
         }
         strcpy(str_aux,sbol->lexema);/*&*/ //necesito saber el nbre del ident para chekear si es tipo arreglo
         scanner();
-    } else error_handler(16); // falta identificador
+    } else {
+        error_handler(16);    // falta identificador
+    }
 
 
 
@@ -789,15 +849,17 @@ void variable() {
             inf_id->ptr_tipo = en_tabla("TIPOARREGLO"); // como arreglo
             inf_id->desc.part_var.arr.ptero_tipo_base = en_tabla("TIPOERROR");
         } else {
-            if(Tipo_Ident(str_aux) != en_tabla("TIPOARREGLO")) // si esta en la tabla me fijo que sea arreglo
-                error_handler(32); // la variable no es de tipo arreglo
+            if(Tipo_Ident(str_aux) != en_tabla("TIPOARREGLO")) { // si esta en la tabla me fijo que sea arreglo
+                error_handler(32);    // la variable no es de tipo arreglo
+            }
         }
         scanner();
         expresion();
-        if (sbol->codigo == CCOR_CIE)
+        if (sbol->codigo == CCOR_CIE) {
             scanner();
-        else
-            error_handler(21); // falta ]
+        } else {
+            error_handler(21);    // falta ]
+        }
     } else {
         if(inf_id->ptr_tipo != en_tabla("TIPOERROR") && Tipo_Ident(str_aux) == en_tabla("TIPOARREGLO")
                 && !inInvocation) { // checkeo no estar en una invocacion
@@ -821,15 +883,17 @@ void variable() {
 
 void llamada_funcion() {
 
-    if (sbol->codigo == CIDENT)
+    if (sbol->codigo == CIDENT) {
         scanner();
-    else
-        error_handler(34); // se esperaba identificador de funcion
+    } else {
+        error_handler(34);    // se esperaba identificador de funcion
+    }
     inInvocation  = TRUE;
-    if (sbol->codigo == CPAR_ABR)
+    if (sbol->codigo == CPAR_ABR) {
         scanner();
-    else
-        error_handler(19); // falta (
+    } else {
+        error_handler(19);    // falta (
+    }
 
     if (sbol->codigo == CMAS || sbol->codigo == CMENOS ||
             sbol->codigo == CIDENT ||
@@ -837,7 +901,9 @@ void llamada_funcion() {
             sbol->codigo == CCONS_ENT || sbol->codigo == CCONS_FLO ||
             sbol->codigo == CCONS_CAR || sbol->codigo == CCONS_STR)
 
+    {
         lista_expresiones();
+    }
 
     if (sbol->codigo == CPAR_CIE) {
         scanner();
@@ -863,8 +929,9 @@ void constante() {
 
     switch (sbol->codigo) {
     case CCONS_ENT:
-        if (inf_id->ptr_tipo == en_tabla("TIPOARREGLO"))
+        if (inf_id->ptr_tipo == en_tabla("TIPOARREGLO")) {
             inf_id->desc.part_var.arr.cant_elem = atoi(sbol->lexema);
+        }
 
         scanner();
         break;
