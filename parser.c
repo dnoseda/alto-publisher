@@ -490,14 +490,10 @@ void proposicion_compuesta() {
         lista_proposiciones();
     }
 
-
-    if (sbol->codigo == CLLA_CIE) {
-        scanner();
-    } else {
-        error_handler(24);    // falta llave que cierra
-    }
-
-    //imprimir_ts();
+ if (sbol->codigo != CLLA_CIE) {
+        error_handler(24);
+ }
+     //imprimir_ts();
     pop_nivel();
 
 }
