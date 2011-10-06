@@ -490,10 +490,10 @@ void proposicion_compuesta() {
         lista_proposiciones();
     }
 
- if (sbol->codigo != CLLA_CIE) {
+    if (sbol->codigo != CLLA_CIE) {
         error_handler(24);
- }
-     //imprimir_ts();
+    }
+    //imprimir_ts();
     pop_nivel();
 
 }
