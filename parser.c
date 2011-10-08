@@ -938,8 +938,7 @@ void constante() {
         scanner();
         break;
     default:
-        error_handler(38);
-        scanner(); /*f_error(); aca va f_error, faltan los algoritmos de conversion a las constantes numericas. */
+        error_handler(38);        
     }
 
 }
