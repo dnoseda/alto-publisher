@@ -703,8 +703,7 @@ void declaracion(set folset) {
 }
 
 void lista_proposiciones(set folset) {
-
-    proposicion(une(folset,first(proposicio)));
+    proposicion(folset|F_proposicion);
 
     while (sbol->codigo == CLLA_ABR || sbol->codigo == CMAS ||
             sbol->codigo == CMENOS || sbol->codigo == CIDENT ||
@@ -716,14 +715,14 @@ void lista_proposiciones(set folset) {
             sbol->codigo == CPYCOMA || sbol->codigo == CRETURN)
 
     {
-        proposicion(une(folset,first(proposicio)));
+        proposicion(folset|F_proposicion);
     }
 
 }
 
 void proposicion(set folset) {
 
-    test(first(proposicio),folset,63);
+    test(F_proposicion,folset,63);
     switch (sbol->codigo) {
     case CLLA_ABR:
         proposicion_compuesta(folset);
@@ -773,7 +772,7 @@ void proposicion_iteracion(set folset) {
         error_handler(19);
     }
 
-    expresion(une(une(folset,first(proposicio)),cons(CPAR_CIE,NADA)));
+    expresion(folset|F_proposicion|CPAR_CIE);
 
     if (sbol->codigo == CPAR_CIE) {
         scanner();
@@ -799,7 +798,7 @@ void proposicion_seleccion(set folset) {
         error_handler(19);
     }
 
-    expresion(une(une(folset,first(proposicio)),cons(CPAR_CIE|CELSE,NADA)));
+    expresion(folset|F_proposicion|CPAR_CIE|CELSE);
 
     if (sbol->codigo == CPAR_CIE) {
         scanner();
@@ -807,7 +806,7 @@ void proposicion_seleccion(set folset) {
         error_handler(20);
     }
 
-    proposicion(une(une(cons(CELSE,NADA),folset),first(proposicio)));
+    proposicion(CELSE|folset|F_proposicion);
 
     if (sbol->codigo == CELSE) {
         scanner();
