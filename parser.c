@@ -352,7 +352,7 @@ void especificador_tipo(set folset) {
 }
 
 void especificador_declaracion(set folset) {
-    test(first(especificador_de_declaracione),folset,53);
+    test(F_especificador_declaracion,folset,53);
     switch (sbol->codigo) {
     case CPAR_ABR: {
         definicion_funcion(folset);
@@ -368,7 +368,7 @@ void especificador_declaracion(set folset) {
     default:
         error_handler(18);
     }
-    test(folset, cons(NADA,NADA), 54);
+    test(folset, NADA, 54);
 }
 
 void definicion_funcion(set folset) {
@@ -389,12 +389,12 @@ void definicion_funcion(set folset) {
 
     if (sbol->codigo == CVOID || sbol->codigo == CCHAR || sbol->codigo == CINT || sbol->codigo == CFLOAT) {
 
-        lista_declaraciones_param(une(une(cons(CPAR_CIE,NADA),folset),first(proposicion_compuest)));
+        lista_declaraciones_param(folset | CPAR_CIE | first_proposicion_compuesta);
 
     } else {
 
         if(sbol->codigo == CIDENT) {
-            lista_declaraciones_param(une(une(cons(CPAR_CIE,NADA),folset),first(proposicion_compuest)));
+            lista_declaraciones_param(folset | CPAR_CIE | first_proposicion_compuesta);
         }
     }
 
@@ -411,34 +411,34 @@ void definicion_funcion(set folset) {
             error_handler(37);
         }
     }
-    //imprime();
+
     pop_nivel();
-    //
+
 }
 
 void lista_declaraciones_param(set folset) {
 
-    declaracion_parametro(une(une(cons(CCOMA,NADA),folset),first(declaracion_de_parametr)));
+    declaracion_parametro(CCOMA | folset | F_declaracion_params);
 
-    while (sbol->codigo ==CCOMA|| in(sbol->codigo,first(declaracion_de_parametr))) {
-        if(in(sbol->codigo,first(declaracion_de_parametr))) {
+    while (sbol->codigo ==CCOMA || sbol->codigo & F_declaracion_params) {
+        if(sbol->codigo & F_declaracion_params) {
             error_handler(75);
         } else {
             scanner();
         }
-        declaracion_parametro(une(une(cons(CCOMA,NADA),folset),first(declaracion_de_parametr)));
+        declaracion_parametro(CCOMA | folset | F_declaracion_params);
     }
 
     ts[posTabla].ets->desc.part_var.sub.cant_par=cantPar;
     ts[posTabla].ets->desc.part_var.sub.ptr_inf_res=inicio;
-    //imprimirPmt();
+
     inicio=NULL;
     cursor=NULL;
 }
 
 void declaracion_parametro(set folset) {
 
-    especificador_tipo(une(folset,cons(CCOR_ABR|CAMPER|CCOR_CIE,CIDENT)));
+    especificador_tipo(folset | CCOR_ABR | CAMPER | CCOR_CIE | CIDENT);
 
     cantPar++;
     inf_id->ptr_tipo=posID;
@@ -478,7 +478,7 @@ void declaracion_parametro(set folset) {
 
     }
 
-//armo la lista vinculada
+
     tipo_inf_res *elemento=NULL; // nuevo elemento
 
     if ((elemento = (tipo_inf_res *) malloc (sizeof (tipo_inf_res))) == NULL) {
@@ -495,17 +495,16 @@ void declaracion_parametro(set folset) {
             cursor=elemento;
         }
     }
-//----------*****--------------
 
-    test(folset,cons(NADA,NADA),55);
-//meto el parametro
+    test(folset,NADA,55);
+
     insertarTS();
-//
+
 }
 
 void lista_declaraciones_init(set folset) {
 
-    test(first(lista_declaraciones_ini), une(une(folset, cons(CCOMA, NADA)), first(declarador_ini)), 57);
+    test(F_lista_declaraciones_init, folset | CCOMA | F_declarador_init, 57);
     if (sbol->codigo == CIDENT) {
         strcpy(inf_id->nbre,sbol->lexema);
         scanner();
@@ -513,7 +512,7 @@ void lista_declaraciones_init(set folset) {
         error_handler(16);
     }
 
-    declarador_init(une(une(cons(CCOMA,CIDENT),first(declarador_ini)),folset));
+    declarador_init(CCOMA  | CIDENT | F_declarador_init | folset);
 
     while (sbol->codigo == CCOMA || sbol->codigo == CIDENT) {
 
@@ -529,7 +528,7 @@ void lista_declaraciones_init(set folset) {
             error_handler(16);
         }
 
-        declarador_init(une(une(cons(CCOMA,CIDENT),first(declarador_ini)),folset));
+        declarador_init(CCOMA  | CIDENT | F_declarador_init | folset);
     }
 
 }
