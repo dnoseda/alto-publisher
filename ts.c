@@ -1,16 +1,16 @@
-/* v_1
-   ======================================================================
-   COMPILADORES
+/*
+======================================================================
+			COMPILADORES
 
-   PROGRAMAS FUENTES ENTREGADOS POR LA CATEDRA
+	  PROGRAMAS FUENTES ENTREGADOS POR LA CATEDRA
 
-   ADMINISTRADOR DE TABLA DE SIMBOLOS 2000
-   ======================================================================
-   */
+		ADMINISTRADOR DE TABLA DE SIMBOLOS 2000
+======================================================================
+*/
 
 /*
-   =====================================================================
-#include para usar en el programa
+=====================================================================
+		#include para usar en el programa
 =====================================================================
 */
 
@@ -19,10 +19,10 @@
 #include "ts.h"
 
 /*
-   =====================================================================
-   funciones para la administracion de la tabla de simbolos
-   =====================================================================
-   */
+=====================================================================
+ funciones para la administracion de la tabla de simbolos
+=====================================================================
+*/
 
 /*
 NOTA: Analizar las condiciones de error y agregar los mensajes pertinentes
@@ -49,7 +49,7 @@ void pop_nivel ();
 
 
 entrada_TS  *inf_id;	 // es el puntero a la estructura que contiene la
-// informacin de un identificador, la cual es
+// informaci¢n de un identificador, la cual es
 // completada previamente a una insercion en TS
 
 int       th[TAM_HASH];   // tabla de hash
@@ -69,7 +69,7 @@ void inic_tablas() {
 
     //  TODOS LOS TOPES ESTAN INICIALIZADOS EN LA DECLARACION
 
-    for (i=0; i< TAM_TS; i++) {    // inicializo tabla de smbolos
+    for (i=0; i< TAM_TS; i++) {    // inicializo tabla de s¡mbolos
         ts[i].ptr_sinon = NIL;
         ts[i].ets = NULL;
     };
@@ -127,32 +127,14 @@ void inic_tablas() {
     inf_id->ptr_tipo = NIL;
     insertarTS();
 
-    // Tipos para poder diferenciar parametro arreglo
-    strcpy(inf_id->nbre, "ARRINT");
-    inf_id->clase = CLASTYPE;
-    inf_id->ptr_tipo = NIL;
-    insertarTS();
-
-    strcpy(inf_id->nbre, "ARRCHAR");
-    inf_id->clase = CLASTYPE;
-    inf_id->ptr_tipo = NIL;
-    insertarTS();
-
-    strcpy(inf_id->nbre, "ARRFLOAT");
-    inf_id->clase = CLASTYPE;
-    inf_id->ptr_tipo = NIL;
-    insertarTS();
-
 };
-
-
 
 
 /* ============ FUNCIONES DE LA TABLA DE BLOQUES ================ */
 
 void popTB() {
     if (topeTB == BASE_TB) {
-        // error_handler(14);
+        error_handler(14);
         exit (1);
     } else {
         tb[topeTB] = NIL;
@@ -165,7 +147,7 @@ void pushTB() {
     // asumo que apunto al 1er ident del nuevo bloque
     topeTB ++;
     if (topeTB == TAM_BLOQ) {
-        // error_handler(13);
+        error_handler(13);
         exit (1);
     } else {
         tb[topeTB] = topeTS + 1;
@@ -177,7 +159,7 @@ void pop_nivel () {    // El bloque a eliminar esta al tope de TS y TB
     int h;
     while (topeTS >= tb[topeTB]) {
         h = hash(ts[topeTS].ets->nbre);
-        th[h] = ts[topeTS].ptr_sinon;  // modifico la TH segn los sinnimos
+        th[h] = ts[topeTS].ptr_sinon;  // modifico la TH seg£n los sin¢nimos
         popTS();        // elimino un identificador del bloque que abandono
     };
     popTB();      // elimino el bloque que abandono
@@ -206,7 +188,7 @@ int insertarTS() { // la inf. del identif. esta en inf_id que es global
     h = hash(inf_id->nbre);
     if ( th[h] != NIL )
         if ( en_nivel_actual(inf_id->nbre) >=0  ) {
-            // error_handler(9);
+            error_handler(9);
             memset((void*)inf_id, 0, sizeof(entrada_TS));
             return 0;      //al retornar 0 indico que NO lo pude insertar
         }
@@ -214,11 +196,11 @@ int insertarTS() { // la inf. del identif. esta en inf_id que es global
     // inserto un nuevo identificador
     th[h]= pushTS(th[h], inf_id);
 
-    // pido mï¿½ memoria para el nuevo identificador
+    // pido más memoria para el nuevo identificador
     inf_id = NULL;
     inf_id = (entrada_TS *) calloc(1, sizeof(entrada_TS));
     if (inf_id == NULL) {
-        // error_handler(10);
+        error_handler(10);
         exit(1);
     }
     return th[h];  // retorno el lugar en TS donde se inserto
@@ -227,7 +209,7 @@ int insertarTS() { // la inf. del identif. esta en inf_id que es global
 
 
 int en_tabla(char *st) {    //busca un identificador en tabla de simbolos,
-    int h;                    //retorna su posicin  o NIL (si no lo encuentra)
+    int h;                    //retorna su posición  o NIL (si no lo encuentra)
     h=th[hash(st)];
     while (h!=NIL) {
         if (strcmp(ts[h].ets->nbre,st)==0) {
@@ -275,18 +257,18 @@ int en_nivel_actual(char *id) { //busca un identificador en el bloque actual
     h = th[hash(id)];
     while (h >= tb[topeTB]) {  // busco el identificador dentro del bloque
         if ( ! strcmp(ts[h].ets->nbre, id) ) {
-            return h;    // lo encontr, devuelvo la posicin h
+            return h;    // lo encontr¢, devuelvo la posici¢n h
         }
         h = ts[h].ptr_sinon;
     };
-    return NIL;          // NO lo encontr ==> ident no declarado
+    return NIL;          // NO lo encontr¢ ==> ident no declarado
 };
 
 
 
 void popTS() {
     if (topeTS == BASE_TS) {
-        // error_handler(14);
+        error_handler(14);
         exit (1);
     } else {
         ts[topeTS].ptr_sinon = NIL;
@@ -300,17 +282,37 @@ void popTS() {
 int pushTS(int s, entrada_TS *ptr) {
     topeTS ++;
     if (topeTS == TAM_TS) {
-        // error_handler(12);
+        error_handler(12);
         exit (1);
     } else {
         ts[topeTS].ptr_sinon = s;
         ts[topeTS].ets = ptr;
     };
-    return topeTS;   // retorno la posicin donde insert
+    return topeTS;   // retorno la posici¢n donde insert‚
 };
 
+// nuevos metodos
 
-#include "print_ts.h"
-#include "list_param.h"
+void imprime() {  //imprime tabla de simbolos,
+    int h=0;
+    int c;
+    while (ts[h].ets != NULL) {
+        printf("NUMERO: (%d)\n" , h);
+        printf("Puntero sinonimo: %d\n" , ts[h].ptr_sinon);
+        printf("IDENTIFICADOR\n");
+        for(c=0; c<14; c++) {
+            printf("%c",ts[h].ets->nbre[c]);
+        }
+        printf("------------------------------------\n");
+        printf("\n");
+        printf("Clase: %d\n" , ts[h].ets->clase);
+        printf("Cant byte: %d\n" , ts[h].ets->cant_byte);
+        printf("Nivel: %d\n" , ts[h].ets->desc.nivel);
+        printf("Desplazamiento: %d\n" , ts[h].ets->desc.despl);
+        h++;
+    }
 
+}
+
+//
 

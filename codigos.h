@@ -1,5 +1,5 @@
 /***********************************************************
-           CODIGOS PARA UTILIZAR EN EL SCANNER v_1
+           CODIGOS PARA UTILIZAR EN EL SCANNER
 ***********************************************************/
 /*  39 TOKEN DE USO EN EL SCANNER */
 

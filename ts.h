@@ -1,4 +1,4 @@
-/* v_1
+/*
 ======================================================================
 			COMPILADORES
 	  PROGRAMAS FUENTES ENTREGADOS POR LA CATEDRA
@@ -6,7 +6,6 @@
        HEADER PARA EL ADMINISTRADOR DE TABLA DE SIMBOLOS 2002
 ======================================================================
 */
-
 
 /*
 ======================================================================
@@ -32,9 +31,6 @@
 #define CLASFUNC   3    // identificador de funcion
 #define CLASPAR    4    // identificador de parametro formal
 
-////////////////// tipo de pasaje de parametros
-#define VALOR 'v'
-#define REF 'r'
 
 
 
@@ -64,7 +60,7 @@ typedef struct inf_res {
 
 
 // ------------------------- STC_TS ---------------------------
-//   Estructura propia de: variables (anonimas), subrutinas y parmetros
+//   Estructura propia de: variables (anonimas), subrutinas y par metros
 
 
 typedef struct {
@@ -102,11 +98,11 @@ typedef struct {
 
 
 // ------------------------ ENTRADA_TS ---------------------------
-//          Estructura de una entrada en la tabla de smbolos
+//          Estructura de una entrada en la tabla de s¡mbolos
 
 typedef struct {
 
-    char nbre[TAM_ID];  // nombre del identificador
+    char nbre[TAM_ID]; // nombre del identificador
 
     int clase;         // clase de objeto computacional:
     // vble., funcion, param., tipo.
@@ -124,7 +120,7 @@ typedef struct {
 
 
 // ---------------------------- TIPO_TS -----------------------------
-//          Estructura que define el tipo de la tabla de smbolos
+//          Estructura que define el tipo de la tabla de s¡mbolos
 
 typedef struct {
 
@@ -146,8 +142,4 @@ extern tipo_TS   ts[TAM_TS];     // tabla de simbolos
 
 
 /*			FIN			*/
-
-
-
-
 

@@ -1,5 +1,5 @@
 #define EXTERNA extern
-// v_1
+
 #include <stdio.h>
 #include "error.h"
 #include "var_globales.h"
@@ -16,22 +16,22 @@ void error_print (int ne) {
         printf("\t Error %d: El String es demasiado largo\n", ne);
         break;
     case 3:
-        printf("\t Warning %d: falta comilla de cierre. la lï¿½ea serï¿½consumida\n", ne);
+        printf("\t Warning %d: falta comilla de cierre. la línea será consumida\n", ne);
         break;
     case 4:
-        printf("\t Warning %d: Identificador de mas de 8 caracteres, serï¿½truncado\n", ne);
+        printf("\t Warning %d: Identificador de mas de 8 caracteres, será truncado\n", ne);
         break;
     case 5:
         printf("\t Error %d: Caracter invalido\n", ne);
         break;
     case 6:
-        printf("\t Error %d: El nmero de argumentos no coincide. ucc programa.c \n", ne);
+        printf("\t Error %d: El número de argumentos no coincide. ucc programa.c \n", ne);
         break;
     case 7:
         printf("\t Error %d: El archivo no existe\n ", ne);
         break;
     case 8:
-        printf("\t Error %d: Ocurri un error \n", ne);
+        printf("\t Error %d: Ocurrió un error \n", ne);
         break;
         /* errores de la tabla de simbolos*/
     case 9:
@@ -41,16 +41,16 @@ void error_print (int ne) {
         printf("\t Error %d: Falta Memoria\n", ne);
         break;
     case 11:
-        printf("\t Error %d: Tabla de Sï¿½bolos vacï¿½\n", ne);
+        printf("\t Error %d: Tabla de Símbolos vacía\n", ne);
         break;
     case 12:
-        printf("\t Error %d: Tabla de Sï¿½bolos llena\n", ne);
+        printf("\t Error %d: Tabla de Símbolos llena\n", ne);
         break;
     case 13:
         printf("\t Error %d: Tabla de Bloques llena\n", ne);
         break;
     case 14:
-        printf("\t Error %d: Tabla de Bloques vacï¿½\n", ne);
+        printf("\t Error %d: Tabla de Bloques vacía\n", ne);
         break;
         /* errores de parser*/
     case 15:
@@ -63,7 +63,7 @@ void error_print (int ne) {
         printf("\t Error %d: Tipo no definido \n", ne);
         break;
     case 18:
-        printf("\t Error %d: En Especificar Declaracin\n", ne);
+        printf("\t Error %d: En Especificar Declaración\n", ne);
         break;
     case 19:
         printf("\t Error %d: Falta (\n", ne);
@@ -84,7 +84,7 @@ void error_print (int ne) {
         printf("\t Error %d: Falta }\n", ne);
         break;
     case 25:
-        printf("\t Error %d: Error en proposicin\n", ne);
+        printf("\t Error %d: Error en proposición\n", ne);
         break;
     case 26:
         printf("\t Error %d: Falta While\n", ne);
@@ -111,7 +111,7 @@ void error_print (int ne) {
         printf("\t Error %d: Identificador no declarado\n", ne);
         break;
     case 34:
-        printf("\t Error %d: Se esperaba identificador de funcin\n", ne);
+        printf("\t Error %d: Se esperaba identificador de función\n", ne);
         break;
     case 35:
         printf("\t Error %d: El tipo de la funcion main() debe ser void\n", ne);
@@ -126,14 +126,107 @@ void error_print (int ne) {
         printf("\t Error %d: Falta constante\n", ne);
         break;
     case 39:
-        printf("\t Error %d: El identificador debe ser una variable o parï¿½etro\n", ne);
+        printf("\t Error %d: El identificador debe ser una variable o parámetro\n", ne);
         break;
     case 40:
         printf("\t Error %d: En una expresion, los arreglos deben ser accedidos por sus elementos\n", ne);
         break;
     case 41:
-        printf("\t Error %d: La cantidad de elementos debe estar especificada por un entero\n", ne);
-        break; // Error definido por nosotros
+        printf("\t Error %d: No hoy mas memoria....\n", ne);
+        break;
+
+        /* errores de recuperacion de errores */
+    case 50:
+        printf("\t Error %d: Al inicio del programa. \n", ne);
+        break;
+    case 51:
+        printf("\t Error %d: Símbolo inesperado o falta especificador de tipo. \n", ne);
+        break;
+    case 52:
+        printf("\t Error %d: Símbolo inesperado después de especificador de tipo. \n", ne);
+        break;
+    case 53:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de especif. de declaración \n", ne);
+        break;
+    case 54:
+        printf("\t Error %d: Símbolo inesperado después de especificador de declaración \n", ne);
+        break;
+    case 55:
+        printf("\t Error %d: Símbolo inesperado después de declarar un parámetro. \n", ne);
+        break;
+    case 56:
+        printf("\t Error %d: Símbolo inesperado después de declarar un parámetro \n", ne);
+        break;
+    case 57:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de lista decl. init.\n", ne);
+        break;
+    case 58:
+        printf("\t Error %d: Símbolo inesperado al comienzo de declarador init. \n", ne);
+        break;
+    case 59:
+        printf("\t Error %d: Símbolo inesperado después de declarador init. \n", ne);
+        break;
+    case 60:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de proposición compuesta. \n", ne);
+        break;
+    case 61:
+        printf("\t Error %d: Símbolo inesperado después de proposición compuesta. \n", ne);
+        break;
+    case 62:
+        printf("\t Error %d: Símbolo inesperado después de declaración. \n", ne);
+        break;
+    case 63:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de proposición. \n", ne);
+        break;
+    case 64:
+        printf("\t Error %d: Símbolo inesperado después de proposición entrada - salida. \n", ne);
+        break;
+    case 65:
+        printf("\t Error %d: Símbolo inesperado después de proposición retorno. \n", ne);
+        break;
+    case 66:
+        printf("\t Error %d: Símbolo inesperado después de proposición expresión. \n", ne);
+        break;
+    case 67:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de expresión simple. \n", ne);
+        break;
+    case 68:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de factor. \n", ne);
+        break;
+    case 69:
+        printf("\t Error %d: Símbolo inesperado después de factor. \n", ne);
+        break;
+    case 70:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de variable. \n", ne);
+        break;
+    case 71:
+        printf("\t Error %d: Símbolo inesperado después de variable. \n", ne);
+        break;
+    case 72:
+        printf("\t Error %d: Símbolo inesperado después de llamada a función. \n", ne);
+        break;
+    case 73:
+        printf("\t Error %d: Símbolo inesperado o falta símb. al comienzo de constante\n", ne);
+        break;
+    case 74:
+        printf("\t Error %d: Símbolo inesperado despues de constante,\n", ne);
+        break;
+    case 75:
+        printf("\t Error %d: Falta , \n", ne);
+        break;
+    case 76:
+        printf("\t Error %d: Falta >> \n", ne);
+        break;
+    case 77:
+        printf("\t Error %d: Falta << \n", ne);
+        break;
+    case 78:
+        printf("\t Error %d: Falta *, /, &&, +, -, ||, = u operador de relación \n", ne);
+        break;
+    case 79:
+        printf("\t Error %d: Falta = \n", ne);
+        break;
+
     }
 }
 

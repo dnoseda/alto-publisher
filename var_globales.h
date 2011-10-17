@@ -1,4 +1,3 @@
-// v_1
 #define TAM_LEXEMA 200
 
 typedef struct {
