@@ -194,16 +194,6 @@ int main( int argc,char *argv[]) {
 
 }
 
-//metodos char to int
-int chartoInt(char str[]) {
-    int num;
-
-    num = atoi(str);
-
-    return num;
-}//FIN metodos char to int
-
-
 /********* funciones del parser ***********/
 
 void unidad_traduccion(set folset) {
@@ -384,20 +374,20 @@ void declaracion_parametro(set folset) {
     }
 
 
-    tipo_inf_res *elemento=NULL; // nuevo elemento
+    tipo_inf_res *aux_inf_res=NULL;
 
-    if ((elemento = (tipo_inf_res *) malloc (sizeof (tipo_inf_res))) == NULL) {
+    if ((aux_inf_res = (tipo_inf_res *) malloc (sizeof (tipo_inf_res))) == NULL) {
         error_handler(41);
     } else {
 
-        elemento->ptero_tipo = inf_id->ptr_tipo;
-        elemento->tipo_pje=inf_id->desc.part_var.tipo_pje;
+        aux_inf_res->ptero_tipo = inf_id->ptr_tipo;
+        aux_inf_res->tipo_pje=inf_id->desc.part_var.tipo_pje;
         if(inicio==NULL) {
-            inicio=elemento;
+            inicio=aux_inf_res;
             cursor=inicio;
         } else {
-            cursor->ptr_sig=elemento;
-            cursor=elemento;
+            cursor->ptr_sig=aux_inf_res;
+            cursor=aux_inf_res;
         }
     }
 
@@ -467,19 +457,19 @@ void declarador_init(set folset) {
         constante(folset);
     } else {
         switch (sbol->codigo) {
-        case CASIGNAC: { //es una variable y estoy viendo el signo igual
+        case CASIGNAC: { 
             scanner();
-            constante(folset);//la constante que asigna
+            constante(folset);
             break;
         }
-        case CCOR_ABR: { //estoy declarando un arreglo
+        case CCOR_ABR: { 
             scanner();
             if (sbol->codigo == CCONS_ENT) {
 
                 strcpy(local,sbol->lexema);
                 constante(folset | F_LIST_INIC | CCOR_CIE | CASIGNAC,NADA);
 
-                tamARR = chartoInt(local);
+                tamARR = atoi(local);
                 inf_id->desc.part_var.arr.cant_elem = tamARR;
 
             }
@@ -963,7 +953,7 @@ void variable(set folset) {
         } else {
             error_handler(21);
         }
-    } else { // si no es un corchete que abre
+    } else {
         if((en_tabla(lexema)==NIL)&&(sbol->codigo!=CCONS_ENT)) {
 
             strcpy(inf_id->nbre,lexema);
