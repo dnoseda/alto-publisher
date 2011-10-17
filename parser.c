@@ -136,98 +136,6 @@ void scanner() {
 }
 
 
-set first(enum noTerminales not) {
-    switch(not) {
-    case declaracione:
-        return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
-
-    case especificador_de_tip:
-        return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
-
-    case especificador_de_declaracione:
-        return cons(CPAR_ABR|CASIGNAC|CCOR_ABR|CCOMA|CPYCOMA, NADA);
-
-    case definicion_de_funcio:
-        return cons(CPAR_ABR ,NADA);
-
-    case lista_declaracion_de_parametro:
-        return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
-
-    case declaracion_de_parametr:
-        return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
-
-    case declaracion_de_variabl:
-        return cons(CASIGNAC|CCOR_ABR|CCOMA|CPYCOMA, NADA);
-
-    case lista_declaraciones_ini:
-        return cons(NADA,CIDENT);
-
-    case declarador_ini:
-        return cons(CASIGNAC|CCOR_ABR, NADA);
-
-    case lista_de_inicializadore:
-        return cons(NADA,CCONS_FLO|CCONS_CAR|CCONS_ENT);
-
-    case proposicion_compuest:
-        return cons(CLLA_ABR,NADA);
-
-    case lista_de_declaracione:
-        return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
-
-    case declaracio:
-        return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
-
-    case lista_de_proposicione:
-        return cons(CWHILE|CIF|CIN|COUT|CLLA_ABR|CPAR_ABR,CMAS|CMENOS|CIDENT|CCONS_FLO|CCONS_CAR|CCONS_ENT|CNEG|CCONS_STR|CRETURN);
-
-    case proposicio:
-        return cons(CWHILE|CIF|CIN|COUT|CLLA_ABR|CPAR_ABR|CPYCOMA,CMAS|CMENOS|CIDENT|CCONS_FLO|CCONS_CAR|CCONS_ENT|CNEG|CCONS_STR|CRETURN);
-        //first entrada salida no lo usamos
-    case proposicion_de_iteracio:
-        return cons(CWHILE,NADA);
-
-    case proposicion_de_seleccio:
-        return cons(CIF,NADA);
-
-    case proposicion_de_retorn:
-        return cons(NADA,CRETURN);
-
-    case proposicion_expresio:
-        return cons(CPAR_ABR|CPYCOMA, CMAS|CMENOS|CIDENT|CCONS_ENT|CCONS_FLO|CCONS_CAR|CNEG|CCONS_STR);
-
-    case expresio:
-        return cons(CPAR_ABR,CMAS|CMENOS|CIDENT|CCONS_ENT|CCONS_FLO|CCONS_CAR|CNEG|CCONS_STR);
-
-    case relacio:
-        return cons(NADA,CMAYOR|CMENOR|CIGUAL|CMEIG|CMAIG|CDISTINTO);
-
-    case expresion_simpl:
-        return cons(CPAR_ABR,CMAS|CMENOS|CIDENT|CCONS_ENT|CCONS_FLO|CCONS_CAR|CNEG|CCONS_STR);
-
-    case termin:
-        return cons(CPAR_ABR,CIDENT|CCONS_ENT|CCONS_FLO|CCONS_CAR|CNEG|CCONS_STR);
-
-    case facto:
-        return cons(CPAR_ABR,CIDENT|CCONS_ENT|CCONS_FLO|CCONS_CAR|CNEG|CCONS_STR);
-
-    case variabl:
-        return cons(NADA,CIDENT);
-
-    case llamada_a_funcio:
-        return cons(NADA,CIDENT);
-
-    case lista_de_expresione:
-        return cons(CPAR_ABR,CMAS|CMENOS|CCONS_ENT|CCONS_FLO|CCONS_CAR|CIDENT|CNEG|CCONS_STR);
-
-    case constant:
-        return cons(NADA,CCONS_ENT|CCONS_FLO|CCONS_CAR);
-
-    default:
-        return NADA;
-
-    }
-
-}
 
 void test(set expected, set rec_points, int error) {
     if (sbol->codigo & expected) {
@@ -1036,9 +944,9 @@ void variable(set folset) {
     if (sbol->codigo == CCOR_ABR) {
 
         scanner();
-        //printf("sbol->lexema antes %s\n",sbol->lexema);
-        expresion(une(folset,cons(CPAR_CIE|CCOR_CIE,NADA)));
-        //printf("sbol->lexema %s\n",sbol->lexema);
+
+        expresion(folset|CPAR_CIE|CCOR_CIE);
+
         if (sbol->codigo == CCOR_CIE) {
             if(en_tabla(lexema)==NIL) {
                 strcpy(inf_id->nbre,lexema);
@@ -1057,11 +965,10 @@ void variable(set folset) {
             scanner();
         } else {
             error_handler(21);
-            printf("naaaaaaaaaaa\n");
         }
     } else { // si no es un corchete que abre
-        if((en_tabla(lexema)==NIL)&&(sbol->codigo!=CCONS_ENT)) { //comparo que no sea constante... por que si es trata de buscar el identificador
-            //printf("naaaaaaaaaa     %s\n",sbol->lexema) ;
+        if((en_tabla(lexema)==NIL)&&(sbol->codigo!=CCONS_ENT)) { 
+        
             strcpy(inf_id->nbre,lexema);
             inf_id->clase= CLASVAR;
             posID=en_tabla("TIPOERROR");
@@ -1069,14 +976,10 @@ void variable(set folset) {
             inf_id->cant_byte = ts[posID].ets->cant_byte;
             insertarTS();
             error_handler(33);
-        } else { //si esta en la tabla
+        } else { 
             if((esParametro==0) && (Tipo_Ident(lexema)==en_tabla("TIPOARREGLO"))) {
                 error_handler(40);
             }
-            /*if(Tipo_Ident(lexema)==en_tabla("TIPOARREGLO")){
-
-            	error_handler(40);
-                }*/
         }
     }
 
@@ -1105,7 +1008,7 @@ void llamada_funcion(set folset) {
             sbol->codigo == CCONS_CAR || sbol->codigo == CCONS_STR)
 
     {
-        lista_expresiones(une(cons(CPAR_CIE,NADA),folset));
+        lista_expresiones(CPAR_CIE|folset);
     }
 
     if (sbol->codigo == CPAR_CIE) {
@@ -1119,14 +1022,14 @@ void llamada_funcion(set folset) {
 }
 
 void lista_expresiones(set folset) {
-    expresion(une(une(folset,cons(CCOMA,NADA)),F_expresion));
+    expresion(folset|CCOMA|F_expresion);
     while ((sbol->codigo == CCOMA)|| sbol->codigo & F_expresion) {
         if(sbol->codigo & F_expresion) {
             error_handler(75);
         } else {
             scanner();
         }
-        expresion(une(une(folset,cons(CCOMA,NADA)),F_expresion));
+        expresion(folset|CCOMA|F_expresion);
     }
 }
 void constante(set folset) {
@@ -1148,36 +1051,6 @@ void constante(set folset) {
 
     }
 
-// printf("sbol->lexema en constanteeeeeeeeeeeeeee %s\n",sbol->lexema); //no encuentra  ] entra a lest hace un sacenner y encuentra ;
     test(folset,NADA,74);
-    //test(une(folset,cons(CCOR_CIE,NADA)),NADA,74);
-    //printf("sbol->lexema en constanteeeeeeeeeeeeeee %s\n",sbol->lexema);
 }
-/*
-
-void imprimirPmt(){
-int i = 0;
-tipo_inf_res *cursorCroto;
-cursorCroto = inicio;
-while(cursorCroto!=NULL){
-
-	printf("(%d)\n",i);
-	printf("%d\n",cursorCroto->ptero_tipo);
-	printf("%c\n",cursorCroto->tipo_pje);
-	i++;
-	cursorCroto=cursorCroto->ptr_sig;
-}
-
-}
-*/
-
-
-
-
-
-
-
-
-
-
 
