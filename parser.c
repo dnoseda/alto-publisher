@@ -86,7 +86,36 @@ int esIndice = 0;
 //
 
 enum noTerminales {
-    lista_declaracion_de_parametro, definicion_de_funcio, lista_declaraciones_ini, lista_de_inicializadore, proposicion_compuest, lista_de_proposicione, proposicio,proposicion_de_iteracio, proposicion_de_seleccio, proposicion_e_, proposicion_de_retorn, proposicion_expresio, expresio,declaracione, especificador_de_tip, expresion_simpl, lista_de_expresione, termin, facto, variabl, llamada_a_funcio, declaracion_de_parametr, lista_de_declaracione, declaracio, especificador_de_declaracione,relacio, declaracion_de_variabl, constant, declarador_ini, unidad_traduccio
+    lista_declaracion_de_parametro,
+	 definicion_de_funcio,
+	 lista_declaraciones_ini,
+	 lista_de_inicializadore,
+	 proposicion_compuest,
+	 lista_de_proposicione,
+	 proposicio,
+	proposicion_de_iteracio,
+	 proposicion_de_seleccio,
+	 proposicion_e_,
+	 proposicion_de_retorn,
+	 proposicion_expresio,
+	 expresio,
+	declaracione,
+	 especificador_de_tip,
+	 expresion_simpl,
+	 lista_de_expresione,
+	 termin,
+	 facto,
+	 variabl,
+	 llamada_a_funcio,
+	 declaracion_de_parametr,
+	 lista_de_declaracione,
+	 declaracio,
+	 especificador_de_declaracione,
+	relacio,
+	 declaracion_de_variabl,
+	 constant,
+	 declarador_ini,
+	 unidad_traduccio
 };
 
 
