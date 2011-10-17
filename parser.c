@@ -84,11 +84,11 @@ tipo_inf_res *cursor; // cursor
 
 
 
-#define F_especificador_tipo (CVOID|CCHAR|CINT|CFLOAT)
-#define F_constante (CCONS_CAR|CCONS_ENT|CCONS_FLO|CCONS_STR)
-#define F_llamada_funcion (CIDENT)
-#define F_variable (CIDENT)
-#define F_relacion (CIGUAL|CDISTINTO|CMENOR|CMAYOR|CMEIG|CMAIG)
+#define F_ESP_TIPO (CVOID|CCHAR|CINT|CFLOAT)
+#define F_CONST (CCONS_CAR|CCONS_ENT|CCONS_FLO|CCONS_STR)
+#define F_LLAMADA_FUNC (CIDENT)
+#define F_VAR (CIDENT)
+#define F_REL (CIGUAL|CDISTINTO|CMENOR|CMAYOR|CMEIG|CMAIG)
 #define F_proposicion_e_s (CIN|COUT)
 #define F_proposicion_seleccion (CIF)
 #define F_proposicion_iteracion (CWHILE)
@@ -98,24 +98,24 @@ tipo_inf_res *cursor; // cursor
 #define F_definicion_funcion (CPAR_ABR)
 #define F_proposicion_compuesta (CLLA_ABR)
 
-#define F_declaracion_params (F_especificador_tipo)
+#define F_declaracion_params (F_ESP_TIPO)
 #define F_lista_declaracion_params (F_declaracion_params)
 #define F_declaracion_variable (F_declarador_init|CCOMA|CPYCOMA)
-#define F_lista_inicializadores (F_constante)
+#define F_lista_inicializadores (F_CONST)
 
 
-#define F_factor (F_variable|F_constante|CNEG|CPAR_ABR|F_llamada_funcion|CCONS_STR)
+#define F_factor (F_VAR|F_CONST|CNEG|CPAR_ABR|F_LLAMADA_FUNC|CCONS_STR)
 #define F_termino (F_factor)
 #define F_expresion_simple (CMAS|CMENOS|F_termino)
 #define F_expresion (F_expresion_simple)
 #define F_lista_expresiones (F_expresion)
 #define F_proposicion_expresion (F_expresion|CPYCOMA)
-#define F_declaracion (F_especificador_tipo)
-#define F_proposicion (F_proposicion_expresion|F_proposicion_compuesta|F_proposicion_seleccion|F_proposicion_iteracion|F_proposicion_e_s|F_proposicion_retorno)
+#define F_declaracion (F_ESP_TIPO)
 #define F_lista_declaraciones (F_declaracion)
+#define F_proposicion (F_proposicion_expresion|F_proposicion_compuesta|F_proposicion_seleccion|F_proposicion_iteracion|F_proposicion_e_s|F_proposicion_retorno)
 #define F_lista_proposiciones (F_proposicion)
-#define F_unidad_traduccion (F_declaracion)
 #define F_especificador_declaracion (F_definicion_funcion|F_declaracion_variable)
+#define F_unidad_traduccion (F_declaracion)
 
 extern FILE *yyin;
 
@@ -228,7 +228,7 @@ void declaraciones(set folset) {
 
 void especificador_tipo(set folset) {
 
-    test(F_especificador_tipo,folset,51);
+    test(F_ESP_TIPO,folset,51);
     switch (sbol->codigo) {
     case CVOID: {
         scanner();
@@ -455,14 +455,14 @@ void declaracion_variable(set folset) {
 
 
 void declarador_init(set folset) {
-    test(F_declarador_init | folset,F_constante,58);
+    test(F_declarador_init | folset,F_CONST,58);
     char local[17];
 
     inf_id->ptr_tipo=posID;
     inf_id->cant_byte=ts[posID].ets->cant_byte;
     inf_id->clase=CLASVAR;
 
-    if(sbol->codigo & F_constante) {
+    if(sbol->codigo & F_CONST) {
         error_handler(79);
         constante(folset);
     } else {
@@ -526,15 +526,15 @@ void declarador_init(set folset) {
 }
 
 void lista_inicializadores(set folset) {
-    constante( F_constante | folset | CCOMA);
-    while (sbol->codigo == CCOMA || sbol->codigo & F_constante) {
-        if(sbol->codigo & F_constante) {
+    constante( F_CONST | folset | CCOMA);
+    while (sbol->codigo == CCOMA || sbol->codigo & F_CONST) {
+        if(sbol->codigo & F_CONST) {
             error_handler(75);
         } else {
             scanner();
         }
         tamARR++;
-        constante(F_constante | folset | CCOMA);
+        constante(F_CONST | folset | CCOMA);
     }
 }
 
@@ -729,15 +729,15 @@ void proposicion_e_s(set folset) {
             error_handler(28);
         }
 
-        variable(folset|CSHR|CPYCOMA|F_variable);
+        variable(folset|CSHR|CPYCOMA|F_VAR);
 
-        while (sbol->codigo == CSHR || sbol->codigo & F_variable) {
-            if(sbol->codigo & F_variable) {
+        while (sbol->codigo == CSHR || sbol->codigo & F_VAR) {
+            if(sbol->codigo & F_VAR) {
                 error_handler(76);
             } else {
                 scanner();
             }
-            variable(folset|CSHR|CPYCOMA|F_variable);
+            variable(folset|CSHR|CPYCOMA|F_VAR);
 
         }
 
@@ -927,7 +927,7 @@ void variable(set folset) {
     char lexema[17];
     int pos;
 
-    test(F_variable,folset,70);
+    test(F_VAR,folset,70);
 
     if (sbol->codigo == CIDENT) {
         strcpy(lexema,sbol->lexema);
@@ -1031,7 +1031,7 @@ void lista_expresiones(set folset) {
 }
 void constante(set folset) {
 
-    test(F_constante,folset,73);
+    test(F_CONST,folset,73);
     switch (sbol->codigo) {
     case CCONS_ENT:
         scanner();
