@@ -832,7 +832,7 @@ void proposicion_e_s(set folset) {
             } else {
                 scanner();
             }
-            variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),F_variable));
+            variable(folset|CSHR|CPYCOMA|F_variable);
 
         }
 
@@ -851,15 +851,15 @@ void proposicion_e_s(set folset) {
             error_handler(29);
         }
 
-        expresion(une(une(folset,cons(CSHL|CPYCOMA,NADA)),first(expresio)));
+        expresion(folset|CSHL|CPYCOMA|F_expresion);
 
-        while (sbol->codigo == CSHL || sbol->codigo & first(expresio)) {
-            if(sbol->codigo & first(expresio)) {
+        while (sbol->codigo == CSHL || sbol->codigo & F_expresion) {
+            if(sbol->codigo & F_expresion) {
                 error_handler(77);
             } else {
                 scanner();
             }
-            expresion(une(une(folset,cons(CSHL|CPYCOMA,NADA)),first(expresio)));
+            expresion(folset|CSHL|CPYCOMA|F_expresion));
         }
         if (sbol->codigo == CPYCOMA) {
             scanner();
@@ -878,7 +878,7 @@ void proposicion_e_s(set folset) {
 void proposicion_retorno(set folset) {
     bandera = 1;
     scanner();
-    expresion(une(folset,cons(CPYCOMA,NADA)));
+    expresion(folset|CPYCOMA);
     if (sbol->codigo == CPYCOMA) {
         scanner();
     } else {
@@ -896,7 +896,7 @@ void proposicion_expresion(set folset) {
             sbol->codigo == CCONS_CAR || sbol->codigo == CCONS_STR)
 
     {
-        expresion(une(folset,cons(CPYCOMA,NADA)));
+        expresion(folset|CPYCOMA);
     }
 
     if (sbol->codigo == CPYCOMA) {
@@ -909,9 +909,9 @@ void proposicion_expresion(set folset) {
 
 
 void expresion(set folset) {
-    expresion_simple(une(une(folset,first(expresio)),cons(CASIGNAC, CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG)));
+    expresion_simple(folset|F_expresion|CASIGNAC| CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG);
 
-    if (sbol->codigo &  first(expresio)) {
+    if (sbol->codigo &  F_expresion) {
         error_handler(78);
         expresion(folset);
     } else {
@@ -1119,14 +1119,14 @@ void llamada_funcion(set folset) {
 }
 
 void lista_expresiones(set folset) {
-    expresion(une(une(folset,cons(CCOMA,NADA)),first(expresio)));
-    while ((sbol->codigo == CCOMA)|| sbol->codigo & first(expresio)) {
-        if(sbol->codigo & first(expresio)) {
+    expresion(une(une(folset,cons(CCOMA,NADA)),F_expresion));
+    while ((sbol->codigo == CCOMA)|| sbol->codigo & F_expresion) {
+        if(sbol->codigo & F_expresion) {
             error_handler(75);
         } else {
             scanner();
         }
-        expresion(une(une(folset,cons(CCOMA,NADA)),first(expresio)));
+        expresion(une(une(folset,cons(CCOMA,NADA)),F_expresion));
     }
 }
 void constante(set folset) {
