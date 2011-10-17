@@ -16,6 +16,9 @@
 #define FALSE (!TRUE)
 
 
+// para representar el set
+typedef long long set;
+
 /*********** prototipos *************/
 
 void unidad_traduccion();
@@ -210,7 +213,7 @@ set first(enum noTerminales not) {
         return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
 
     case especificador_de_declaracione:
-        return cons(CPAR_ABR|CASIGNAC|CCOR_ABR|CCOMA|CPYCOMA, NADA);//verrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+        return cons(CPAR_ABR|CASIGNAC|CCOR_ABR|CCOMA|CPYCOMA, NADA);
 
     case definicion_de_funcio:
         return cons(CPAR_ABR ,NADA);
@@ -222,7 +225,7 @@ set first(enum noTerminales not) {
         return cons(CINT|CFLOAT|CVOID|CCHAR,NADA);
 
     case declaracion_de_variabl:
-        return cons(CASIGNAC|CCOR_ABR|CCOMA|CPYCOMA, NADA);//verrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+        return cons(CASIGNAC|CCOR_ABR|CCOMA|CPYCOMA, NADA);
 
     case lista_declaraciones_ini:
         return cons(NADA,CIDENT);
