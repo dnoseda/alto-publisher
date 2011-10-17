@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "ts.h"
-
+#include <stdlib.h>
 /*
 =====================================================================
  funciones para la administracion de la tabla de simbolos
