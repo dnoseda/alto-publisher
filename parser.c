@@ -223,7 +223,7 @@ set first(enum noTerminales not) {
         return cons(NADA,CCONS_ENT|CCONS_FLO|CCONS_CAR);
 
     default:
-        return cons(NADA,NADA);
+        return NADA;
 
     }
 
@@ -534,11 +534,11 @@ void lista_declaraciones_init(set folset) {
 }
 
 void declaracion_variable(set folset) {
-    declarador_init(une(une(cons(CCOMA|CPYCOMA,NADA),first(lista_declaraciones_ini)),folset));
+    declarador_init(CCOMA|CPYCOMA | F_lista_declaraciones_init|folset);
 
     if (sbol->codigo == CCOMA) {
         scanner();
-        lista_declaraciones_init(une(folset,cons(CPYCOMA, NADA)));
+        lista_declaraciones_init(folset | CPYCOMA);
     }
     if (sbol->codigo == CPYCOMA) {
         scanner();
@@ -550,17 +550,14 @@ void declaracion_variable(set folset) {
 
 
 void declarador_init(set folset) {
-    test(une(first(declarador_ini),folset),first(constant),58);
+    test(F_declarador_init | folset,F_constante,58);
     char local[17];
-//el declarador_init hace un push de una vble
+
     inf_id->ptr_tipo=posID;
-    inf_id->cant_byte=ts[posID].ets->cant_byte; //en la TS en donde esta guardado el tipo le doy la cant de byte
+    inf_id->cant_byte=ts[posID].ets->cant_byte;
     inf_id->clase=CLASVAR;
 
-
-
-
-    if(in(sbol->codigo,first(constant))) {
+    if(in(sbol->codigo,F_constante)) {
         error_handler(79);
         constante(folset);
     } else {
@@ -575,11 +572,11 @@ void declarador_init(set folset) {
             if (sbol->codigo == CCONS_ENT) {
 
                 strcpy(local,sbol->lexema);
-                constante(une(une(folset,first(lista_de_inicializadore)),cons(CCOR_CIE|CASIGNAC,NADA)));//la constante que asigna
-                //
-                tamARR = chartoInt(local);//paso a entero
+                constante(folset | F_lista_inicializadores | CCOR_CIE | CASIGNAC,NADA);
+
+                tamARR = chartoInt(local);
                 inf_id->desc.part_var.arr.cant_elem = tamARR;
-                //
+
             }
             if (sbol->codigo == CCOR_CIE) {
                 scanner();
@@ -596,7 +593,7 @@ void declarador_init(set folset) {
 
                 tamARR=0;
 
-                lista_inicializadores(une(folset,cons(CLLA_CIE,NADA)));
+                lista_inicializadores(folset | CLLA_CIE );
 
                 inf_id->desc.part_var.arr.cant_elem = tamARR;
                 if (sbol->codigo == CLLA_CIE) {
@@ -619,27 +616,27 @@ void declarador_init(set folset) {
     }
 
 
-    test(folset,cons(NADA,NADA),59);
+    test(folset,NADA,59);
 
 }
 
 void lista_inicializadores(set folset) {
-    constante(une(une(first(constant),folset),cons(CCOMA,NADA)));
-    while (sbol->codigo == CCOMA||in(sbol->codigo,first(constant))) {
-        if(in(sbol->codigo,first(constant))) {
+    constante( F_constante | folset | CCOMA);
+    while (sbol->codigo == CCOMA || sbol->codigo & F_constante) {
+        if(in(sbol->codigo,F_constante)) {
             error_handler(75);
         } else {
             scanner();
         }
         tamARR++;
-        constante(une(une(first(constant),folset),cons(CCOMA,NADA)));
+        constante(F_constante | folset | CCOMA);
     }
 }
 
 
 void proposicion_compuesta(set folset) {
 
-    test(first(proposicion_compuest),une(une(une(first(lista_de_declaracione),first(lista_de_proposicione)),folset),cons(CLLA_CIE,NADA)),60);
+    test(F_proposicion_compuesta,( F_lista_declaraciones | F_lista_proposiciones|folset|CLLA_CIE ),60);
     if (sbol->codigo == CLLA_ABR) {
         scanner();
     } else {
@@ -650,7 +647,7 @@ void proposicion_compuesta(set folset) {
             sbol->codigo == CINT || sbol->codigo == CFLOAT)
 
     {
-        lista_declaraciones(une(folset,une(first(lista_de_proposicione),cons(CLLA_CIE,NADA))));
+        lista_declaraciones(folset | F_lista_proposiciones |CLLA_CIE,NADA);
     }
 
     if (sbol->codigo == CLLA_ABR || sbol->codigo == CMAS ||
@@ -663,7 +660,7 @@ void proposicion_compuesta(set folset) {
             sbol->codigo == CPYCOMA || sbol->codigo == CRETURN) {
 
 
-        lista_proposiciones(une(folset,cons(CLLA_CIE,NADA)));
+        lista_proposiciones(folset | CLLA_CIE);
     }
 
     if (sbol->codigo == CLLA_CIE) {
@@ -673,7 +670,7 @@ void proposicion_compuesta(set folset) {
     } else {
         error_handler(24);
     }
-    test(folset,cons(NADA,NADA),61);
+    test(folset,NADA,61);
 
 }
 void lista_declaraciones(set folset) {
@@ -702,7 +699,7 @@ void declaracion(set folset) {
     }
 
 
-    test(folset,cons(NADA,NADA),62);
+    test(folset,NADA,62);
 }
 
 void lista_proposiciones(set folset) {
@@ -875,7 +872,7 @@ void proposicion_e_s(set folset) {
     default:
         error_handler(30);
     }
-    test(folset,cons(NADA,NADA),64);
+    test(folset,NADA,64);
 }
 
 
@@ -888,7 +885,7 @@ void proposicion_retorno(set folset) {
     } else {
         error_handler(22);
     }
-    test(folset,cons(NADA,NADA),65);
+    test(folset,NADA,65);
 }
 
 
@@ -908,7 +905,7 @@ void proposicion_expresion(set folset) {
     } else {
         error_handler(22);
     }
-    test(folset,cons(NADA,NADA),66);
+    test(folset,NADA,66);
 }
 
 
@@ -1019,7 +1016,7 @@ void factor(set folset) {
         error_handler(31);
     }
 
-    test(folset,cons(NADA,NADA), 69);
+    test(folset,NADA, 69);
 }
 
 void variable(set folset) {
@@ -1085,7 +1082,7 @@ void variable(set folset) {
     }
 
 
-    test(folset,cons(NADA,NADA),71);
+    test(folset,NADA,71);
 
 }
 void llamada_funcion(set folset) {
@@ -1118,7 +1115,7 @@ void llamada_funcion(set folset) {
         error_handler(20);
     }
 
-    test(folset,cons(NADA,NADA),72);
+    test(folset,NADA,72);
 
 }
 
@@ -1135,7 +1132,7 @@ void lista_expresiones(set folset) {
 }
 void constante(set folset) {
 
-    test(first(constant),folset,73);
+    test(F_constante,folset,73);
     switch (sbol->codigo) {
     case CCONS_ENT:
         scanner();
@@ -1153,8 +1150,8 @@ void constante(set folset) {
     }
 
 // printf("sbol->lexema en constanteeeeeeeeeeeeeee %s\n",sbol->lexema); //no encuentra  ] entra a lest hace un sacenner y encuentra ;
-    test(folset,cons(NADA,NADA),74);
-    //test(une(folset,cons(CCOR_CIE,NADA)),cons(NADA,NADA),74);
+    test(folset,NADA,74);
+    //test(une(folset,cons(CCOR_CIE,NADA)),NADA,74);
     //printf("sbol->lexema en constanteeeeeeeeeeeeeee %s\n",sbol->lexema);
 }
 /*
