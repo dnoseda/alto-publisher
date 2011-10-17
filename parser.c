@@ -310,7 +310,8 @@ void unidad_traduccion(set folset) {
 }
 
 void declaraciones(set folset) {
-    especificador_tipo(une(folset,une(cons(NADA,CIDENT),first(especificador_de_declaracione))));
+    
+    especificador_tipo(folset | CIDENT | F_especificador_declaracion);
     if (sbol->codigo == CIDENT) {
         strcpy(inf_id->nbre,sbol->lexema);
         scanner();
@@ -322,7 +323,7 @@ void declaraciones(set folset) {
 
 void especificador_tipo(set folset) {
 
-    test(first(especificador_de_tip),folset,51);
+    test(F_especificador_tipo,folset,51);
     switch (sbol->codigo) {
     case CVOID: {
         scanner();
@@ -347,7 +348,7 @@ void especificador_tipo(set folset) {
     default:
         error_handler(17);
     }
-    test(folset,cons(NADA,NADA),52);
+    test(folset,NADA,52);
 }
 
 void especificador_declaracion(set folset) {
