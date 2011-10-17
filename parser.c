@@ -86,8 +86,39 @@ tipo_inf_res *cursor; // cursor
 
 int esIndice = 0;
 
-//
 
+#define F_especificador_tipo (CVOID|CCHAR|CINT|CFLOAT)
+#define F_constante (CCONS_CAR|CCONS_ENT|CCONS_FLO|CCONS_STR)
+#define F_llamada_funcion (CIDENT)
+#define F_variable (CIDENT)
+#define F_relacion (CIGUAL|CDISTINTO|CMENOR|CMAYOR|CMEIG|CMAIG)
+#define F_proposicion_e_s (CIN|COUT)
+#define F_proposicion_seleccion (CIF)
+#define F_proposicion_iteracion (CWHILE)
+#define F_proposicion_retorno (CRETURN)
+#define F_declarador_init (CASIGNAC|CCOR_ABR)
+#define F_lista_declaraciones_init (CIDENT)
+#define F_definicion_funcion (CPAR_ABR)
+#define F_proposicion_compuesta (CLLA_ABR)
+
+#define F_declaracion_params (F_especificador_tipo)
+#define F_lista_declaracion_params (F_declaracion_params)
+#define F_declaracion_variable (F_declarador_init|CCOMA|CPYCOMA)
+#define F_lista_inicializadores (F_constante)
+
+
+#define F_factor (F_variable|F_constante|CNEG|CPAR_ABR|F_llamada_funcion|CCONS_STR)
+#define F_termino (F_factor)
+#define F_expresion_simple (CMAS|CMENOS|F_termino)
+#define F_expresion (F_expresion_simple)
+#define F_lista_expresiones (F_expresion)
+#define F_proposicion_expresion (F_expresion|CPYCOMA)
+#define F_declaracion (F_especificador_tipo)
+#define F_proposicion (F_proposicion_expresion|F_proposicion_compuesta|F_proposicion_seleccion|F_proposicion_iteracion|F_proposicion_e_s|F_proposicion_retorno)
+#define F_lista_declaraciones (F_declaracion)
+#define F_lista_proposiciones (F_proposicion)
+#define F_unidad_traduccion (F_declaracion)
+#define F_especificador_declaracion (F_definicion_funcion|F_declaracion_variable)
 enum noTerminales {
     lista_declaracion_de_parametro,
 	 definicion_de_funcio,
@@ -137,71 +168,6 @@ void scanner() {
     strcat(linea, token1.lexema);
     free ( (void *) liberar);
 }
-
-//***************************FUNCIONES DEL SET************************************
-
-typedef struct {
-    long p1,p2 ;
-} set ;             /* define tipo set */
-
-/* p1 define el long conteniendo los codigos SIN el 1 en el primer bits */
-/* p2 define el long conteniendo los codigos CON el 1 en el primer bits */
-
-
-set  une(set,set);              /* retorna la union de dos conjuntos */
-int in(long,set);               /* si un elemento pertenece al conjunto */
-set  cons(long,long);           /* construye un set */
-void imp_set(set);
-
-
-
-set une(set c1, set c2) {
-    set u;
-
-    u.p1=c1.p1|c2.p1;
-    u.p2=c1.p2|c2.p2;
-    return u;
-}
-//****************************************************************************
-
-
-int in(long e,set A) { /* x pertenece a A ? */
-    long r;
-
-    if ((e & (UNO<<30)) != UNO<<30 ) {
-        r= (e & A.p1);
-    } else {
-        r=(e & A.p2);
-    }
-    if (e == r) {
-        return 1;
-    } else {
-        return 0;
-    }
-
-}
-
-/****************************************************************************
-						cons()
-****************************************************************************/
-set cons(long x,long y) {
-    set nuevo_set;
-
-    nuevo_set.p1 = x;
-    nuevo_set.p2 = y;
-    return nuevo_set;
-}
-/***********************************************************************
-                            imprime set
-***********************************************************************/
-void imp_set(set v) {
-    printf("%X\n",v.p1);
-    printf("%X \n",v.p2);
-};
-
-
-//********************************************************************************
-
 
 
 set first(enum noTerminales not) {
@@ -297,16 +263,17 @@ set first(enum noTerminales not) {
 
 }
 
-
-void test(set conjunto, set puntosRecuperacion, int error) {
-    if(in(sbol->codigo, conjunto)==0) {
-        error_handler(error);
-        conjunto=une(conjunto, puntosRecuperacion);
-        while (in(sbol->codigo,conjunto)==0) {
-            scanner();
-        }
+void test(set expected, set rec_points, int error) {
+    if (sbol->codigo & expected) {
+        return;
+    }
+    error_handler(error);
+    set recover = expected | rec_points;
+    while ((sbol->codigo & recover) == 0LL) {
+        scanner();
     }
 }
+
 
 int main( int argc,char *argv[]) {
 
@@ -333,7 +300,7 @@ int main( int argc,char *argv[]) {
     }
     sbol=&token1;
     scanner();
-    unidad_traduccion(cons(NADA,CEOF));
+    unidad_traduccion(CEOF);
 
     if(Clase_Ident("main")!=CLASFUNC) {
         error_handler(15);
