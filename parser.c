@@ -594,7 +594,7 @@ void declaracion(set folset) {
     }
 
 
-    test(folset,NADA,62);
+    test(folset,NADA,61);
 }
 
 void lista_proposiciones(set folset) {
@@ -804,7 +804,7 @@ void proposicion_expresion(set folset) {
 
 
 void expresion(set folset) {
-    expresion_simple(folset|F_EXPR|CASIGNAC| CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG);
+    expresion_simple(folset|F_EXPR| CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG);
 
     if (sbol->codigo &  F_EXPR) {
         error_handler(78);
@@ -893,7 +893,7 @@ void factor(set folset) {
         break;
     case CPAR_ABR: {
         scanner();
-        expresion(folset|CPAR_CIE);
+        expresion(folset);
         if (sbol->codigo == CPAR_CIE) {
             scanner();
         } else {
@@ -910,7 +910,7 @@ void factor(set folset) {
         error_handler(31);
     }
 
-    test(folset,NADA, 69);
+    test(folset,NADA, 68);
 }
 
 void variable(set folset) {
@@ -1023,21 +1023,21 @@ void constante(set folset) {
 
     test(F_CONST,folset,73);
     switch (sbol->codigo) {
-    case CCONS_ENT:
-        scanner();
-        break;
-    case CCONS_FLO:
-        scanner();
-        break;
-    case CCONS_CAR:
-        scanner();
-        break;
-    default: {
-        error_handler(38);
-    }
+        case CCONS_ENT:
+            scanner();
+            break;
+        case CCONS_FLO:
+            scanner();
+            break;
+        case CCONS_CAR:
+            scanner();
+            break;
+        default: {
+            error_handler(38);
+        }
 
     }
 
-    test(folset,NADA,74);
+    test(folset,NADA,73);
 }
 
