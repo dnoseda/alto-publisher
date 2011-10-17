@@ -937,20 +937,20 @@ void expresion(set folset) {
 
 void expresion_simple(set folset) {
 
-    test(first(expresion_simpl),une(une(first(termin),cons(NADA,COR)),folset),67);	//ver esteeeeeeeeeeeeeee
+    test(F_expresion_simple,F_termino|COR|folset,67);
     if (sbol->codigo == CMAS || sbol->codigo == CMENOS) {
         scanner();
     }
 
-    termino(une(une(folset,cons(NADA,CMAS|CMENOS|COR)),first(termin)));
+    termino(folset|CMAS|CMENOS|COR|F_termino);
 
     while ((sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR) || sbol->codigo & first(termin)) {
-        if(sbol->codigo & first(termin)) {
+        if(sbol->codigo & F_termino) {
             error_handler(78);
         } else {
             scanner();
         }
-        termino(une(une(folset,cons(NADA,CMAS|CMENOS|COR)),first(termin)));
+        termino(folset | CMAS|CMENOS|COR| F_termino);
     }
 }
 
