@@ -4,11 +4,17 @@
 
 #define EXTERNA extern
 
+#include <stdlib.h>
 #include <stdio.h>
 #include "codigos.h"
 #include "var_globales.h"
 #include <string.h>
 #include "ts.h"
+#include "ts.c"
+
+
+#define TRUE (1 == 1)
+#define FALSE (!TRUE)
 
 
 /*********** prototipos *************/
@@ -48,6 +54,14 @@ void lista_expresiones();
 
 
 void scanner ();
+
+
+/*************** variables auxiliares *************/
+ 
+int punteroFuncion;  // donde apunto a la funcin donde estoy metido
+int tipo_global;     // donde guardo en el caso     int a,b,c;    el tipo para b y c
+int flag_hay_return; // dice si hay return en la declaracin de funcin
+int void_flag;
 
 /********** variables globales ************/
 
