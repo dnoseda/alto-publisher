@@ -10,7 +10,6 @@
 #include "var_globales.h"
 #include <string.h>
 #include "ts.h"
-#include "ts.c"
 
 
 #define TRUE (1 == 1)
