@@ -944,7 +944,7 @@ void expresion_simple(set folset) {
 
     termino(folset|CMAS|CMENOS|COR|F_termino);
 
-    while ((sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR) || sbol->codigo & first(termin)) {
+    while ((sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR) || sbol->codigo & F_termino) {
         if(sbol->codigo & F_termino) {
             error_handler(78);
         } else {
@@ -956,22 +956,22 @@ void expresion_simple(set folset) {
 
 void termino(set folset) {
 
-    factor(une(une(folset,cons(NADA,CMULT|CDIV|CAND)),first(facto)));
+    factor(folset| CMULT|CDIV|CAND | F_factor);
 
-    while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND)|| sbol->codigo & first(facto)) {
-        if(sbol->codigo & first(facto)) {
+    while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND)|| sbol->codigo & F_factor) {
+        if(sbol->codigo & F_factor) {
             error_handler(78);
         } else {
             scanner();
         }
-        factor(une(une(folset,cons(NADA,CMULT|CDIV|CAND)),first(facto)));
+        factor(folset| CMULT|CDIV|CAND | F_factor);
     }
 
 }
 
 void factor(set folset) {
 
-    test(first(facto), folset, 68);
+    test(F_factor, folset, 68);
     switch (sbol->codigo) {
     case CIDENT: {
         if (Clase_Ident(sbol->lexema)== CLASFUNC) {
@@ -998,7 +998,7 @@ void factor(set folset) {
         break;
     case CPAR_ABR: {
         scanner();
-        expresion(une(folset,cons(CPAR_CIE,NADA)));
+        expresion(folset|CPAR_CIE);
         if (sbol->codigo == CPAR_CIE) {
             scanner();
         } else {
