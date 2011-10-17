@@ -30,8 +30,8 @@
 #define CSHR      (UNO<<20)     /* c>> */  /* 1048576 */
 
 #define CDISTINTO  (UNO|FLAG)     /* */
-#define CIGUAL     (UNO<<1|FLAG)  /* */ 
-#define CMENOR     (UNO<<2|FLAG)  /* */ 
+#define CIGUAL     (UNO<<1|FLAG)  /* */
+#define CMENOR     (UNO<<2|FLAG)  /* */
 #define CMEIG      (UNO<<3|FLAG)  /* */
 #define CMAYOR     (UNO<<4|FLAG)
 #define CMAIG      (UNO<<5|FLAG)
@@ -48,7 +48,7 @@
 #define CCONS_CAR  (UNO<<16|FLAG)
 #define CCONS_STR  (UNO<<17|FLAG)
 #define CRETURN    (UNO<<18|FLAG)
-  
+
 #define CEOF       (UNO<<19|FLAG)
 #define SEGUIR     (UNO<<20|FLAG)
 

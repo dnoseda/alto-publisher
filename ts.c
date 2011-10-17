@@ -18,9 +18,9 @@
 #include <string.h>
 #include "ts.h"
 
-/* 
+/*
    =====================================================================
-   funciones para la administracion de la tabla de simbolos 
+   funciones para la administracion de la tabla de simbolos
    =====================================================================
    */
 
@@ -63,24 +63,24 @@ int  topeTB = BASE_TB;
 /* ============ FUNCION DE INICIALIZACION DE TABLAS ================ */
 
 
-void inic_tablas()
-{
+void inic_tablas() {
     int i;
     char id[TAM_ID];
 
     //  TODOS LOS TOPES ESTAN INICIALIZADOS EN LA DECLARACION
 
-    for (i=0; i< TAM_TS; i++)      // inicializo tabla de smbolos
-    {
+    for (i=0; i< TAM_TS; i++) {    // inicializo tabla de smbolos
         ts[i].ptr_sinon = NIL;
         ts[i].ets = NULL;
     };
 
-    for (i=0; i< TAM_HASH; i++)    // inicializo tabla de hash en nil
+    for (i=0; i< TAM_HASH; i++) {  // inicializo tabla de hash en nil
         th[i] = NIL;
+    }
 
-    for (i=0; i< TAM_BLOQ; i++)    // inicializo tabla de bloques en nil
+    for (i=0; i< TAM_BLOQ; i++) {  // inicializo tabla de bloques en nil
         tb[i] = NIL;
+    }
 
     // RESERVA MEMORIA para una entrada de la TS
 
@@ -150,9 +150,8 @@ void inic_tablas()
 
 /* ============ FUNCIONES DE LA TABLA DE BLOQUES ================ */
 
-void popTB()
-{
-    if (topeTB == BASE_TB){
+void popTB() {
+    if (topeTB == BASE_TB) {
         // error_handler(14);
         exit (1);
     } else {
@@ -162,22 +161,21 @@ void popTB()
 }
 
 
-void pushTB()
-{                      // asumo que apunto al 1er ident del nuevo bloque
+void pushTB() {
+    // asumo que apunto al 1er ident del nuevo bloque
     topeTB ++;
     if (topeTB == TAM_BLOQ) {
         // error_handler(13);
         exit (1);
-    } else
+    } else {
         tb[topeTB] = topeTS + 1;
+    }
 };
 
 
-void pop_nivel ()      // El bloque a eliminar esta al tope de TS y TB
-{
+void pop_nivel () {    // El bloque a eliminar esta al tope de TS y TB
     int h;
-    while (topeTS >= tb[topeTB])
-    {
+    while (topeTS >= tb[topeTB]) {
         h = hash(ts[topeTS].ets->nbre);
         th[h] = ts[topeTS].ptr_sinon;  // modifico la TH segn los sinnimos
         popTS();        // elimino un identificador del bloque que abandono
@@ -188,13 +186,13 @@ void pop_nivel ()      // El bloque a eliminar esta al tope de TS y TB
 
 /* ============ FUNCIONES DE LA TABLA DE HASH ================ */
 
-int hash(char id[])
-{
+int hash(char id[]) {
     int i;
     long l=0;
 
-    for (i=0; id[i] ; i++)
+    for (i=0; id[i] ; i++) {
         l = 3 * l + id[i];
+    }
     l = l % TAM_HASH;
     return l;
 };
@@ -203,13 +201,11 @@ int hash(char id[])
 
 /* ============ FUNCIONES DE LA TABLA DE SIMBOLOS ================ */
 
-int insertarTS()   // la inf. del identif. esta en inf_id que es global
-{
+int insertarTS() { // la inf. del identif. esta en inf_id que es global
     int i,h;
     h = hash(inf_id->nbre);
     if ( th[h] != NIL )
-        if ( en_nivel_actual(inf_id->nbre) >=0  )
-        {
+        if ( en_nivel_actual(inf_id->nbre) >=0  ) {
             // error_handler(9);
             memset((void*)inf_id, 0, sizeof(entrada_TS));
             return 0;      //al retornar 0 indico que NO lo pude insertar
@@ -230,12 +226,13 @@ int insertarTS()   // la inf. del identif. esta en inf_id que es global
 
 
 
-int en_tabla(char *st)      //busca un identificador en tabla de simbolos,
-{ int h;                    //retorna su posicin  o NIL (si no lo encuentra)
+int en_tabla(char *st) {    //busca un identificador en tabla de simbolos,
+    int h;                    //retorna su posicin  o NIL (si no lo encuentra)
     h=th[hash(st)];
-    while (h!=NIL)
-    {  if (strcmp(ts[h].ets->nbre,st)==0)
-        return h;
+    while (h!=NIL) {
+        if (strcmp(ts[h].ets->nbre,st)==0) {
+            return h;
+        }
 
         h=ts[h].ptr_sinon;
     }
@@ -243,40 +240,43 @@ int en_tabla(char *st)      //busca un identificador en tabla de simbolos,
 }
 
 
-int Tipo_Ident(char *st)    //busca un identificador en tabla de simbolos,
-{ int h;                     //retorna su tipo o NIL (si no lo encuentra)
+int Tipo_Ident(char *st) {  //busca un identificador en tabla de simbolos,
+    int h;                     //retorna su tipo o NIL (si no lo encuentra)
     h=th[hash(st)];
-    while (h!=NIL)
-    {  if (strcmp(ts[h].ets->nbre,st)==0)
-        return ts[h].ets->ptr_tipo;
+    while (h!=NIL) {
+        if (strcmp(ts[h].ets->nbre,st)==0) {
+            return ts[h].ets->ptr_tipo;
+        }
 
         h=ts[h].ptr_sinon;
     };
-    return NIL; 
+    return NIL;
 
 }
 
 
-int Clase_Ident(char *st)   //busca un identificador en tabla de simbolos,
-{ int h;                    //retorna su clase o NIL (si no lo encuentra)
+int Clase_Ident(char *st) { //busca un identificador en tabla de simbolos,
+    int h;                    //retorna su clase o NIL (si no lo encuentra)
     h=th[hash(st)];
-    while (h!=NIL)
-    {if (strcmp(ts[h].ets->nbre,st)==0)
-        return ts[h].ets->clase;
+    while (h!=NIL) {
+        if (strcmp(ts[h].ets->nbre,st)==0) {
+            return ts[h].ets->clase;
+        }
         h=ts[h].ptr_sinon;
     }
-    return NIL;}
+    return NIL;
+}
 
 
 
-int en_nivel_actual(char *id) //busca un identificador en el bloque actual
-{ int h;                  //retorna su posicion o NIL (si no lo encuentra)
+int en_nivel_actual(char *id) { //busca un identificador en el bloque actual
+    int h;                  //retorna su posicion o NIL (si no lo encuentra)
 
     h = th[hash(id)];
-    while (h >= tb[topeTB])    // busco el identificador dentro del bloque
-    {
-        if ( ! strcmp(ts[h].ets->nbre, id) )
-            return h;     // lo encontr, devuelvo la posicin h
+    while (h >= tb[topeTB]) {  // busco el identificador dentro del bloque
+        if ( ! strcmp(ts[h].ets->nbre, id) ) {
+            return h;    // lo encontr, devuelvo la posicin h
+        }
         h = ts[h].ptr_sinon;
     };
     return NIL;          // NO lo encontr ==> ident no declarado
@@ -284,9 +284,8 @@ int en_nivel_actual(char *id) //busca un identificador en el bloque actual
 
 
 
-void popTS()
-{
-    if (topeTS == BASE_TS){
+void popTS() {
+    if (topeTS == BASE_TS) {
         // error_handler(14);
         exit (1);
     } else {
@@ -298,12 +297,11 @@ void popTS()
 };
 
 
-int pushTS(int s, entrada_TS *ptr)
-{
+int pushTS(int s, entrada_TS *ptr) {
     topeTS ++;
     if (topeTS == TAM_TS) {
         // error_handler(12);
-        exit (1);        
+        exit (1);
     } else {
         ts[topeTS].ptr_sinon = s;
         ts[topeTS].ets = ptr;
