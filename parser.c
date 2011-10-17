@@ -213,7 +213,7 @@ void unidad_traduccion(set folset) {
     test(F_unidad_traduccion | folset, NADA, 50);
     while (sbol->codigo == CVOID || sbol->codigo == CCHAR || sbol->codigo == CINT || sbol->codigo == CFLOAT) {
         declaraciones(folset | F_declaracion);
-        test(F_declaracion,folset,51)
+        test(F_declaracion,folset,51);
     }
 }
 
@@ -297,12 +297,12 @@ void definicion_funcion(set folset) {
 
     if (sbol->codigo == CVOID || sbol->codigo == CCHAR || sbol->codigo == CINT || sbol->codigo == CFLOAT) {
 
-        lista_declaraciones_param(folset | CPAR_CIE | first_proposicion_compuesta);
+        lista_declaraciones_param(folset | CPAR_CIE | F_proposicion_compuesta);
 
     } else {
 
         if(sbol->codigo == CIDENT) {
-            lista_declaraciones_param(folset | CPAR_CIE | first_proposicion_compuesta);
+            lista_declaraciones_param(folset | CPAR_CIE | F_proposicion_compuesta);
         }
     }
 
@@ -767,7 +767,7 @@ void proposicion_e_s(set folset) {
             } else {
                 scanner();
             }
-            expresion(folset|CSHL|CPYCOMA|F_expresion));
+            expresion(folset|CSHL|CPYCOMA|F_expresion);
         }
         if (sbol->codigo == CPYCOMA) {
             scanner();
