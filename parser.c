@@ -59,7 +59,7 @@ void scanner ();
 
 
 /*************** variables auxiliares *************/
- 
+
 int punteroFuncion;  // donde apunto a la funcin donde estoy metido
 int tipo_global;     // donde guardo en el caso     int a,b,c;    el tipo para b y c
 int flag_hay_return; // dice si hay return en la declaracin de funcin
@@ -218,7 +218,7 @@ void unidad_traduccion(set folset) {
 }
 
 void declaraciones(set folset) {
-    
+
     especificador_tipo(folset | CIDENT | F_especificador_declaracion);
     if (sbol->codigo == CIDENT) {
         strcpy(inf_id->nbre,sbol->lexema);
@@ -967,8 +967,8 @@ void variable(set folset) {
             error_handler(21);
         }
     } else { // si no es un corchete que abre
-        if((en_tabla(lexema)==NIL)&&(sbol->codigo!=CCONS_ENT)) { 
-        
+        if((en_tabla(lexema)==NIL)&&(sbol->codigo!=CCONS_ENT)) {
+
             strcpy(inf_id->nbre,lexema);
             inf_id->clase= CLASVAR;
             posID=en_tabla("TIPOERROR");
@@ -976,7 +976,7 @@ void variable(set folset) {
             inf_id->cant_byte = ts[posID].ets->cant_byte;
             insertarTS();
             error_handler(33);
-        } else { 
+        } else {
             if((esParametro==0) && (Tipo_Ident(lexema)==en_tabla("TIPOARREGLO"))) {
                 error_handler(40);
             }
