@@ -315,4 +315,5 @@ void imprime() {  //imprime tabla de simbolos,
 }
 
 //
-
+#include "print_ts.h"
+#include "list_param.h"

@@ -31,7 +31,9 @@
 #define CLASFUNC   3    // identificador de funcion
 #define CLASPAR    4    // identificador de parametro formal
 
-
+////////////////// tipo de pasaje de parametros
+#define VALOR 'v'
+#define REF 'r'
 
 
 /*
