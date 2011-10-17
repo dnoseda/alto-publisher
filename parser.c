@@ -675,22 +675,22 @@ void proposicion_compuesta(set folset) {
 }
 void lista_declaraciones(set folset) {
 
-    declaracion(une(folset,first(declaracio)));
+    declaracion(folset|F_declaracion);
 
     while (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
             sbol->codigo == CINT || sbol->codigo == CFLOAT)
 
     {
-        declaracion(une(folset,first(declaracio)));
+        declaracion(folset|F_declaracion);
     }
 
 }
 
 void declaracion(set folset) {
 
-    especificador_tipo(une(une(folset,first(lista_declaraciones_ini)),cons(CPYCOMA,NADA)));
+    especificador_tipo(folset|F_lista_declaraciones_init|CPYCOMA);
 
-    lista_declaraciones_init(une(folset,cons(CPYCOMA,NADA)));
+    lista_declaraciones_init(folset|CPYCOMA);
 
     if (sbol->codigo == CPYCOMA) {
         scanner();
