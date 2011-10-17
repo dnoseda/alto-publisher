@@ -78,13 +78,10 @@ int tamARR=0;
 char lexema[17];
 int bandera;
 int posicionTS;
-int esParametro = 0;
+int esParametro = FALSE;
 tipo_inf_res *inicio; // puntero de la lista de parametros
 tipo_inf_res *cursor; // cursor
 
-//para ver la constante dentro de los corchetes.......
-
-int esIndice = 0;
 
 
 #define F_especificador_tipo (CVOID|CCHAR|CINT|CFLOAT)
@@ -281,7 +278,7 @@ void especificador_declaracion(set folset) {
 
 void definicion_funcion(set folset) {
 
-    bandera=0;
+    bandera=FALSE;
     inf_id->clase=CLASFUNC;
     inf_id->ptr_tipo=posID;
     inf_id->cant_byte=ts[posID].ets->cant_byte;
@@ -315,7 +312,7 @@ void definicion_funcion(set folset) {
     proposicion_compuesta(folset);
 
     if(posicionTS!=en_tabla("void")) {
-        if(bandera!=1) {
+        if(bandera!=TRUE) {
             error_handler(37);
         }
     }
@@ -784,7 +781,7 @@ void proposicion_e_s(set folset) {
 
 
 void proposicion_retorno(set folset) {
-    bandera = 1;
+    bandera = TRUE;
     scanner();
     expresion(folset|CPYCOMA);
     if (sbol->codigo == CPYCOMA) {
@@ -885,11 +882,11 @@ void factor(set folset) {
         if (Clase_Ident(sbol->lexema)== CLASFUNC) {
             inicio = ts[en_tabla(sbol->lexema)].ets->desc.part_var.sub.ptr_inf_res;
             cantPar=ts[en_tabla(sbol->lexema)].ets->desc.part_var.sub.cant_par;
-            esParametro = 1;
+            esParametro = TRUE;
             llamada_funcion(folset);
             inicio=NULL;
             cursor=NULL;
-            esParametro = 0;
+            esParametro = FALSE;
         } else {
             variable(folset);
         }
@@ -977,7 +974,7 @@ void variable(set folset) {
             insertarTS();
             error_handler(33);
         } else {
-            if((esParametro==0) && (Tipo_Ident(lexema)==en_tabla("TIPOARREGLO"))) {
+            if((esParametro==FALSE) && (Tipo_Ident(lexema)==en_tabla("TIPOARREGLO"))) {
                 error_handler(40);
             }
         }
