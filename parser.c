@@ -557,7 +557,7 @@ void declarador_init(set folset) {
     inf_id->cant_byte=ts[posID].ets->cant_byte;
     inf_id->clase=CLASVAR;
 
-    if(in(sbol->codigo,F_constante)) {
+    if(sbol->codigo & F_constante) {
         error_handler(79);
         constante(folset);
     } else {
@@ -623,7 +623,7 @@ void declarador_init(set folset) {
 void lista_inicializadores(set folset) {
     constante( F_constante | folset | CCOMA);
     while (sbol->codigo == CCOMA || sbol->codigo & F_constante) {
-        if(in(sbol->codigo,F_constante)) {
+        if(sbol->codigo & F_constante) {
             error_handler(75);
         } else {
             scanner();
@@ -824,15 +824,15 @@ void proposicion_e_s(set folset) {
             error_handler(28);
         }
 
-        variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),first(variabl)));
+        variable(folset|CSHR|CPYCOMA|F_variable);
 
-        while (sbol->codigo == CSHR || in(sbol->codigo,first(variabl))) {
-            if(in(sbol->codigo,first(variabl))) {
+        while (sbol->codigo == CSHR || sbol->codigo & F_variable) {
+            if(sbol->codigo & F_variable) {
                 error_handler(76);
             } else {
                 scanner();
             }
-            variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),first(variabl)));
+            variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),F_variable));
 
         }
 
@@ -853,8 +853,8 @@ void proposicion_e_s(set folset) {
 
         expresion(une(une(folset,cons(CSHL|CPYCOMA,NADA)),first(expresio)));
 
-        while (sbol->codigo == CSHL || in(sbol->codigo,first(expresio))) {
-            if(in(sbol->codigo,first(expresio))) {
+        while (sbol->codigo == CSHL || sbol->codigo & first(expresio)) {
+            if(sbol->codigo & first(expresio)) {
                 error_handler(77);
             } else {
                 scanner();
@@ -911,7 +911,7 @@ void proposicion_expresion(set folset) {
 void expresion(set folset) {
     expresion_simple(une(une(folset,first(expresio)),cons(CASIGNAC, CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG)));
 
-    if (in(sbol->codigo, first(expresio))) {
+    if (sbol->codigo &  first(expresio)) {
         error_handler(78);
         expresion(folset);
     } else {
@@ -944,8 +944,8 @@ void expresion_simple(set folset) {
 
     termino(une(une(folset,cons(NADA,CMAS|CMENOS|COR)),first(termin)));
 
-    while ((sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR) || in(sbol->codigo,first(termin))) {
-        if(in(sbol->codigo,first(termin))) {
+    while ((sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR) || sbol->codigo & first(termin)) {
+        if(sbol->codigo & first(termin)) {
             error_handler(78);
         } else {
             scanner();
@@ -958,8 +958,8 @@ void termino(set folset) {
 
     factor(une(une(folset,cons(NADA,CMULT|CDIV|CAND)),first(facto)));
 
-    while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND)|| in(sbol->codigo,first(facto))) {
-        if(in(sbol->codigo,first(facto))) {
+    while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND)|| sbol->codigo & first(facto)) {
+        if(sbol->codigo & first(facto)) {
             error_handler(78);
         } else {
             scanner();
@@ -1022,7 +1022,7 @@ void variable(set folset) {
     char lexema[17];
     int pos;
 
-    test(first(variabl),folset,70);
+    test(F_variable,folset,70);
 
     if (sbol->codigo == CIDENT) {
         strcpy(lexema,sbol->lexema);
@@ -1120,8 +1120,8 @@ void llamada_funcion(set folset) {
 
 void lista_expresiones(set folset) {
     expresion(une(une(folset,cons(CCOMA,NADA)),first(expresio)));
-    while ((sbol->codigo == CCOMA)|| in(sbol->codigo,first(expresio))) {
-        if(in(sbol->codigo,first(expresio))) {
+    while ((sbol->codigo == CCOMA)|| sbol->codigo & first(expresio)) {
+        if(sbol->codigo & first(expresio)) {
             error_handler(75);
         } else {
             scanner();
