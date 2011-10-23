@@ -1,5 +1,5 @@
 
-#define E_X_LINEA 20
+#define E_X_LINEA 100
 
 
 int errores_x_linea[ E_X_LINEA ];
