@@ -457,12 +457,12 @@ void declarador_init(set folset) {
         constante(folset);
     } else {
         switch (sbol->codigo) {
-        case CASIGNAC: { 
+        case CASIGNAC: {
             scanner();
             constante(folset);
             break;
         }
-        case CCOR_ABR: { 
+        case CCOR_ABR: {
             scanner();
             if (sbol->codigo == CCONS_ENT) {
 
