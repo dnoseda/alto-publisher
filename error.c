@@ -4,9 +4,11 @@
 #include "error.h"
 #include "var_globales.h"
 
+char error =0;
 
 void error_print (int ne) {
-
+    error = 1;
+    //printf("\t Error %d: *****************************************ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ\n", ne);
     switch (ne) {
         /* errores de scanner */
     case 1:
@@ -134,6 +136,10 @@ void error_print (int ne) {
     case 41:
         printf("\t Error %d: No hoy mas memoria....\n", ne);
         break;
+    case 43:
+        printf("\t Error %d: La variable es de tipo Arreglo, se esperan conchetes\n", ne);
+        break;
+
 
         /* errores de recuperacion de errores */
     case 50:
@@ -226,6 +232,64 @@ void error_print (int ne) {
     case 79:
         printf("\t Error %d: Falta = \n", ne);
         break;
+    case 80:
+        printf("\t Error %d:  \n", ne);
+        break;
+    case 81:
+        printf("\t Error %d: Un arreglo no puede estar vacion, debe tener al menos un elemento \n", ne);
+        break;
+    case 82:
+        printf("\t Error %d: Una variable o un parametro no puede ser de tipo VOID \n", ne);
+        break;
+    case 83:
+        printf("\t Error %d: La cardinalidad del arreglo se especifica con un tipo entero \n", ne);
+        break;
+    case 84:
+        printf("\t Error %d: A la izquierda de una asignacion debe ir una variable \n", ne);
+        break;
+    case 85:
+        printf("\t Error %d: Indices no validos del arreglo \n", ne);
+        break;
+    case 86:
+        printf("\t Error %d: Un String solo puede estar en una proposicion de E/S \n", ne);
+        break;
+    case 87:
+        printf("\t Error %d: Indice Negativo\n", ne);
+        break;
+
+    case 88:
+        printf("\t Error %d: La cantidad de parametros en la invocacion debe conincidir con la cantida de la declaracion\n", ne);
+        break;
+    case 89:
+        printf("\t Error %d: No se puede pasar un arreglo por direccion\n", ne);
+        break;
+    case 90:
+        printf("\t Error %d: Tipos de parametros desiguales\n", ne);
+        break;
+    case 91:
+        printf("\t Error %d: En el parámetro real sólo debe aparecer un identificador.\n", ne);
+        break;
+    case 92:
+        printf("\t Error %d: El parámetro real debe ser una variable.\n", ne);
+        break;
+    case 93:
+        printf("\t Error %d: Asignacion no valida.\n", ne);
+        break;
+    case 94:
+        printf("\t Error %d: La cantidad de elementos en la lista de inicializacion no coincide con el tamaño del arreglo.\n", ne);
+        break;
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 }
