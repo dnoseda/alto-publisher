@@ -49,15 +49,15 @@ void pop_nivel ();
 
 
 entrada_TS  *inf_id;	 // es el puntero a la estructura que contiene la
-// informaci¢n de un identificador, la cual es
+// informaciï¿½n de un identificador, la cual es
 // completada previamente a una insercion en TS
 
-int       th[TAM_HASH];   // tabla de hash
-tipo_TS   ts[TAM_TS];     // tabla de simbolos
-int       tb[TAM_BLOQ];   // tabla de bloques
-int  topeTS = BASE_TS;
-int  topeTB = BASE_TB;
-
+int     th[TAM_HASH];   // tabla de hash
+tipo_TS ts[TAM_TS];     // tabla de simbolos
+int     tb[TAM_BLOQ];   // tabla de bloques
+int     topeTS = BASE_TS;
+int     topeTB = BASE_TB;
+int     despl = 0;
 
 
 /* ============ FUNCION DE INICIALIZACION DE TABLAS ================ */
@@ -65,16 +65,15 @@ int  topeTB = BASE_TB;
 
 void inic_tablas() {
     int i;
-    char id[TAM_ID];
 
     //  TODOS LOS TOPES ESTAN INICIALIZADOS EN LA DECLARACION
 
-    for (i=0; i< TAM_TS; i++) {    // inicializo tabla de s¡mbolos
+    for (i=0; i< TAM_TS; i++) {     // inicializo tabla de sï¿½mbolos
         ts[i].ptr_sinon = NIL;
         ts[i].ets = NULL;
     };
 
-    for (i=0; i< TAM_HASH; i++) {  // inicializo tabla de hash en nil
+    for (i=0; i< TAM_HASH; i++) {	// inicializo tabla de hash en nil
         th[i] = NIL;
     }
 
@@ -105,7 +104,7 @@ void inic_tablas() {
     strcpy(inf_id->nbre, "int");
     inf_id->clase = CLASTYPE;
     inf_id->ptr_tipo = NIL;
-    inf_id->cant_byte = sizeof(int);
+    inf_id->cant_byte = sizeof(int)-2;
     insertarTS();
 
     // inicializo la entrada para el tipo base FLOAT
@@ -126,7 +125,6 @@ void inic_tablas() {
     inf_id->clase = CLASTYPE;
     inf_id->ptr_tipo = NIL;
     insertarTS();
-
 };
 
 
@@ -144,7 +142,7 @@ void popTB() {
 
 
 void pushTB() {
-    // asumo que apunto al 1er ident del nuevo bloque
+    despl = 0;
     topeTB ++;
     if (topeTB == TAM_BLOQ) {
         error_handler(13);
@@ -155,15 +153,25 @@ void pushTB() {
 };
 
 
-void pop_nivel () {    // El bloque a eliminar esta al tope de TS y TB
+void pop_nivel () {
     int h;
+
+    despl = 0;
+
     while (topeTS >= tb[topeTB]) {
+
         h = hash(ts[topeTS].ets->nbre);
-        th[h] = ts[topeTS].ptr_sinon;  // modifico la TH seg£n los sin¢nimos
-        popTS();        // elimino un identificador del bloque que abandono
-    };
-    popTB();      // elimino el bloque que abandono
+        th[h] = ts[topeTS].ptr_sinon;
+        popTS();
+
+    }
+
+    popTB();
 };
+
+int get_nivel() {
+    return topeTB + 2;
+}
 
 
 /* ============ FUNCIONES DE LA TABLA DE HASH ================ */
@@ -196,7 +204,7 @@ int insertarTS() { // la inf. del identif. esta en inf_id que es global
     // inserto un nuevo identificador
     th[h]= pushTS(th[h], inf_id);
 
-    // pido más memoria para el nuevo identificador
+    // pido mï¿½s memoria para el nuevo identificador
     inf_id = NULL;
     inf_id = (entrada_TS *) calloc(1, sizeof(entrada_TS));
     if (inf_id == NULL) {
@@ -208,15 +216,14 @@ int insertarTS() { // la inf. del identif. esta en inf_id que es global
 
 
 
-int en_tabla(char *st) {    //busca un identificador en tabla de simbolos,
-    int h;                    //retorna su posición  o NIL (si no lo encuentra)
-    h=th[hash(st)];
+int en_tabla(char *st) {     //busca un identificador en tabla de simbolos,
+    int h;                   	 //retorna su posiciï¿½n  o NIL (si no lo encuentra)
+    h= th[hash(st)];
     while (h!=NIL) {
-        if (strcmp(ts[h].ets->nbre,st)==0) {
+        if (strcmp(ts[h].ets->nbre, st) == 0) {
             return h;
         }
-
-        h=ts[h].ptr_sinon;
+        h= ts[h].ptr_sinon;
     }
     return NIL;
 }
@@ -239,16 +246,15 @@ int Tipo_Ident(char *st) {  //busca un identificador en tabla de simbolos,
 
 int Clase_Ident(char *st) { //busca un identificador en tabla de simbolos,
     int h;                    //retorna su clase o NIL (si no lo encuentra)
-    h=th[hash(st)];
-    while (h!=NIL) {
-        if (strcmp(ts[h].ets->nbre,st)==0) {
+    h= th[hash(st)];
+    while (h != NIL) {
+        if (strcmp(ts[h].ets->nbre, st) == 0) {
             return ts[h].ets->clase;
         }
-        h=ts[h].ptr_sinon;
+        h= ts[h].ptr_sinon;
     }
     return NIL;
 }
-
 
 
 int en_nivel_actual(char *id) { //busca un identificador en el bloque actual
@@ -257,11 +263,11 @@ int en_nivel_actual(char *id) { //busca un identificador en el bloque actual
     h = th[hash(id)];
     while (h >= tb[topeTB]) {  // busco el identificador dentro del bloque
         if ( ! strcmp(ts[h].ets->nbre, id) ) {
-            return h;    // lo encontr¢, devuelvo la posici¢n h
+            return h;    // lo encontrï¿½, devuelvo la posiciï¿½n h
         }
         h = ts[h].ptr_sinon;
     };
-    return NIL;          // NO lo encontr¢ ==> ident no declarado
+    return NIL;          // NO lo encontrï¿½ ==> ident no declarado
 };
 
 
@@ -288,7 +294,7 @@ int pushTS(int s, entrada_TS *ptr) {
         ts[topeTS].ptr_sinon = s;
         ts[topeTS].ets = ptr;
     };
-    return topeTS;   // retorno la posici¢n donde insert‚
+    return topeTS;   // retorno la posiciï¿½n donde inserta
 };
 
 // nuevos metodos
