@@ -900,50 +900,33 @@ void test(set expected, set rec_points, int error) {
 
 int main( int argc,char *argv[]) {
 
-    inic_tablas();
     linea = (char *) malloc (2);
     strcat(linea, "");
+
     nro_linea=0;
+
     if (argc != 3) {
         error_handler(6);
         error_handler(COD_IMP_ERRORES);
         exit(1);
     } else {
-        if(strcmp(argv[1],"-c")!=0) {
-            error_handler(0);
+        if ((yyin = fopen(argv[2], "r" )) == NULL) {
+            error_handler(7);
             error_handler(COD_IMP_ERRORES);
             exit(1);
-        } else {
-            if ((yyin = fopen(argv[2], "r" )) == NULL) {
-                error_handler(7);
-                error_handler(COD_IMP_ERRORES);
-                exit(1);
-            }
         }
-    }
-    sbol=&token1;
-    scanner();
-    unidad_traduccion(CEOF);
-
-    if(Clase_Ident("main")!=CLASFUNC) {
-        error_handler(15);
-        error_handler(COD_IMP_ERRORES);
-
-    } else {
-        if(ts[en_tabla("main")].ets->desc.part_var.sub.cant_par!=0) {
-            error_handler(36);
-            error_handler(COD_IMP_ERRORES);
-        }
-        if(Tipo_Ident("main")!= en_tabla("void")) {
-            error_handler(35);
-            error_handler(COD_IMP_ERRORES);
-        }
-    }
-    if (sbol->codigo != CEOF) {
-        error_handler(8);
+        archivo= argv[2];
+        *(archivo + strlen(archivo)-2)= 0;
     }
 
+    if (argv[1][1] == 'c') {
+        compilacion();
 
+    } else if (argv[1][1] == 'e') {
+
+        ejecucion();
+
+    }
 }
 
 /********* funciones del parser ***********/
@@ -1019,13 +1002,13 @@ void especificador_declaracion(set folset) {
 }
 
 void definicion_funcion(set folset) {
+    isdeffuncion= 1;
+    isReturn= 0;
+    inf_id->clase = CLASFUNC;
+    inf_id->ptr_tipo = posID;
+    inf_id->cant_byte = ts[posID].ets->cant_byte;
 
-    bandera=FALSE;
-    inf_id->clase=CLASFUNC;
-    inf_id->ptr_tipo=posID;
-    inf_id->cant_byte=ts[posID].ets->cant_byte;
-    posTabla=insertarTS();
-    posicionTS = posID;
+    en_tabla_funcion= insertarTS();
     pushTB();
 
     if (sbol->codigo == CPAR_ABR) {
@@ -1034,16 +1017,14 @@ void definicion_funcion(set folset) {
         error_handler(19);
     }
 
-    if (sbol->codigo == CVOID || sbol->codigo == CCHAR || sbol->codigo == CINT || sbol->codigo == CFLOAT) {
+    cantParametros= 0;
 
-        lista_declaraciones_param(folset | CPAR_CIE | F_PROP_COMP);
-
-    } else {
-
-        if(sbol->codigo == CIDENT) {
-            lista_declaraciones_param(folset | CPAR_CIE | F_PROP_COMP);
-        }
+    if (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
+            sbol->codigo == CINT  || sbol->codigo == CFLOAT || sbol->codigo == CIDENT) {
+        lista_declaraciones_param(CPAR_CIE | folset | F_PROP_COMP);
     }
+
+    ts[en_tabla_funcion].ets->desc.part_var.sub.cant_par= cantParametros;
 
     if (sbol->codigo == CPAR_CIE) {
         scanner();
@@ -1052,15 +1033,7 @@ void definicion_funcion(set folset) {
     }
 
     proposicion_compuesta(folset);
-
-    if(posicionTS!=en_tabla("void")) {
-        if(bandera!=TRUE) {
-            error_handler(37);
-        }
-    }
-
-    pop_nivel();
-
+    en_tabla_funcion= NIL;
 }
 
 void lista_declaraciones_param(set folset) {
