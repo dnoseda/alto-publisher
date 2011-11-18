@@ -324,7 +324,7 @@ float charToFloat(char num[]) {
         }
     }
     decimales= strlen(part_dec);
-    res= (stringToInt(strcat(part_ent, part_dec))+.0)/elev(10, decimales);
+    res= (stringToInt(strcat(part_ent, part_dec))+.0)/power(10, decimales);
 
     return (num[0]== '-')? -res : res;
 }

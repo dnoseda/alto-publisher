@@ -8,13 +8,13 @@ int stringToInt(char t[]) {
     }
 
     for (; Ti>=piso; Ti--) {
-        res+= (t[Ti]-48)*elev(10,strlen(t)-(Ti+1));
+        res+= (t[Ti]-48)*power(10,strlen(t)-(Ti+1));
     }
 
     return (t[0]== '-')? -res : res;
 }
 
-int elev(int x, int y) {
+int power(int x, int y) {
     int Rstado=1;
     for (; y>0; y--) {
         Rstado *= x;
