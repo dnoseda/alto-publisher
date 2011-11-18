@@ -153,12 +153,7 @@ int esIndice = 0;
 
 
 enum ExpresionType {
-    bunchOfVariables,
-    aVariable,
-    constOfExpresionType,
-    constVariable,
-    function,
-    constIntToString
+    aVariable,constOfExpresionType,bunchOfVariables, constVariable, function,constIntToString
 };
 
 
