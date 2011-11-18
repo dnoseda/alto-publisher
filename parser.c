@@ -152,7 +152,7 @@ int esIndice = 0;
 #define F_UNID_TRAD (F_DECL)
 
 
-enum typeExpresion {
+enum ExpresionType {
     variables,
     unaVariable,
     Constant,
@@ -186,7 +186,7 @@ void scanner() {
 
 
 struct TipoAttr {
-    enum    typeExpresion typeExpresionresion;
+    enum    ExpresionType typeExpresionresion;
     int    tipo;
     int    tipo_base;
     float   valor;
