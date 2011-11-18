@@ -1746,7 +1746,7 @@ struct Tipo expresion_simple(set folset) {
 }
 
 struct Tipo termino(set folset) {
-    long int op;
+    long long op;
     struct Tipo Tipo_Retorno, TipoF;
     char t, tvar;
     int nLineaCast;
