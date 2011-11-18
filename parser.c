@@ -17,7 +17,7 @@
 #define FALSE (!TRUE)
 
 
-// para representar el set
+
 typedef long long set;
 
 /*********** prototipos *************/
@@ -61,7 +61,7 @@ void scanner ();
 
 /********** variables globales ************/
 
-//********************************************************
+
 
 
 
@@ -79,8 +79,8 @@ int control= 0;
 
 char *archivo;
 
-char *codigo[15000]; //Para mostrar
-char *codigoMostrar[15000]; //Para mostrar por pantalla
+char *codigo[15000]; 
+char *codigoMostrar[15000]; 
 char *newLine;
 int  newLineMAC= 0;
 
@@ -92,9 +92,9 @@ int en_tabla_funcion_Llama= NIL;
 
 int segVar= 2;
 
-int punteroFuncion;  // donde apunto a la funcin donde estoy metido
-int tipo_global;     // donde guardo en el caso     int a,b,c;    el tipo para b y c
-int flag_hay_return; // dice si hay return en la declaracin de funcin
+int punteroFuncion;  
+int tipo_global;     
+int flag_hay_return; 
 int void_flag;
 
 /********** variables globales ************/
@@ -111,8 +111,8 @@ char lexema[17];
 int bandera;
 int posicionTS;
 int esParametro = FALSE;
-tipo_inf_res *inicio; // puntero de la lista de parametros
-tipo_inf_res *cursor; // cursor
+tipo_inf_res *inicio; 
+tipo_inf_res *cursor; 
 char *archivo;
 
 
@@ -182,7 +182,7 @@ void scanner() {
     free ( (void *) liberar);
 }
 
-//***************************funcionES DEL SET************************************
+
 
 
 struct Tipo {
@@ -196,7 +196,7 @@ struct Tipo {
 };
 
 
-//*******************************************************************************
+
 int toInt(char t[]) {
     int res= 0, Ti= strlen(t)-1, piso= 0;
 
@@ -245,7 +245,7 @@ char *unionST(char s1[], char s2[]) {
     return strcat(newLine, s2);
 }
 
-//**********************************************************
+
 char *strmplN(char *s1) {
     int i,j;
 
@@ -275,7 +275,7 @@ char *strmplT(char *s1) {
 
     return s1;
 }
-//**********************************************************
+
 
 
 char *iToStr(int num) {
@@ -298,10 +298,10 @@ char *iToStr(int num) {
 }
 
 void appendMAC(int INST, char linea[]) {
-    //printf("INSTI string:  %s\n", iToStr(INST));
-    //printf("INSTI:  %d\n", INST);
+    
+    
     codigo[newLineMAC]= concatString(iToStr(INST),linea);
-    //codigo[newLineMAC]= concatString(linea,iToStr(INST));
+    
     codigoMostrar[newLineMAC++]= concatString(getStringINST(INST),linea);
 }
 
@@ -350,13 +350,13 @@ tipo_inf_res getParam(int k) {
 void chequeoParam(struct Tipo parametroReal, int numParametro) {
     tipo_inf_res parametroFormal;
 
-    //  printf("numero de parametro..........       %d\n",numParametro);
+    
 
     if (numParametro <= ts[en_tabla_funcion_Llama].ets->desc.part_var.sub.cant_par) {
 
         parametroFormal = getParam(numParametro);
 
-        // printf("NUMERO PARAMETRO(%d)\n",numParametro);
+        
         /*
         printf("%d\n",parametroFormal.ptero_tipo_base);
         printf("%d\n",parametroFormal.ptero_tipo);
@@ -369,14 +369,14 @@ void chequeoParam(struct Tipo parametroReal, int numParametro) {
                 error_handler(91);
             } else if (parametroReal.tipo != en_tabla("TIPOARREGLO") || (parametroReal.tipo_base != parametroFormal.ptero_tipo_base)) {
 
-                //printf("\n\n\nparametro real tipo... %d\n",parametroReal.tipo);
-                //printf("posicion del tipo arreglo... %d\n",		en_tabla("TIPOARREGLO"));
+                
+                
 
-                //printf("numero de parametro... %d\n\n\n\n\n",numParametro);
-                //printf("parametro real tipo base... %d\n",parametroReal.tipo_base);
-                //printf("parametro formal tipo base... %d\n",parametroFormal.ptero_tipo_base);
+                
+                
+                
 
-                //printf("arribaaaaaaaaaaaaa %d\n\n\n\n\n",numParametro);
+                
                 error_handler(90);
             }
         } else {
@@ -389,11 +389,11 @@ void chequeoParam(struct Tipo parametroReal, int numParametro) {
 
             if (parametroFormal.ptero_tipo == en_tabla("float") && (parametroReal.tipo == en_tabla("float") || parametroReal.tipo == en_tabla("char") || 				parametroReal.tipo == en_tabla("int"))) {
                 return;
-            } else //error_handler(90);
+            } else 
 
                 if (parametroFormal.ptero_tipo == en_tabla("int") && (parametroReal.tipo == en_tabla("char") || parametroReal.tipo == en_tabla("int"))) {
                     return;
-                } else //error_handler(90);
+                } else 
                     if (parametroFormal.ptero_tipo == en_tabla("char") && parametroReal.tipo == en_tabla("char") ) {
                         return;
                     } else {
@@ -414,7 +414,7 @@ float charToFloat(char num[]) {
 
 
     if (num[0]== '-') {
-        piso= 1;    //Si es negativo
+        piso= 1;    
     }
 
     part_ent[0]= part_dec[0]= '0';
@@ -459,7 +459,7 @@ void verInstrucciones() {
     printf("\n\n MAC:\n\n\n");
 
     for (i= 0; i < newLineMAC; i++) {
-        //printf("CODIGO %d: %s\n", i, codigo[i]);
+        
         printf("Linea %d: %s\n", i+1, codigoMostrar[i]);
     }
 
@@ -480,7 +480,7 @@ int i;
 for (i= 0; i < dameCS(); i++)
 	fprintf(PObj, "%c\n", dameC(i));
 
-//fprintf(PObj, "$ ");
+
 
 for (i= 0; i < newLineMAC; i++)
 	fprintf(PObj, "%s\n", codigoMostrar[i]);
@@ -508,12 +508,12 @@ void generarSalida() {
     int banderasa = 0;
     if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
         int i;
-        //printf("dameCS:_________________ %c\n", dameCS());
+        
         fprintf(PObj, "$ ");
         for (i= 0; i < newLineMAC; i++) {
-            //index2=0;
-            //strcpy(arreglo1,codigo[i]);
-            //printf("arreglo: %s\n", arreglo1);
+            
+            
+            
             /*for(index = 0; arreglo1[index]!='\0'; index++){
             	if(arreglo1[index]!= '_'){
             		arreglo2[index2++] = arreglo1[index];
@@ -529,30 +529,30 @@ void generarSalida() {
             	}
 
             }*/
-            //printf("arreglo2: %s\n", codigo[i]);
+            
             fprintf(PObj, "%s\n", codigo[i]);
         }
 
         fprintf(PObj, "$ ");
 
 
-        //for(t=0;t<150;t++) printf("arreglo");
+        
 
         for (i= 0,j=0; i < dameCS(); i++) {
-            //for (i= 0,j=0; i < dameCS()-1; i++){
-            //aux = dameC(i);
-            //printf("dameC metodo:               %c\n", dameC(i));
-            //printf("aux:               %c\n", aux);
-            //arreglo[j] = aux;
+            
+            
+            
+            
+            
             fprintf(PObj, "%d\n", dameC(i));
-            //fwrite(&aux, sizeof(char), 1,PObj);
+            
         }
         fprintf(PObj, "$ ");
-        //for(t=0;t<150;t++) printf("arreglo %c\n", arreglo[t]);
-        //printf("arreglo %s\n", *arreglo);
+        
+        
 
-        //aux =   "$";
-        //fwrite(&aux, sizeof(char), 1,PObj);
+        
+        
     }
     fclose(PObj);
 }
@@ -741,7 +741,7 @@ void compilacion() {
     sbol=&token1 ;
 
     appendMAC(INPP,"");
-    //appendMAC(ENBL, iToStr(get_nivel()));
+    
 
     printf("\nCOMPILACION\n");
 
@@ -767,7 +767,7 @@ void compilacion() {
         error_handler(8);
     }
     printf("\n\n\nCOMPILACION CORRECTA\n\n\n\n");
-    //appendMAC(FINB, iToStr(get_nivel()));
+    
     appendMAC(PARAR,"");
     if (error == 0) {
         verInstrucciones();
@@ -777,55 +777,55 @@ void compilacion() {
 
 /*
 void ejecucion(){
-    //int j =0;
+    
     FILE *PObj;
     char cur[25];
     printf("archivo:   %s\n",strcat(archivo, ".o"));
     PObj= fopen(strcat(archivo, ".o"), "r");
     if (PObj!= NULL){
-      //  printf("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-       // while(j<=1000000){
-        // printf("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-        //  j++;
-     //	}
+      
+       
+        
+        
+     
         int i;
         fscanf(PObj, "%s", cur);
-        //fgets (cur , 20,PObj);
-        //printf("cur: %s",&cur);
-       // for (i= 0; cur!=NULL ; i++){
-        //for (i= 0; strcmp(cur, "$"); i++){
+        
+        
+       
+        
             addC(toInt(cur));
             fscanf(PObj, "%s", cur);
         }
 
-       //for (i= 0; strcmp(cur, "$"); i++){
-     //   addC(toInt(cur));
-           // fscanf(PObj, "%s", cur);
-     // }
+       
+     
+           
+     
 
-     //    fscanf(PObj, "%s", cur);
+     
 
-     //        float val = -1;
-     //        for (i = 0; !feof(PObj); i++) {
-     //	       printf("cur: %s",cur);
-     //            //val = P[i];
-     //
-     //              }
+     
+     
+     
+     
+     
+     
 
-        // while(!feof(PObj)){
+        
          for (i= 0;!feof(PObj); i++){
             float cod;
 
              cod= charToFloat(cur);
-            //printf("floAT: %f",&cod);
-	    //fgets (cur ,100,PObj);
+            
+	    
             printf("cur: %s",cur);
             pushP(&cod);
 
             fscanf(PObj, "%s", cur);
         }
     }else{
-          //printf("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+          
     }
 
     fclose(PObj);
@@ -845,27 +845,27 @@ void ejecucion() {
 
     if ((PObj= fopen(strcat(archivo, ".o"), "r")) != NULL) {
         int i;
-//      for(kk=0;kk<10000;kk++)printf("aaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
+
 
         fscanf(PObj, "%s", &cur);
         fscanf(PObj, "%s", &cur);
-        //for(kk=0;kk<10000;kk++) printf("PASOOOOOOOOOOOOO\n");
+        
         for (i= 0; strcmp(cur, "$"); i++) {
             cod= charToFloat(cur);
-            //  printf("COD: %f\n",cod);
-            // printf("CUR: %s\n",cur);
-            //pushP(&cod);                 // 1) Cargar Instruccion
+            
+            
+            
 
             P[i] = cod;
             lp++;
-            fscanf(PObj, "%s", &cur);    // 2) Leer otra Instruccion
+            fscanf(PObj, "%s", &cur);    
         }
 
-        // for(kk=0;kk<10000;kk++) printf("PASOOOOOOOOOOOOOFUERAAAAAAAAAA\n");
+        
 
         fscanf(PObj, "%s", &cur);
 
-        for (i= 0; strcmp(cur, "$"); i++) {  // 1) Leer y Cargar las Constanes de Strings
+        for (i= 0; strcmp(cur, "$"); i++) {  
             addC(toInt(cur));
             fscanf(PObj, "%s", &cur);
         }
@@ -877,11 +877,11 @@ void ejecucion() {
                             val = P[i];
              }
         */
-        //for(kk=0;kk<200;kk++) printf("P: %f\n",P[kk]);
-        //for(kk=0;kk<200;kk++) printf("C: %c\n",C[kk]);
+        
+        
     }
     fclose(PObj);
-    //28352
+    
     interprete2();
 }
 
@@ -1281,9 +1281,9 @@ void declarador_init(set folset) {
     test(folset, NADA, 59);
 }
 
-//MEEEEEEEEEEEEEEEEEEEEEEEEEEEE -dn
 
-void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
+
+void lista_inicializadores(set folset) {  
     llamolista_ini= 1;
     constante(F_CONST | folset | CCOMA | NADA);
     llamolista_ini= 0;
@@ -1298,7 +1298,7 @@ void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
 }
 
 
-void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+void proposicion_compuesta(set folset) { 
     int finBloqueVars;
 
     test(F_PROP_COMP, F_LIST_DECL | F_LIST_PROP | folset | CLLA_CIE | NADA,60);
@@ -1322,11 +1322,11 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
     if (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
             sbol->codigo == CINT || sbol->codigo == CFLOAT)
 
-        // printf("antes %s\n",sbol->lexema );
+        
     {
         lista_declaraciones(folset | F_LIST_PROP | CLLA_CIE | NADA);
     }
-    //printf("despues %s\n",sbol->lexema );
+    
     finBloqueVars= newLineMAC;
     if (sbol->codigo == CLLA_ABR || sbol->codigo == CMAS ||
             sbol->codigo == CMENOS || sbol->codigo == CIDENT ||
@@ -1342,7 +1342,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
     }
 
     if (sbol->codigo == CLLA_CIE) {
-        //printf("es llave que cierra %s\n",sbol->lexema );
+        
         if (en_tabla_funcion != NIL && (ts[en_tabla_funcion].ets->ptr_tipo != en_tabla("void")) && (!isReturn)) {
             error_handler(37);
         }
@@ -1353,16 +1353,14 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
     }
 
     appendMAC(FINB, iToStr(get_nivel()));
-//    printf("antes del pop%s\n",sbol->lexema );
-    pop_nivel();
-    //  printf("despues del pop%s\n",sbol->lexema );
-    test(folset, NADA | NADA, 61);
-    //printf("antes del pop%s\n",sbol->lexema );
-    return finBloqueVars;
 
+    pop_nivel();
+    
+    test(folset, NADA | NADA, 61);
+    
 
 }
-void lista_declaraciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+void lista_declaraciones(set folset) { 
 
     declaracion(folset | F_DECL);
 
@@ -1375,7 +1373,7 @@ void lista_declaraciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKK
 
 }
 
-void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKK
+void declaracion(set folset) { 
 
     especificador_tipo(folset | F_LIST_DECL_INIT | CPYCOMA | NADA);
 
@@ -1392,7 +1390,7 @@ void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
 
 }
 
-void lista_proposiciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
+void lista_proposiciones(set folset) { 
 
     proposicion(folset | F_PROP);
 
@@ -1411,9 +1409,9 @@ void lista_proposiciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
 
 }
 
-void proposicion(set folset) { //VER EL RETUR, TIPO -1
+void proposicion(set folset) { 
 
-    //if(vengodeIF)appendMAC(ENBL, iToStr(get_nivel()));
+    
 
     test(F_PROP,folset,63);
     switch (sbol->codigo) {
@@ -1448,13 +1446,12 @@ void proposicion(set folset) { //VER EL RETUR, TIPO -1
     default:
         error_handler(25);
 
-        //if(vengodeIF){appendMAC(FINB, iToStr(get_nivel()));vengodeIF = 0;}
+        
 
     }
-    return -1;
 }
 
-void proposicion_iteracion(set folset) {// OKKKKKKKKKKKKKKKKKKKK
+void proposicion_iteracion(set folset) {
 
 
 
@@ -1483,7 +1480,7 @@ void proposicion_iteracion(set folset) {// OKKKKKKKKKKKKKKKKKKKK
 }
 
 
-void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+void proposicion_seleccion(set folset) { 
 
     struct Tipo TipoEx;
     int lineaBIFF, lineaBIFS, d1;
@@ -1510,21 +1507,21 @@ void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
     }
 
 
-    lineaBIFF= newLineMAC;    //guardala linea del if
-// printf("newLineMac1: %d \n", newLineMAC);
-    //vengodeIF = 1;
+    lineaBIFF= newLineMAC;    
+
+    
     proposicion(CELSE | NADA | folset | F_PROP);
 
-    d1 = calcularDespl(lineaBIFF, newLineMAC); //calcula el desplazamianto a donde tiene que ir a para el BIFF
+    d1 = calcularDespl(lineaBIFF, newLineMAC); 
 
 
 
     if (sbol->codigo == CELSE) {
-        lineaBIFS= newLineMAC;  //guardala linea del else
+        lineaBIFS= newLineMAC;  
         scanner();
-//printf("newLineMac2: %d \n", newLineMAC);
+
         proposicion(folset);
-        //printf("newLineMac2: %d \n", newLineMAC);
+        
         d1= calcularDespl(lineaBIFS, newLineMAC);
 
         appendKMAC(BIFS, iToStr(d1), lineaBIFS);
@@ -1532,12 +1529,12 @@ void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
         d1= calcularDespl(lineaBIFF, lineaBIFS + 1);
 
     }
-    // printf("newLineMac3: %d \n", newLineMAC);
+    
     appendKMAC(BIFF, concatString(iToStr(getTipo(TipoEx.tipo)), iToStr(d1)), lineaBIFF);
 }
 
 
-void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooooooooooo
+void proposicion_e_s(set folset) { 
 
     struct Tipo TipoExp;
     char t;
@@ -1552,7 +1549,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
         } else {
             error_handler(28);
         }
-        //F_VAR
+        
         TipoExp= variable(folset | CSHR|CPYCOMA | NADA | F_VAR);
 
         clearLMAC();
@@ -1635,8 +1632,8 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
 }
 
 
-void proposicion_retorno(set folset) {	//OKKKKKKKKKKKKKK
-    //bandera = 1;
+void proposicion_retorno(set folset) {	
+    
     scanner();
     expresion(folset | CPYCOMA | NADA);
     if (sbol->codigo == CPYCOMA) {
@@ -1649,7 +1646,7 @@ void proposicion_retorno(set folset) {	//OKKKKKKKKKKKKKK
 }
 
 
-void proposicion_expresion(set folset) { //OKKKKKKKKKKKKKK
+void proposicion_expresion(set folset) { 
     sentencia= 1;
     control= -1;
 
@@ -1715,10 +1712,10 @@ struct Tipo expresion(set folset) {
             }
 
             appendMAC(ALM, concatString(concatString(iToStr(Tipo_Retorno.nivel),  iToStr(Tipo_Retorno.despl)), iToStr(tvar)));
-            //
+            
             appendMAC(POP, iToStr(tvar));
             appendMAC(CRVL, concatString(concatString(iToStr(Tipo_Retorno.nivel),  iToStr(Tipo_Retorno.despl)), iToStr(tvar)));
-            //
+            
             if (sentencia && control == 0) {
                 appendMAC(POP, iToStr(tvar));
             }
@@ -1755,14 +1752,14 @@ struct Tipo expresion(set folset) {
                 break;
             case CMENOR:
                 appendMAC(CMME, iToStr(t));
-                //appendMAC(CMMA, iToStr(t));
+                
                 break;
             case CMEIG:
                 appendMAC(CMEI, iToStr(t));
                 break;
             case CMAYOR:
                 appendMAC(CMMA, iToStr(t));
-                //appendMAC(CMME, iToStr(t));
+                
                 break;
             case CMAIG:
                 appendMAC(CMAI, iToStr(t));
@@ -1785,8 +1782,8 @@ struct Tipo expresion_simple(set folset) {
     char t, tvar;
     int nLineaCast;
 
-    //F_EXP_SIMPLE
-    //F_TERM
+    
+    
     test(F_EXP_SIMPLE,F_TERM | NADA | COR | folset,67);
 
     if (sbol->codigo == CMAS || sbol->codigo == CMENOS) {
@@ -1865,13 +1862,13 @@ struct Tipo expresion_simple(set folset) {
     return Tipo_Retorno;
 }
 
-struct Tipo termino(set folset) {  // OKKKKKKKKKKKKKK
+struct Tipo termino(set folset) {  
     long int op;
     struct Tipo Tipo_Retorno, TipoF;
     char t, tvar;
     int nLineaCast;
 
-    //F_FACTORt 
+    
     Tipo_Retorno= factor(folset | NADA | CMULT|CDIV|CAND | F_FACTOR);
     nLineaCast= newLineMAC;
 
@@ -1900,8 +1897,6 @@ struct Tipo termino(set folset) {  // OKKKKKKKKKKKKKK
             appendKMAC(CAST, concatString(iToStr(t), iToStr(tvar)), nLineaCast);
             t= tvar;
         }
-
-
 
         switch(op) {
         case CMULT:
@@ -1936,7 +1931,7 @@ struct Tipo termino(set folset) {  // OKKKKKKKKKKKKKK
 
 }
 
-struct Tipo factor(set folset) {//0KKKKKKKKKKKKKKKK
+struct Tipo factor(set folset) {
 
     char lexema[TAM_LEXEMA], t;
     struct Tipo Tipo_Retorno;
@@ -2133,7 +2128,7 @@ struct Tipo variable(set folset) {
 
                     inf_id->desc.part_var.arr.ptero_tipo_base= inf_id->ptr_tipo;
                     inf_id->ptr_tipo = en_tabla("TIPOARREGLO");
-                    inf_id->desc.part_var.arr.cant_elem= 99999; //inicializo con un nro grande
+                    inf_id->desc.part_var.arr.cant_elem= 99999; 
 
                     scanner();
                     expresion(folset |  CCOR_CIE |  NADA);
@@ -2173,16 +2168,16 @@ struct Tipo variable(set folset) {
                     error_handler(32);
                 } else {
                     Tipo_Retorno.tipo= ts[en_tabla(lexema)].ets->desc.part_var.arr.ptero_tipo_base;
-                    //printf("retorno de base arreglo: %d\n",Tipo_Retorno.tipo);
-                    //printf("lexema arreglo: %s\n",lexema);
+                    
+                    
                 }
             } else if (Tipo_Ident(lexema) == en_tabla("TIPOARREGLO")&&!isLlamadafuncion) {
                 error_handler(43);
             } else {
-                //Tipo_Retorno.tipo= Tipo_Ident(lexema)+0x30;
+                
                 Tipo_Retorno.tipo= Tipo_Ident(lexema);
-                //printf("retorno de tipo_ident: %d\n",Tipo_Retorno.tipo);
-                //printf("lexema.......................iuiuip: %s\n",lexema);
+                
+                
                 t= getTipo(Tipo_Retorno.tipo);
 
                 appendMAC(CRVL, concatString(concatString(iToStr(ts[en_tabla(lexema)].ets->desc.nivel), iToStr(ts[en_tabla(lexema)].ets->desc.despl)), iToStr(t)));
@@ -2257,11 +2252,11 @@ struct Tipo llamada_funcion(set folset) {
 }
 
 
-void lista_expresiones(set folset) { //0KKK
+void lista_expresiones(set folset) { 
     struct Tipo TipoE;
     cantParametros= 0;
 
-    //F_EXPR
+    
     TipoE= expresion(folset | CCOMA | NADA | F_EXPR);
     cantParametros++;
 
@@ -2278,7 +2273,7 @@ void lista_expresiones(set folset) { //0KKK
     */
 
 
-    chequeoParam(TipoE, cantParametros);//cheque el tipo de expresion TipoE con el parametro cantParametros
+    chequeoParam(TipoE, cantParametros);
 
     while (sbol->codigo == CCOMA || (sbol->codigo & F_EXPR)) {
         if ((sbol->codigo & F_EXPR)) {
@@ -2294,7 +2289,7 @@ void lista_expresiones(set folset) { //0KKK
     }
 }
 
-struct Tipo constante(set folset) {    // ver el ultimo case
+struct Tipo constante(set folset) {    
     struct Tipo Tipo_Retorno;
 
     Tipo_Retorno.typeExpresionresion= Constant;
@@ -2302,8 +2297,8 @@ struct Tipo constante(set folset) {    // ver el ultimo case
     test(F_CONST,folset,73);
     switch (sbol->codigo) {
     case CCONS_ENT:
-//printf("retorno de base arreglo: %d\n",Tipo_Retorno.tipo);
-        //printf("lexema arreglo: %s\n",lexema);
+
+        
         Tipo_Retorno.valor= atoi(sbol->lexema);
         strcpy(Tipo_Retorno.sValor, sbol->lexema);
 
