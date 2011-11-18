@@ -1285,15 +1285,16 @@ void declarador_init(set folset) {
 
 void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
     llamolista_ini= 1;
-    constante(une(une(first(constant),folset),cons(CCOMA,NADA)));
+    F_CONST
+    constante(une(une(F_CONST,folset),cons(CCOMA,NADA)));
     llamolista_ini= 0;
-    while (sbol->codigo == CCOMA||in(sbol->codigo,first(constant))) {
-        if(in(sbol->codigo,first(constant))) {
+    while (sbol->codigo == CCOMA||in(sbol->codigo,F_CONST)) {
+        if(in(sbol->codigo,F_CONST)) {
             error_handler(75);
         } else {
             scanner();
         }
-        constante(une(une(first(constant),folset),cons(CCOMA,NADA)));
+        constante(une(une(F_CONST,folset),cons(CCOMA,NADA)));
     }
 }
 
@@ -2339,7 +2340,7 @@ struct Tipo constante(set folset) {    // ver el ultimo case
 
     Tipo_Retorno.typeExpresionresion= Constant;
 
-    test(first(constant),folset,73);
+    test(F_CONST,folset,73);
     switch (sbol->codigo) {
     case CCONS_ENT:
 //printf("retorno de base arreglo: %d\n",Tipo_Retorno.tipo);
