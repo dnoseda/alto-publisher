@@ -1797,7 +1797,7 @@ struct Tipo factor(set folset) {
 
         appendMAC(CRCTS, intToString(dameCS()));
         unescapeNewline(sbol->lexema);
-        strmplT(sbol->lexema);
+        unescapeTab(sbol->lexema);
 
         pushCS(sbol->lexema);
 

@@ -64,7 +64,7 @@ char *unescapeNewline(char *s1) {
     return s1;
 }
 
-char *strmplT(char *s1) {
+char *unescapeTab(char *s1) {
     int i,j;
 
     for (i= 0; s1[i]!= 0; i++)
