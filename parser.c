@@ -1056,72 +1056,6 @@ void lista_declaraciones_param(set folset) {
     cursor=NULL;
 }
 
-void declaracion_parametro(set folset) {
-
-    especificador_tipo(folset | CCOR_ABR | CAMPER | CCOR_CIE | CIDENT);
-
-    cantPar++;
-    inf_id->ptr_tipo=posID;
-    inf_id->clase=CLASPAR;
-    inf_id->cant_byte=ts[posID].ets->cant_byte;
-
-
-
-    if (sbol->codigo == CAMPER) {
-        scanner();
-        inf_id->desc.part_var.tipo_pje='r';
-
-    } else {
-        inf_id->desc.part_var.tipo_pje='v';
-    }
-
-    if (sbol->codigo == CIDENT) {
-        strcpy(inf_id->nbre,sbol->lexema);
-        scanner();
-    } else {
-        error_handler(16);
-    }
-
-    if (sbol->codigo == CCOR_ABR) {
-
-
-        inf_id->desc.part_var.arr.ptero_tipo_base = inf_id->ptr_tipo;
-        inf_id->ptr_tipo = en_tabla("TIPOARREGLO");
-        inf_id->cant_byte = (ts[posID].ets->cant_byte);
-
-        scanner();
-        if (sbol->codigo == CCOR_CIE) {
-            scanner();
-        } else {
-            error_handler(21);
-        }
-
-    }
-
-
-    tipo_inf_res *aux_inf_res=NULL;
-
-    if ((aux_inf_res = (tipo_inf_res *) malloc (sizeof (tipo_inf_res))) == NULL) {
-        error_handler(41);
-    } else {
-
-        aux_inf_res->ptero_tipo = inf_id->ptr_tipo;
-        aux_inf_res->tipo_pje=inf_id->desc.part_var.tipo_pje;
-        if(inicio==NULL) {
-            inicio=aux_inf_res;
-            cursor=inicio;
-        } else {
-            cursor->ptr_sig=aux_inf_res;
-            cursor=aux_inf_res;
-        }
-    }
-
-    test(folset,NADA,55);
-
-    insertarTS();
-
-}
-
 void lista_declaraciones_init(set folset) {
 
     test(F_LIST_DECL_INIT, folset | CCOMA | F_DECL_INIT, 57);
@@ -1151,6 +1085,64 @@ void lista_declaraciones_init(set folset) {
         declarador_init(CCOMA  | CIDENT | F_DECL_INIT | folset);
     }
 
+}
+
+
+
+void declaracion_parametro(set folset) {
+
+    tipo_inf_res *info_res_param= NULL;
+    info_res_param= (tipo_inf_res *) calloc(1, sizeof(tipo_inf_res));
+
+    especificador_tipo(folset|CAMPER|CCOR_ABR|CCOR_CIE| CIDENT);
+
+    inf_id->clase = CLASPAR;
+
+    if (posID == en_tabla("void")) {
+        error_handler(82);
+        inf_id->ptr_tipo = en_tabla("TIPOERROR");
+    } else {
+        inf_id->ptr_tipo = posID;
+    }
+    if (sbol->codigo == CAMPER) {
+        scanner();
+        inf_id->desc.part_var.tipo_pje= 'r';
+        inf_id->cant_byte = ts[en_tabla("int")].ets->cant_byte;
+    } else {
+        inf_id->desc.part_var.tipo_pje= 'v';
+        inf_id->cant_byte = ts[posID].ets->cant_byte;
+    }
+    if (sbol->codigo == CIDENT) {
+        strcpy(inf_id->nbre, sbol->lexema);
+        scanner();
+    } else {
+        error_handler(16);
+    }
+    if (sbol->codigo == CCOR_ABR) {
+        if (inf_id->desc.part_var.tipo_pje == 'r') {
+            error_handler(89);
+        }
+
+        inf_id->desc.part_var.tipo_pje == 'r';
+        inf_id->desc.part_var.arr.ptero_tipo_base = inf_id->ptr_tipo;
+        inf_id->ptr_tipo = en_tabla("TIPOARREGLO");
+
+        scanner();
+        if (sbol->codigo == CCOR_CIE) {
+            scanner();
+        } else {
+            error_handler(21);
+        }
+    }
+
+    cantParametros++;
+    info_res_param->ptero_tipo= inf_id->ptr_tipo;
+    info_res_param->tipo_pje= inf_id->desc.part_var.tipo_pje;
+    info_res_param->ptero_tipo_base = inf_id->desc.part_var.arr.ptero_tipo_base ;
+    info_res_param->ptr_sig= NULL;
+    appendParam(info_res_param);
+    insertarTS();
+    test(folset,NADA, 55);
 }
 
 void declaracion_variable(set folset) {
