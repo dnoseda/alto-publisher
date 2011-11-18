@@ -1302,7 +1302,10 @@ void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
 void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
     int finBloqueVars;
 
-    test(first(proposicion_compuest),une(une(une(first(lista_de_declaracione),first(lista_de_proposicione)),folset),cons(CLLA_CIE,NADA)),60);
+    // F_PROP_COMP
+    // F_LIST_DECL
+    // F_LIST_PROP
+    test(F_PROP_COMP, une(une(F_LIST_DECL | F_LIST_PROP,folset),cons(CLLA_CIE,NADA)),60);
 
     if (sbol->codigo == CLLA_ABR) {
         scanner();
@@ -1325,7 +1328,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
 
         // printf("antes %s\n",sbol->lexema );
     {
-        lista_declaraciones(une(folset,une(first(lista_de_proposicione),cons(CLLA_CIE,NADA))));
+        lista_declaraciones(une(folset,une(F_LIST_PROP,cons(CLLA_CIE,NADA))));
     }
     //printf("despues %s\n",sbol->lexema );
     finBloqueVars= newLineMAC;
