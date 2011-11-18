@@ -1178,7 +1178,7 @@ void declarador_init(set folset) {
     inf_id->cant_byte = ts[inf_id->ptr_tipo].ets->cant_byte;
 
 
-    if ((sbol->codigo & F_CONST)) {
+    if (sbol->codigo & F_CONST)) {
         error_handler(79);
         constante(folset);
     } else
@@ -1285,7 +1285,6 @@ void declarador_init(set folset) {
 
 void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
     llamolista_ini= 1;
-    F_CONST
     constante(F_CONST | folset | CCOMA | NADA);
     llamolista_ini= 0;
     while (sbol->codigo == CCOMA||(sbol->codigo & F_CONST)) {
@@ -1302,9 +1301,6 @@ void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
 void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
     int finBloqueVars;
 
-    // F_PROP_COMP
-    // F_LIST_DECL
-    // F_LIST_PROP
     test(F_PROP_COMP, F_LIST_DECL | F_LIST_PROP | folset | CLLA_CIE | NADA,60);
 
     if (sbol->codigo == CLLA_ABR) {
@@ -1368,7 +1364,6 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
 }
 void lista_declaraciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKKK
 
-    // F_DECL
     declaracion(folset | F_DECL);
 
     while (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
@@ -1382,7 +1377,6 @@ void lista_declaraciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKK
 
 void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKK
 
-    // F_LIST_DECL_INIT
     especificador_tipo(folset | F_LISTA_DECL_INIT | CPYCOMA | NADA);
 
     lista_declaraciones_init(folset | CPYCOMA | NADA);
@@ -1400,7 +1394,6 @@ void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
 
 void lista_proposiciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
 
-    // F_PROP
     proposicion(folset | F_PROP);
 
     while (sbol->codigo == CLLA_ABR || sbol->codigo == CMAS ||
@@ -1614,7 +1607,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
         }
 
         while (sbol->codigo == CSHL || (sbol->codigo & F_EXPR)) {
-            if((sbol->codigo & F_EXPR)) {
+            if(sbol->codigo & F_EXPR)) {
                 error_handler(77);
             } else {
                 scanner();
@@ -1878,7 +1871,7 @@ struct Tipo termino(set folset) {  // OKKKKKKKKKKKKKK
     char t, tvar;
     int nLineaCast;
 
-    //F_FACTOR
+    //F_FACTORt 
     Tipo_Retorno= factor(folset | NADA | CMULT|CDIV|CAND | F_FACTOR);
     nLineaCast= newLineMAC;
 
