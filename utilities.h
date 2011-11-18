@@ -82,19 +82,19 @@ char *strmplT(char *s1) {
 
 
 char *intToString(int num) {
-    char *salida= (char *)calloc (1, TAM_LEXEMA);
+    char *result= (char *)calloc (1, TAM_LEXEMA);
     int i=0;
     if (num >= 0) {
         if (num == 0) {
-            salida[0]= '0';
+            result[0]= '0';
             i= 1;
         }
         for (; num>0; i++) {
-            salida[i]=num%10+48;
+            result[i]=num%10+48;
             num/=10;
         }
-        salida[i]= 0;
-        return stringReverse(salida);
+        result[i]= 0;
+        return stringReverse(result);
     } else {
         return joinString("-",intToString(-num));
     }
