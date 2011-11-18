@@ -1178,7 +1178,7 @@ void declarador_init(set folset) {
     inf_id->cant_byte = ts[inf_id->ptr_tipo].ets->cant_byte;
 
 
-    if (sbol->codigo & F_CONST)) {
+    if (sbol->codigo & F_CONST) {
         error_handler(79);
         constante(folset);
     } else
