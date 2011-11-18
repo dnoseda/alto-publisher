@@ -84,7 +84,6 @@ char *codigoMostrar[15000]; //Para mostrar por pantalla
 char *newLine;
 int  newLineMAC= 0;
 
-char posID= 0;
 int constEntera= -1;
 int cantConstantess= 0;
 int cantParametros= 0;
@@ -173,6 +172,16 @@ void scanner() {
 }
 
 //***************************funcionES DEL SET************************************
+
+enum typeExpresion {variables,
+                    unaVariable,
+                    Constant,
+                    vars_consts,
+                    funcion,
+                    Const_iToStr
+                   };
+
+
 struct Tipo {
     enum    typeExpresion typeExpresionresion;
     int    tipo;
