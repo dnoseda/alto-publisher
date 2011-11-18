@@ -743,16 +743,10 @@ void ejecucion() {
 
         for (i= 0; strcmp(cur, "$"); i++) {
             cod= charToFloat(cur);
-
-
-
-
             P[i] = cod;
             lp++;
             fscanf(PObj, "%s", &cur);
         }
-
-
 
         fscanf(PObj, "%s", &cur);
 
