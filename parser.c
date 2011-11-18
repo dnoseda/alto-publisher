@@ -1286,7 +1286,7 @@ void declarador_init(set folset) {
 void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
     llamolista_ini= 1;
     F_CONST
-    constante(une(une(F_CONST,folset),cons(CCOMA,NADA)));
+    constante(une(F_CONST | folset,CCOMA | NADA));
     llamolista_ini= 0;
     while (sbol->codigo == CCOMA||in(sbol->codigo,F_CONST)) {
         if(in(sbol->codigo,F_CONST)) {
@@ -1294,7 +1294,7 @@ void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
         } else {
             scanner();
         }
-        constante(une(une(F_CONST,folset),cons(CCOMA,NADA)));
+        constante(une(F_CONST | folset,CCOMA | NADA));
     }
 }
 
@@ -1305,7 +1305,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
     // F_PROP_COMP
     // F_LIST_DECL
     // F_LIST_PROP
-    test(F_PROP_COMP, une(une(F_LIST_DECL | F_LIST_PROP,folset),cons(CLLA_CIE,NADA)),60);
+    test(F_PROP_COMP, une(F_LIST_DECL | F_LIST_PROP | folset,CLLA_CIE | NADA),60);
 
     if (sbol->codigo == CLLA_ABR) {
         scanner();
@@ -1328,7 +1328,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
 
         // printf("antes %s\n",sbol->lexema );
     {
-        lista_declaraciones(une(folset,une(F_LIST_PROP,cons(CLLA_CIE,NADA))));
+        lista_declaraciones(une(folset,F_LIST_PROP | CLLA_CIE | NADA));
     }
     //printf("despues %s\n",sbol->lexema );
     finBloqueVars= newLineMAC;
@@ -1342,7 +1342,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
             sbol->codigo == CPYCOMA || sbol->codigo == CRETURN) {
 
 
-        lista_proposiciones(une(folset,cons(CLLA_CIE,NADA)));
+        lista_proposiciones(folset | CLLA_CIE | NADA);
     }
 
     if (sbol->codigo == CLLA_CIE) {
@@ -1360,7 +1360,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
 //    printf("antes del pop%s\n",sbol->lexema );
     pop_nivel();
     //  printf("despues del pop%s\n",sbol->lexema );
-    test(folset, cons(NADA,NADA), 61);
+    test(folset, NADA | NADA, 61);
     //printf("antes del pop%s\n",sbol->lexema );
     return finBloqueVars;
 
@@ -1381,9 +1381,9 @@ void lista_declaraciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKK
 
 void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKK
 
-    especificador_tipo(une(une(folset,first(lista_declaraciones_ini)),cons(CPYCOMA,NADA)));
+    especificador_tipo(une(une(folset,first(lista_declaraciones_ini)),CPYCOMA | NADA));
 
-    lista_declaraciones_init(une(folset,cons(CPYCOMA,NADA)));
+    lista_declaraciones_init(folset | CPYCOMA | NADA);
 
     if (sbol->codigo == CPYCOMA) {
         scanner();
@@ -1392,7 +1392,7 @@ void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
     }
 
 
-    test(folset,cons(NADA,NADA),62);
+    test(folset,NADA | NADA,62);
 
 }
 
@@ -1474,7 +1474,7 @@ void proposicion_iteracion(set folset) {// OKKKKKKKKKKKKKKKKKKKK
         error_handler(19);
     }
 
-    expresion(une(une(folset,first(proposicio)),cons(CPAR_CIE,NADA)));
+    expresion(une(une(folset,first(proposicio)),CPAR_CIE | NADA));
 
     if (sbol->codigo == CPAR_CIE) {
         scanner();
@@ -1517,7 +1517,7 @@ void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
     lineaBIFF= newLineMAC;    //guardala linea del if
 // printf("newLineMac1: %d \n", newLineMAC);
     //vengodeIF = 1;
-    proposicion(une(une(cons(CELSE,NADA),folset),first(proposicio)));
+    proposicion(une(CELSE | NADA | folset,first(proposicio)));
 
     d1 = calcularDespl(lineaBIFF, newLineMAC); //calcula el desplazamianto a donde tiene que ir a para el BIFF
 
@@ -1568,7 +1568,7 @@ struct Tipo struct_expresion;
 		error_handler(20);
 		//conj_aux=insertar_en_conjunto(FIRST(Proposicion),CELSE);
 		//proposicion(union_conjunto(folset,conj_aux));//traduccion para sent verd-->este actualiza nLineaMAC
-		 proposicion(une(une(cons(CELSE,NADA),folset),first(proposicio)));
+		 proposicion(une(CELSE | NADA | folset,first(proposicio)));
        if (sbol->codigo == CELSE){
 		guarda_linea_bifs=nLineaMAC;//guardo linea donde esta BIFS
 		agrega_linea_MAC2(BIFS,"0");//pongo despl falso hasta saber cual es para actualizar
@@ -1678,7 +1678,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
     default:
         error_handler(30);
     }
-    test(folset,cons(NADA,NADA),64);
+    test(folset,NADA | NADA,64);
     isINOUT= 0;
 }
 
@@ -1686,14 +1686,14 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
 void proposicion_retorno(set folset) {	//OKKKKKKKKKKKKKK
     //bandera = 1;
     scanner();
-    expresion(une(folset,cons(CPYCOMA,NADA)));
+    expresion(folset | CPYCOMA | NADA);
     if (sbol->codigo == CPYCOMA) {
         scanner();
     } else {
         error_handler(22);
     }
     isReturn= 1;
-    test(folset,cons(NADA,NADA),65);
+    test(folset,NADA | NADA,65);
 }
 
 
@@ -1708,7 +1708,7 @@ void proposicion_expresion(set folset) { //OKKKKKKKKKKKKKK
             sbol->codigo == CCONS_CAR || sbol->codigo == CCONS_STR)
 
     {
-        expresion(une(folset,cons(CPYCOMA,NADA)));
+        expresion(folset | CPYCOMA | NADA);
     }
 
     if (sbol->codigo == CPYCOMA) {
@@ -1716,7 +1716,7 @@ void proposicion_expresion(set folset) { //OKKKKKKKKKKKKKK
     } else {
         error_handler(22);
     }
-    test(folset,cons(NADA,NADA),66);
+    test(folset,NADA | NADA,66);
     sentencia= 0;
 }
 
@@ -1833,7 +1833,7 @@ struct Tipo expresion_simple(set folset) {
     char t, tvar;
     int nLineaCast;
 
-    test(first(expresion_simpl),une(une(first(termin),cons(NADA,COR)),folset),67);
+    test(first(expresion_simpl),une(une(first(termin),NADA | COR),folset),67);
 
     if (sbol->codigo == CMAS || sbol->codigo == CMENOS) {
         op= sbol->codigo;
@@ -2120,7 +2120,7 @@ struct Tipo factor(set folset) {//0KKKKKKKKKKKKKKKK
         Tipo_Retorno.tipo= en_tabla("TIPOERROR");
     }
 
-    test(folset, cons(NADA,NADA), 69);
+    test(folset, NADA | NADA, 69);
 
     return Tipo_Retorno;
 }
@@ -2245,7 +2245,7 @@ struct Tipo variable(set folset) {
         error_handler(16);
     }
 
-    test(folset, cons(NADA,NADA), 71);
+    test(folset, NADA | NADA, 71);
 
     return Tipo_Retorno;
 }
@@ -2293,7 +2293,7 @@ struct Tipo llamada_funcion(set folset) {
 
     isLlamadafuncion= 0;
 
-    test(folset, cons(NADA,NADA), 72);
+    test(folset, NADA | NADA, 72);
 
     Tipo_Retorno.tipo= Tipo_Ident(lexema);
     Tipo_Retorno.typeExpresionresion= funcion;
@@ -2306,7 +2306,7 @@ void lista_expresiones(set folset) { //0KKK
     struct Tipo TipoE;
     cantParametros= 0;
 
-    TipoE= expresion(une(une(folset,cons(CCOMA,NADA)),first(expresio)));
+    TipoE= expresion(une(folset | CCOMA | NADA,first(expresio)));
     cantParametros++;
 
 
@@ -2331,7 +2331,7 @@ void lista_expresiones(set folset) { //0KKK
             scanner();
         }
 
-        TipoE= expresion(une(une(folset,cons(CCOMA,NADA)),first(expresio)));
+        TipoE= expresion(une(folset | CCOMA | NADA,first(expresio)));
         cantParametros++;
 
         chequeoParam(TipoE, cantParametros);
@@ -2375,7 +2375,7 @@ struct Tipo constante(set folset) {    // ver el ultimo case
         error_handler(38);
 
     }
-    test(folset,cons(NADA,NADA),74);
+    test(folset,NADA | NADA,74);
     return Tipo_Retorno;
 
 }
