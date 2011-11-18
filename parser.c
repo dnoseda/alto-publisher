@@ -1566,7 +1566,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
 
 
         while (sbol->codigo == CSHR || (sbol->codigo & F_VAR)) {
-            if (in(sbol->codigo, F_VAR)) {
+            if ((sbol->codigo & F_VAR)) {
                 error_handler(76);
             } else {
                 scanner();
@@ -1607,7 +1607,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
         }
 
         while (sbol->codigo == CSHL || (sbol->codigo & F_EXPR)) {
-            if(sbol->codigo & F_EXPR)) {
+            if(sbol->codigo & F_EXPR) {
                 error_handler(77);
             } else {
                 scanner();
@@ -1685,7 +1685,7 @@ struct Tipo expresion(set folset) {
 
     TipoE.tipo= en_tabla("char");
 
-    if (in(sbol->codigo, F_EXPR)) {
+    if ((sbol->codigo & F_EXPR)) {
         error_handler(78);
         TipoE= expresion(folset);
     } else
@@ -1808,10 +1808,10 @@ struct Tipo expresion_simple(set folset) {
         Tipo_Retorno.typeExpresionresion= variables;
     }
 
-    while (sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR || in(sbol->codigo, F_TERM)) {
+    while (sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR || (sbol->codigo & F_TERM)) {
         op= sbol->codigo;
 
-        if (in(sbol->codigo, F_TERM)) {
+        if ((sbol->codigo & F_TERM)) {
             error_handler(78);
         } else {
             scanner();
@@ -2280,8 +2280,8 @@ void lista_expresiones(set folset) { //0KKK
 
     chequeoParam(TipoE, cantParametros);//cheque el tipo de expresion TipoE con el parametro cantParametros
 
-    while (sbol->codigo == CCOMA || in(sbol->codigo, F_EXPR)) {
-        if (in(sbol->codigo, F_EXPR)) {
+    while (sbol->codigo == CCOMA || (sbol->codigo & F_EXPR)) {
+        if ((sbol->codigo & F_EXPR)) {
             error_handler(75);
         } else {
             scanner();
