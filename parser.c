@@ -324,7 +324,7 @@ float charToFloat(char num[]) {
         }
     }
     decimales= strlen(part_dec);
-    res= (toInt(strcat(part_ent, part_dec))+.0)/elev(10, decimales);
+    res= (stringToInt(strcat(part_ent, part_dec))+.0)/elev(10, decimales);
 
     return (num[0]== '-')? -res : res;
 }
@@ -650,7 +650,7 @@ void ejecucion() {
         fscanf(PObj, "%s", &cur);
 
         for (i= 0; strcmp(cur, "$"); i++) {
-            addC(toInt(cur));
+            addC(stringToInt(cur));
             fscanf(PObj, "%s", &cur);
         }
 
@@ -972,7 +972,7 @@ void declarador_init(set folset) {
             scanner();
             constEntera= -1;
             if (sbol->codigo == CCONS_ENT) {
-                constEntera= toInt(sbol->lexema);
+                constEntera= stringToInt(sbol->lexema);
                 if (constEntera <= 0) {
                     error_handler(80);
                 }
