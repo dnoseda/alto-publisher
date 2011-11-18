@@ -49,7 +49,7 @@ char *joinString(char s1[], char s2[]) {
 }
 
 
-char *strmplN(char *s1) {
+char *unescapeNewline(char *s1) {
     int i,j;
 
     for (i= 0; s1[i]!= 0; i++)
