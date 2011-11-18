@@ -1286,7 +1286,7 @@ void declarador_init(set folset) {
 void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
     llamolista_ini= 1;
     F_CONST
-    constante(une(F_CONST | folset,CCOMA | NADA));
+    constante(F_CONST | folset | CCOMA | NADA);
     llamolista_ini= 0;
     while (sbol->codigo == CCOMA||in(sbol->codigo,F_CONST)) {
         if(in(sbol->codigo,F_CONST)) {
@@ -1294,7 +1294,7 @@ void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
         } else {
             scanner();
         }
-        constante(une(F_CONST | folset,CCOMA | NADA));
+        constante(F_CONST | folset | CCOMA | NADA);
     }
 }
 
@@ -1305,7 +1305,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
     // F_PROP_COMP
     // F_LIST_DECL
     // F_LIST_PROP
-    test(F_PROP_COMP, une(F_LIST_DECL | F_LIST_PROP | folset,CLLA_CIE | NADA),60);
+    test(F_PROP_COMP, F_LIST_DECL | F_LIST_PROP | folset | CLLA_CIE | NADA,60);
 
     if (sbol->codigo == CLLA_ABR) {
         scanner();
@@ -1328,7 +1328,7 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
 
         // printf("antes %s\n",sbol->lexema );
     {
-        lista_declaraciones(une(folset,F_LIST_PROP | CLLA_CIE | NADA));
+        lista_declaraciones(folset | F_LIST_PROP | CLLA_CIE | NADA);
     }
     //printf("despues %s\n",sbol->lexema );
     finBloqueVars= newLineMAC;
@@ -1368,20 +1368,22 @@ void proposicion_compuesta(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKK
 }
 void lista_declaraciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKKK
 
-    declaracion(une(folset,first(declaracio)));
+    // F_DECL
+    declaracion(folset | F_DECL);
 
     while (sbol->codigo == CVOID || sbol->codigo == CCHAR ||
             sbol->codigo == CINT || sbol->codigo == CFLOAT)
 
     {
-        declaracion(une(folset,first(declaracio)));
+        declaracion(folset | F_DECL);
     }
 
 }
 
 void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKK
 
-    especificador_tipo(une(une(folset,first(lista_declaraciones_ini)),CPYCOMA | NADA));
+    // F_LIST_DECL_INIT
+    especificador_tipo(une(une(folset,F_LISTA_DECL_INIT),CPYCOMA | NADA));
 
     lista_declaraciones_init(folset | CPYCOMA | NADA);
 
@@ -1398,7 +1400,8 @@ void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
 
 void lista_proposiciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
 
-    proposicion(une(folset,first(proposicio)));
+    // F_PROP
+    proposicion(une(folset,F_PROP));
 
     while (sbol->codigo == CLLA_ABR || sbol->codigo == CMAS ||
             sbol->codigo == CMENOS || sbol->codigo == CIDENT ||
@@ -1410,7 +1413,7 @@ void lista_proposiciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKK
             sbol->codigo == CPYCOMA || sbol->codigo == CRETURN)
 
     {
-        proposicion(une(folset,first(proposicio)));
+        proposicion(une(folset,F_PROP));
     }
 
 }
@@ -1419,7 +1422,7 @@ void proposicion(set folset) { //VER EL RETUR, TIPO -1
 
     //if(vengodeIF)appendMAC(ENBL, iToStr(get_nivel()));
 
-    test(first(proposicio),folset,63);
+    test(F_PROP,folset,63);
     switch (sbol->codigo) {
     case CLLA_ABR:
         proposicion_compuesta(folset);
@@ -1474,7 +1477,7 @@ void proposicion_iteracion(set folset) {// OKKKKKKKKKKKKKKKKKKKK
         error_handler(19);
     }
 
-    expresion(une(une(folset,first(proposicio)),CPAR_CIE | NADA));
+    expresion(une(une(folset,F_PROP),CPAR_CIE | NADA));
 
     if (sbol->codigo == CPAR_CIE) {
         scanner();
@@ -1503,7 +1506,7 @@ void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
         error_handler(19);
     }
 
-    TipoEx=expresion(une(une(folset,first(proposicio)),cons(CPAR_CIE|CELSE,NADA)));
+    TipoEx=expresion(une(une(folset,F_PROP),cons(CPAR_CIE|CELSE,NADA)));
 
 
 
@@ -1517,7 +1520,7 @@ void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
     lineaBIFF= newLineMAC;    //guardala linea del if
 // printf("newLineMac1: %d \n", newLineMAC);
     //vengodeIF = 1;
-    proposicion(une(CELSE | NADA | folset,first(proposicio)));
+    proposicion(une(CELSE | NADA | folset,F_PROP));
 
     d1 = calcularDespl(lineaBIFF, newLineMAC); //calcula el desplazamianto a donde tiene que ir a para el BIFF
 
@@ -1540,51 +1543,6 @@ void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
     appendKMAC(BIFF, concatString(iToStr(getTipo(TipoEx.tipo)), iToStr(d1)), lineaBIFF);
 }
 
-/*
-void proposicion_seleccion(set folset) {
-struct Tipo struct_expresion;
-	int guarda_linea_biff,guarda_linea_bifs=-1;
-	char destino_biff[2];
-	char destino_bifs[2];
-	char string_tipo[2];
-	if (sbol->codigo == CIF)
-	scanner();
-	else
-	error_handler(27);
-	if (sbol->codigo == CPAR_ABR)
-		scanner();
-	else error_handler(19);
-                TipoEx=expresion(une(une(folset,first(proposicio)),cons(CPAR_CIE|CELSE,NADA)));
-
-
-        lineaBIFF= newLineMAC;
-
-	appendKMAC(BIFF, concatString(iToStr(getTipo(TipoEx.tipo)), iToStr(d1)), lineaBIFF);
-//		strcpy(string_tipo,convierte_a_string(dameTipo(struct_expresion.tipo)));
-//		agrega_linea_MAC3(BIFF,string_tipo,"0");//despl falso('0')-> sepa orig->reemp
-	if (sbol->codigo == CPAR_CIE)
-		scanner();
-	else
-		error_handler(20);
-		//conj_aux=insertar_en_conjunto(FIRST(Proposicion),CELSE);
-		//proposicion(union_conjunto(folset,conj_aux));//traduccion para sent verd-->este actualiza nLineaMAC
-		 proposicion(une(CELSE | NADA | folset,first(proposicio)));
-       if (sbol->codigo == CELSE){
-		guarda_linea_bifs=nLineaMAC;//guardo linea donde esta BIFS
-		agrega_linea_MAC2(BIFS,"0");//pongo despl falso hasta saber cual es para actualizar
-		scanner();
-		strcpy(destino_biff,convierte_a_string(nLineaMAC));//nLineaMAC xq el dest del salto es la 1 linea d proposicion
-		actualilza_linea_MAC4(BIFF,string_tipo,destino_biff,guarda_linea_biff);//act linea dond estaba el BIFF con dest real
-		proposicion(folset);//traduccion para sent falsa
-		strcpy(destino_bifs,convierte_a_string(nLineaMAC));//nLineaMAC xq el salto es 1 pos + d la trad d la sent x falso
-		actualilza_linea_MAC3(BIFS,destino_bifs,guarda_linea_bifs);//actualiza la linea del BIFS con el dest del salto
-	}
-	if(guarda_linea_bifs==-1){//no se actualizo->no entro x la rama del else-->BIFF salta despues de trad sent verdadera
-		strcpy(destino_biff,convierte_a_string(nLineaMAC));//nLineaMAC es la linea posterior a la trad de la sent verdadera
-		actualilza_linea_MAC4(BIFF,string_tipo,destino_biff,guarda_linea_biff);//act la linea del BIFF con el dest d salto
-	}
-}
-*/
 
 void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooooooooooo
 
@@ -1601,7 +1559,8 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
         } else {
             error_handler(28);
         }
-        TipoExp= variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),first(variabl)));
+        //F_VAR
+        TipoExp= variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),F_VAR));
 
         clearLMAC();
 
@@ -1613,14 +1572,14 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
 
 
 
-        while (sbol->codigo == CSHR || in(sbol->codigo,first(variabl))) {
-            if (in(sbol->codigo, first(variabl))) {
+        while (sbol->codigo == CSHR || in(sbol->codigo,F_VAR)) {
+            if (in(sbol->codigo, F_VAR)) {
                 error_handler(76);
             } else {
                 scanner();
             }
 
-            TipoExp= variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),first(variabl)));
+            TipoExp= variable(une(une(folset,cons(CSHR|CPYCOMA,NADA)),F_VAR));
 
             clearLMAC();
 
@@ -2132,7 +2091,7 @@ struct Tipo variable(set folset) {
     struct Tipo TipoE, Tipo_Retorno;
 
 
-    test(first(variabl), folset, 70);
+    test(F_VAR, folset, 70);
 
     if (sbol->codigo == CIDENT) {
 
@@ -2306,6 +2265,7 @@ void lista_expresiones(set folset) { //0KKK
     struct Tipo TipoE;
     cantParametros= 0;
 
+    //F_EXPR
     TipoE= expresion(une(folset | CCOMA | NADA,first(expresio)));
     cantParametros++;
 
