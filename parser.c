@@ -1377,7 +1377,7 @@ void lista_declaraciones(set folset) { //OOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKK
 
 void declaracion(set folset) { //OOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKK
 
-    especificador_tipo(folset | F_LISTA_DECL_INIT | CPYCOMA | NADA);
+    especificador_tipo(folset | F_LIST_DECL_INIT | CPYCOMA | NADA);
 
     lista_declaraciones_init(folset | CPYCOMA | NADA);
 
