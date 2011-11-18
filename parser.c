@@ -173,13 +173,14 @@ void scanner() {
 
 //***************************funcionES DEL SET************************************
 
-enum typeExpresion {variables,
-                    unaVariable,
-                    Constant,
-                    vars_consts,
-                    funcion,
-                    Const_iToStr
-                   };
+enum typeExpresion {
+    variables,
+    unaVariable,
+    Constant,
+    vars_consts,
+    funcion,
+    Const_iToStr
+};
 
 
 struct Tipo {
