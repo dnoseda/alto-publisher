@@ -357,11 +357,6 @@ void chequeoParam(struct Tipo parametroReal, int numParametro) {
         parametroFormal = getParam(numParametro);
 
         
-        /*
-        printf("%d\n",parametroFormal.ptero_tipo_base);
-        printf("%d\n",parametroFormal.ptero_tipo);
-        printf("%c\n",parametroFormal.tipo_pje);
-        */
 
         if (parametroFormal.ptero_tipo == en_tabla("TIPOARREGLO")) {
 
@@ -467,31 +462,7 @@ void verInstrucciones() {
     printf("\n******************\n");
 }
 
-/*
-void generarSalida(){
 
-printf("ffffffffffffffffff");
-FILE *PObj;
-
-
-if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL){
-int i;
-
-for (i= 0; i < dameCS(); i++)
-	fprintf(PObj, "%c\n", dameC(i));
-
-
-
-for (i= 0; i < newLineMAC; i++)
-	fprintf(PObj, "%s\n", codigoMostrar[i]);
-
-for (i= 0; i < newLineMAC; i++)
-	printf(dameC(i));
-
-	}
-fclose(PObj);
-}
-*/
 
 
 
@@ -512,25 +483,7 @@ void generarSalida() {
         fprintf(PObj, "$ ");
         for (i= 0; i < newLineMAC; i++) {
             
-            
-            
-            /*for(index = 0; arreglo1[index]!='\0'; index++){
-            	if(arreglo1[index]!= '_'){
-            		arreglo2[index2++] = arreglo1[index];
-            		banderasa=1;
-
-            	}else{
-            		banderasa=0;
-                                    printf("arreglo2: %s\n", arreglo2);
-                                    arreglo2[index2]='\0';
-            		fprintf(PObj, "%f\n", charToFloat(arreglo2));
-                                    index2=0; arreglo2[0]='\0';
-
-            	}
-
-            }*/
-            
-            fprintf(PObj, "%s\n", codigo[i]);
+                        fprintf(PObj, "%s\n", codigo[i]);
         }
 
         fprintf(PObj, "$ ");
@@ -775,67 +728,6 @@ void compilacion() {
     }
 }
 
-/*
-void ejecucion(){
-    
-    FILE *PObj;
-    char cur[25];
-    printf("archivo:   %s\n",strcat(archivo, ".o"));
-    PObj= fopen(strcat(archivo, ".o"), "r");
-    if (PObj!= NULL){
-      
-       
-        
-        
-     
-        int i;
-        fscanf(PObj, "%s", cur);
-        
-        
-       
-        
-            addC(toInt(cur));
-            fscanf(PObj, "%s", cur);
-        }
-
-       
-     
-           
-     
-
-     
-
-     
-     
-     
-     
-     
-     
-
-        
-         for (i= 0;!feof(PObj); i++){
-            float cod;
-
-             cod= charToFloat(cur);
-            
-	    
-            printf("cur: %s",cur);
-            pushP(&cod);
-
-            fscanf(PObj, "%s", cur);
-        }
-    }else{
-          
-    }
-
-    fclose(PObj);
-
-    interprete();
-
-}
-
-*/
-
 
 void ejecucion() {
     float cod;
@@ -870,15 +762,7 @@ void ejecucion() {
             fscanf(PObj, "%s", &cur);
         }
 
-        /*
-        float val = -1;
-                        for (i = 0; val != PARAR; i++) {
-                            fscanf(obj, "%f\n", &P[i]);
-                            val = P[i];
-             }
-        */
-        
-        
+                
     }
     fclose(PObj);
     
@@ -2020,25 +1904,7 @@ struct Tipo factor(set folset) {
         }
 
         appendMAC(CRCTS, iToStr(dameCS()));
-        /*
-        s1=sbol->lexema;
-        for (i= 0; s1[i]!= 0; i++)
-           				if (s1[i] == 91 && s1[i+1] == 'n'){
-               					s1[i++]= '\n';
-               					for (j= i; s1[j] && s1[j+1]; j++)
-                   				s1[j]=s1[j+1];
-               					s1[j]= 0;
-           				}
-        				for (i= 0; s1[i]!= 0; i++)
-           				if (s1[i] == 91 && s1[i+1] == 't'){
-               					s1[i++]= '\t';
-               					for (j= i; s1[j] && s1[j+1]; j++)
-                   				s1[j]=s1[j+1];
-               					s1[j]= 0;
-           				}
-                           *sbol->lexema=s1;
-                           */
-        strmplN(sbol->lexema);
+                strmplN(sbol->lexema);
         strmplT(sbol->lexema);
 
         pushCS(sbol->lexema);
@@ -2261,19 +2127,7 @@ void lista_expresiones(set folset) {
     cantParametros++;
 
 
-    /*
-       printf("int: %d\n", TipoE.typeExpresionresion);
-       printf("char: %c\n", TipoE.tipo);
-       printf("char: %c\n", TipoE.tipo_base);
-       printf("float: %f\n", TipoE.valor);
-       printf("string: %s\n", TipoE.sValor);
-       printf("nivel: %d\n", TipoE.nivel);
-       printf("despl: %d\n", TipoE.despl);
-
-    */
-
-
-    chequeoParam(TipoE, cantParametros);
+        chequeoParam(TipoE, cantParametros);
 
     while (sbol->codigo == CCOMA || (sbol->codigo & F_EXPR)) {
         if ((sbol->codigo & F_EXPR)) {
@@ -2331,21 +2185,4 @@ struct Tipo constante(set folset) {
 
 }
 
-/*
-
-void imprimirPmt(){
-int i = 0;
-tipo_inf_res *cursorCroto;
-cursorCroto = inicio;
-while(cursorCroto!=NULL){
-
-	printf("(%d)\n",i);
-	printf("%d\n",cursorCroto->ptero_tipo);
-	printf("%c\n",cursorCroto->tipo_pje);
-	i++;
-	cursorCroto=cursorCroto->ptr_sig;
-}
-
-}
-*/
 
