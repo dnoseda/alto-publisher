@@ -22,7 +22,7 @@ int elev(int x, int y) {
     return Rstado;
 }
 
-char *deReversa(char cadena[]) {
+char *stringReverse(char cadena[]) {
     int i;
     char temp;
 
@@ -94,7 +94,7 @@ char *iToStr(int num) {
             num/=10;
         }
         salida[i]= 0;
-        return deReversa(salida);
+        return stringReverse(salida);
     } else {
         return unionST("-",iToStr(-num));
     }
