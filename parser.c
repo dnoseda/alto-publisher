@@ -1162,74 +1162,123 @@ void declaracion_variable(set folset) {
 
 
 void declarador_init(set folset) {
-    test(F_DECL_INIT | folset,F_CONST,58);
-    char local[17];
 
-    inf_id->ptr_tipo=posID;
-    inf_id->cant_byte=ts[posID].ets->cant_byte;
-    inf_id->clase=CLASVAR;
+    char t;
+    struct Tipo TipoC;
+    TipoC.tipo = NIL;
+    test(F_DECL_INIT | folset, F_CONST, 58);
 
-    if(sbol->codigo & F_CONST) {
+    if (posID == en_tabla("void")) {
+        error_handler(82);
+        inf_id->ptr_tipo = en_tabla("TIPOERROR");
+    } else {
+        inf_id->ptr_tipo = posID;
+    }
+
+    inf_id->cant_byte = ts[inf_id->ptr_tipo].ets->cant_byte;
+
+
+    if (in(sbol->codigo,F_CONST)) {
         error_handler(79);
         constante(folset);
-    } else {
+    } else
         switch (sbol->codigo) {
-        case CASIGNAC: {
+        case CASIGNAC:
             scanner();
-            constante(folset);
+            if(sbol->codigo==CCONS_STR) {
+                scanner();
+                error_handler(86);
+            }
+            TipoC= constante(folset);
+
             break;
-        }
-        case CCOR_ABR: {
+        case CCOR_ABR:
             scanner();
+            constEntera= -1;
             if (sbol->codigo == CCONS_ENT) {
-
-                strcpy(local,sbol->lexema);
-                constante(folset | F_LIST_INIC | CCOR_CIE | CASIGNAC,NADA);
-
-                tamARR = atoi(local);
-                inf_id->desc.part_var.arr.cant_elem = tamARR;
-
+                constEntera= toInt(sbol->lexema);
+                if (constEntera <= 0) {
+                    error_handler(80);
+                }
+                scanner();
+            } else {
+                scanner();
             }
             if (sbol->codigo == CCOR_CIE) {
                 scanner();
             } else {
                 error_handler(21);
             }
-            if (sbol->codigo == CASIGNAC) {
-                scanner();
+
+            if (sbol->codigo == CASIGNAC || sbol->codigo == CLLA_ABR) {
+                if (sbol->codigo == CLLA_ABR) {
+                    error_handler(79);
+                } else {
+                    scanner();
+                }
+
                 if (sbol->codigo == CLLA_ABR) {
                     scanner();
                 } else {
                     error_handler(23);
                 }
 
-                tamARR=0;
+                cantConstantess= 0;
+                lista_inicializadores(folset | CLLA_CIE);
 
-                lista_inicializadores(folset | CLLA_CIE );
+                if (constEntera== -1) {
+                    constEntera= cantConstantess;
+                } else if (cantConstantess != constEntera) {
+                    error_handler(94);
+                }
 
-                inf_id->desc.part_var.arr.cant_elem = tamARR;
                 if (sbol->codigo == CLLA_CIE) {
                     scanner();
                 } else {
                     error_handler(24);
                 }
             }
-            inf_id->desc.part_var.arr.ptero_tipo_base = inf_id->ptr_tipo;
+
+            inf_id->desc.part_var.arr.cant_elem= constEntera;
+
+            inf_id->desc.part_var.arr.ptero_tipo_base= inf_id->ptr_tipo;
+
+
+            if (constEntera == -1) {
+                error_handler(83);
+                inf_id->desc.part_var.arr.ptero_tipo_base= en_tabla("TIPOERROR");
+            }
+
             inf_id->ptr_tipo = en_tabla("TIPOARREGLO");
-            inf_id->cant_byte = ((inf_id->cant_byte)*tamARR);
+            inf_id->cant_byte = (inf_id->desc.part_var.arr.cant_elem)*(ts[posID].ets->cant_byte);
 
             break;
+        };
+
+    inf_id->clase = CLASVAR;
+
+    inf_id->desc.nivel = get_nivel();
+
+    inf_id->desc.despl= despl;
+    despl+= inf_id->cant_byte;
+
+    appendMAC(ALOC, iToStr(inf_id->cant_byte));
+
+    if (TipoC.tipo != NIL) {
+
+        t= getTipo(inf_id->ptr_tipo);
+
+        if (t == 2) {
+            appendMAC(CRCT, concatString(iToStr(t), TipoC.sValor));
+        } else {
+            appendMAC(CRCT, concatString(iToStr(t), iToStr((int)TipoC.valor)));
         }
-        }
-
-    }
-    if(!(inf_id->nbre[0]=='\0')) {
-        insertarTS();
+        appendMAC(ALM, concatString(concatString(iToStr(inf_id->desc.nivel),  iToStr(inf_id->desc.despl)), iToStr(t)));
+        appendMAC(POP, iToStr(t));
     }
 
-
-    test(folset,NADA,59);
-
+    insertarTS();
+    test(folset, NADA, 59);
 }
 
 void lista_inicializadores(set folset) {
