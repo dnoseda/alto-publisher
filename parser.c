@@ -198,6 +198,28 @@ void test(set expected, set rec_points, int error) {
 char Cohersion(char tipo, char Tipo_Operado) {
     char Tipo_Retorno= en_tabla("float");
 
+    if (tipo == en_tabla("TIPOARREGLO") || Tipo_Operado == en_tabla("TIPOARREGLO")) {
+        return en_tabla("TIPOARREGLO");
+    }
+
+    if (tipo == en_tabla("TIPOERROR") || Tipo_Operado == en_tabla("TIPOERROR")) {
+        return en_tabla("TIPOERROR");
+    }
+
+    if (tipo == en_tabla("char")) {
+        Tipo_Retorno= Tipo_Operado;
+    } else if (tipo == en_tabla("int")) {
+        if (Tipo_Operado == en_tabla("float")) {
+            Tipo_Retorno= Tipo_Operado;
+        } else {
+            Tipo_Retorno= en_tabla("int");
+        }
+    }
+
+    return Tipo_Retorno;
+
+}
+
 int main( int argc,char *argv[]) {
 
     inic_tablas();
