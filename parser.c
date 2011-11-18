@@ -1506,7 +1506,7 @@ void proposicion_seleccion(set folset) { // AGREGARRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
         error_handler(19);
     }
 
-    TipoEx=expresion(une(folset | F_PROP,CPAR_CIE|CELSE | NADA));
+    TipoEx=expresion(folset | F_PROP | CPAR_CIE|CELSE | NADA);
 
 
 
@@ -1560,7 +1560,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
             error_handler(28);
         }
         //F_VAR
-        TipoExp= variable(une(une(folset,CSHR|CPYCOMA | NADA),F_VAR));
+        TipoExp= variable(folset | CSHR|CPYCOMA | NADA | F_VAR);
 
         clearLMAC();
 
@@ -1579,7 +1579,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
                 scanner();
             }
 
-            TipoExp= variable(une(une(folset,CSHR|CPYCOMA | NADA),F_VAR));
+            TipoExp= variable(folset | CSHR|CPYCOMA | NADA | F_VAR);
 
             clearLMAC();
 
@@ -1606,7 +1606,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
         }
 
 
-        TipoExp= expresion(une(une(folset,CSHL|CPYCOMA | NADA),F_EXPR));
+        TipoExp= expresion(folset | CSHL|CPYCOMA | NADA | F_EXPR);
         if (TipoExp.typeExpresionresion == Const_iToStr) {
             appendMAC(IMPCS,"");
         } else {
@@ -1619,7 +1619,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
             } else {
                 scanner();
             }
-            TipoExp= expresion(une(une(folset,CSHL|CPYCOMA | NADA),F_EXPR));
+            TipoExp= expresion(folset | CSHL|CPYCOMA | NADA | F_EXPR);
             if (TipoExp.typeExpresionresion == Const_iToStr) {
                 appendMAC(IMPCS, "");
             } else {
@@ -1687,7 +1687,7 @@ struct Tipo expresion(set folset) {
 
     control++;
 
-    Tipo_Retorno=   expresion_simple(une(folset | F_EXPR,CASIGNAC |  CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG));
+    Tipo_Retorno=   expresion_simple(folset | F_EXPR | CASIGNAC |  CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG);
     nLineaCast= newLineMAC;
 
     TipoE.tipo= en_tabla("char");
@@ -1802,7 +1802,7 @@ struct Tipo expresion_simple(set folset) {
         masMenos= 1;
     }
 
-    Tipo_Retorno= termino(une(une(folset,NADA | CMAS|CMENOS|COR),F_TERM));
+    Tipo_Retorno= termino(folset | NADA | CMAS|CMENOS|COR | F_TERM);
     nLineaCast= newLineMAC;
 
 
@@ -1823,7 +1823,7 @@ struct Tipo expresion_simple(set folset) {
         } else {
             scanner();
         }
-        TipoT= termino(une(une(folset,NADA | CMAS|CMENOS|COR),F_TERM));
+        TipoT= termino(folset | NADA | CMAS|CMENOS|COR | F_TERM);
 
         t= getTipo(Tipo_Retorno.tipo);
         tvar= getTipo(TipoT.tipo);
@@ -1879,7 +1879,7 @@ struct Tipo termino(set folset) {  // OKKKKKKKKKKKKKK
     int nLineaCast;
 
     //F_FACTOR
-    Tipo_Retorno= factor(une(une(folset,NADA | CMULT|CDIV|CAND),F_FACTOR));
+    Tipo_Retorno= factor(folset | NADA | CMULT|CDIV|CAND | F_FACTOR);
     nLineaCast= newLineMAC;
 
 
@@ -1896,7 +1896,7 @@ struct Tipo termino(set folset) {  // OKKKKKKKKKKKKKK
         } else {
             scanner();
         }
-        TipoF= factor(une(une(folset,NADA | CMULT|CDIV|CAND),F_FACTOR));
+        TipoF= factor(folset | NADA | CMULT|CDIV|CAND | F_FACTOR);
 
         t= getTipo(Tipo_Retorno.tipo);
         tvar= getTipo(TipoF.tipo);
@@ -1975,7 +1975,7 @@ struct Tipo factor(set folset) {//0KKKKKKKKKKKKKKKK
                         sbol->codigo == CNEG      || sbol->codigo == CCONS_ENT ||
                         sbol->codigo == CCONS_FLO || sbol->codigo == CCONS_CAR ||
                         sbol->codigo == CCONS_STR) {
-                    lista_expresiones(une(folset, CPAR_CIE |  NADA));
+                    lista_expresiones(folset |  CPAR_CIE |  NADA);
                 }
 
                 if (sbol->codigo == CPAR_CIE) {
@@ -1996,7 +1996,7 @@ struct Tipo factor(set folset) {//0KKKKKKKKKKKKKKKK
                     inf_id->ptr_tipo = en_tabla("TIPOARREGLO");
 
                     scanner();
-                    expresion(une(folset, CCOR_CIE |  NADA));
+                    expresion(folset |  CCOR_CIE |  NADA);
 
                     if (sbol->codigo == CCOR_CIE) {
                         scanner();
@@ -2061,7 +2061,7 @@ struct Tipo factor(set folset) {//0KKKKKKKKKKKKKKKK
         break;
     case CPAR_ABR:
         scanner();
-        Tipo_Retorno= expresion(une(folset, CPAR_CIE |  NADA));
+        Tipo_Retorno= expresion(folset |  CPAR_CIE |  NADA);
 
         if (sbol->codigo == CPAR_CIE) {
             scanner();
@@ -2121,7 +2121,7 @@ struct Tipo variable(set folset) {
                         sbol->codigo == CNEG      || sbol->codigo == CCONS_ENT ||
                         sbol->codigo == CCONS_FLO || sbol->codigo == CCONS_CAR ||
                         sbol->codigo == CCONS_STR) {
-                    lista_expresiones(une(folset, CPAR_CIE |  NADA));
+                    lista_expresiones(folset |  CPAR_CIE |  NADA);
                 }
 
                 if (sbol->codigo == CPAR_CIE) {
@@ -2143,7 +2143,7 @@ struct Tipo variable(set folset) {
                     inf_id->desc.part_var.arr.cant_elem= 99999; //inicializo con un nro grande
 
                     scanner();
-                    expresion(une(folset, CCOR_CIE |  NADA));
+                    expresion(folset |  CCOR_CIE |  NADA);
 
                     if (sbol->codigo == CCOR_CIE) {
                         scanner();
@@ -2159,7 +2159,7 @@ struct Tipo variable(set folset) {
         } else {
             if (sbol->codigo == CCOR_ABR) {
                 scanner();
-                TipoE= expresion(une(folset, CCOR_CIE |  NADA));
+                TipoE= expresion(folset |  CCOR_CIE |  NADA);
 
                 if (TipoE.typeExpresionresion == Constant) {
                     if (TipoE.tipo == en_tabla("float") || TipoE.valor < 0) {
@@ -2240,7 +2240,7 @@ struct Tipo llamada_funcion(set folset) {
             sbol->codigo == CNEG      || sbol->codigo == CCONS_ENT ||
             sbol->codigo == CCONS_FLO || sbol->codigo == CCONS_CAR ||
             sbol->codigo == CCONS_STR) {
-        lista_expresiones(une(folset, CPAR_CIE |  NADA));
+        lista_expresiones(folset |  CPAR_CIE |  NADA);
     }
 
     if (cantParametros != ts[en_tabla(lexema)].ets->desc.part_var.sub.cant_par) {
