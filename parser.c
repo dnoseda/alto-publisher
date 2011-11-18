@@ -33,7 +33,7 @@ void lista_declaraciones_param();
 void declaracion_parametro();
 void declarador_init();
 void lista_declacion_init();
-struct Tipo constante();
+struct TipoAttr constante();
 void lista_inicializadores();
 void lista_proposiciones();
 void lista_declaraciones();
@@ -45,15 +45,15 @@ void proposicion_seleccion();
 void proposicion_iteracion();
 void proposicion_e_s();
 void proposicion_retorno();
-struct Tipo variable();
-struct Tipo expresion();
+struct TipoAttr variable();
+struct TipoAttr expresion();
 void expresion_asignacion();
 void expresion_relacional();
-struct Tipo expresion_simple();
+struct TipoAttr expresion_simple();
 void relacion();
-struct Tipo termino();
-struct Tipo factor();
-struct Tipo llamada_funcion();
+struct TipoAttr termino();
+struct TipoAttr factor();
+struct TipoAttr llamada_funcion();
 void lista_expresiones();
 char *getStringINST(int INST);
 
@@ -185,7 +185,7 @@ void scanner() {
 
 
 
-struct Tipo {
+struct TipoAttr {
     enum    typeExpresion typeExpresionresion;
     int    tipo;
     int    tipo_base;
@@ -246,7 +246,7 @@ tipo_inf_res getParam(int k) {
     return salida;
 }
 
-void chequeoParam(struct Tipo parametroReal, int numParametro) {
+void chequeoParam(struct TipoAttr parametroReal, int numParametro) {
     tipo_inf_res parametroFormal;
 
 
@@ -940,7 +940,7 @@ void declaracion_variable(set folset) {
 void declarador_init(set folset) {
 
     char t;
-    struct Tipo TipoC;
+    struct TipoAttr TipoC;
     TipoC.tipo = NIL;
     test(F_DECL_INIT | folset, F_CONST, 58);
 
@@ -1258,7 +1258,7 @@ void proposicion_iteracion(set folset) {
 
 void proposicion_seleccion(set folset) {
 
-    struct Tipo TipoEx;
+    struct TipoAttr TipoEx;
     int lineaBIFF, lineaBIFS, d1;
     if (sbol->codigo == CIF) {
         scanner();
@@ -1312,7 +1312,7 @@ void proposicion_seleccion(set folset) {
 
 void proposicion_e_s(set folset) {
 
-    struct Tipo TipoExp;
+    struct TipoAttr TipoExp;
     char t;
 
     isINOUT= 1;
@@ -1445,8 +1445,8 @@ void proposicion_expresion(set folset) {
     sentencia= 0;
 }
 
-struct Tipo expresion(set folset) {
-    struct Tipo Tipo_Retorno,TipoE;
+struct TipoAttr expresion(set folset) {
+    struct TipoAttr Tipo_Retorno,TipoE;
     char tvar,t;
     int nLineaCast;
     long int op;
@@ -1551,8 +1551,8 @@ struct Tipo expresion(set folset) {
 
 
 
-struct Tipo expresion_simple(set folset) {
-    struct Tipo TipoT, Tipo_Retorno;
+struct TipoAttr expresion_simple(set folset) {
+    struct TipoAttr TipoT, Tipo_Retorno;
     int masMenos= 0;
     long int op= CMAS;
     char t, tvar;
@@ -1638,9 +1638,9 @@ struct Tipo expresion_simple(set folset) {
     return Tipo_Retorno;
 }
 
-struct Tipo termino(set folset) {
+struct TipoAttr termino(set folset) {
     long long op;
-    struct Tipo Tipo_Retorno, TipoF;
+    struct TipoAttr Tipo_Retorno, TipoF;
     char t, tvar;
     int nLineaCast;
 
@@ -1707,10 +1707,10 @@ struct Tipo termino(set folset) {
 
 }
 
-struct Tipo factor(set folset) {
+struct TipoAttr factor(set folset) {
 
     char lexema[TAM_LEXEMA], t;
-    struct Tipo Tipo_Retorno;
+    struct TipoAttr Tipo_Retorno;
     int i,j;
     char* s1;
 
@@ -1834,10 +1834,10 @@ struct Tipo factor(set folset) {
 }
 
 
-struct Tipo variable(set folset) {
+struct TipoAttr variable(set folset) {
     char lexema[TAM_LEXEMA], t;
     int Iden_No_Declarado= 0;
-    struct Tipo TipoE, Tipo_Retorno;
+    struct TipoAttr TipoE, Tipo_Retorno;
 
 
     test(F_VAR, folset, 70);
@@ -1959,9 +1959,9 @@ struct Tipo variable(set folset) {
 }
 
 
-struct Tipo llamada_funcion(set folset) {
+struct TipoAttr llamada_funcion(set folset) {
     char lexema[TAM_LEXEMA];
-    struct Tipo Tipo_Retorno;
+    struct TipoAttr Tipo_Retorno;
     isLlamadafuncion= 1;
 
     en_tabla_funcion_Llama= en_tabla(sbol->lexema);
@@ -2011,7 +2011,7 @@ struct Tipo llamada_funcion(set folset) {
 
 
 void lista_expresiones(set folset) {
-    struct Tipo TipoE;
+    struct TipoAttr TipoE;
     cantParametros= 0;
 
 
@@ -2035,8 +2035,8 @@ void lista_expresiones(set folset) {
     }
 }
 
-struct Tipo constante(set folset) {
-    struct Tipo Tipo_Retorno;
+struct TipoAttr constante(set folset) {
+    struct TipoAttr Tipo_Retorno;
 
     Tipo_Retorno.typeExpresionresion= Constant;
 
