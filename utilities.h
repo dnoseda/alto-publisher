@@ -34,7 +34,7 @@ char *stringReverse(char cadena[]) {
     return cadena;
 }
 
-char *concatString(char s1[], char s2[]) {
+char *stringConcat(char s1[], char s2[]) {
     auxString= (char *) calloc(1, 50);
     strcat(auxString, s1);
     strcat(auxString, " ");

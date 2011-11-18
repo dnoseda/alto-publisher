@@ -190,9 +190,9 @@ struct TipoAttr {
 void appendMAC(int INST, char linea[]) {
 
 
-    codigo[newLineMAC]= concatString(intToString(INST),linea);
+    codigo[newLineMAC]= stringConcat(intToString(INST),linea);
 
-    codigoMostrar[newLineMAC++]= concatString(getStringINST(INST),linea);
+    codigoMostrar[newLineMAC++]= stringConcat(getStringINST(INST),linea);
 }
 
 void appendKMAC(int INST, char linea[], int kLinea) {
@@ -202,8 +202,8 @@ void appendKMAC(int INST, char linea[], int kLinea) {
         codigo[i+1]= codigo[i];
         codigoMostrar[i+1]= codigoMostrar[i];
     }
-    codigo[kLinea]= concatString(intToString(INST),linea);
-    codigoMostrar[kLinea]= concatString(getStringINST(INST),linea);
+    codigo[kLinea]= stringConcat(intToString(INST),linea);
+    codigoMostrar[kLinea]= stringConcat(getStringINST(INST),linea);
 
     newLineMAC++;
 }
@@ -1036,11 +1036,11 @@ void declarador_init(set folset) {
         t= getTipo(inf_id->ptr_tipo);
 
         if (t == 2) {
-            appendMAC(CRCT, concatString(intToString(t), TipoC.stringValue));
+            appendMAC(CRCT, stringConcat(intToString(t), TipoC.stringValue));
         } else {
-            appendMAC(CRCT, concatString(intToString(t), intToString((int)TipoC.value)));
+            appendMAC(CRCT, stringConcat(intToString(t), intToString((int)TipoC.value)));
         }
-        appendMAC(ALM, concatString(concatString(intToString(inf_id->desc.nivel),  intToString(inf_id->desc.despl)), intToString(t)));
+        appendMAC(ALM, stringConcat(stringConcat(intToString(inf_id->desc.nivel),  intToString(inf_id->desc.despl)), intToString(t)));
         appendMAC(POP, intToString(t));
     }
 
@@ -1297,7 +1297,7 @@ void proposicion_seleccion(set folset) {
 
     }
 
-    appendKMAC(BIFF, concatString(intToString(getTipo(TipoEx.intType)), intToString(d1)), lineaBIFF);
+    appendKMAC(BIFF, stringConcat(intToString(getTipo(TipoEx.intType)), intToString(d1)), lineaBIFF);
 }
 
 
@@ -1324,7 +1324,7 @@ void proposicion_e_s(set folset) {
         t= getTipo(TipoExp.intType);
 
         appendMAC(LEER, intToString(getTipo(TipoExp.intType)));
-        appendMAC(ALM, concatString(concatString(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
+        appendMAC(ALM, stringConcat(stringConcat(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
         appendMAC(POP, intToString(t));
 
 
@@ -1343,7 +1343,7 @@ void proposicion_e_s(set folset) {
             t= getTipo(TipoExp.intType);
 
             appendMAC(LEER, intToString(getTipo(TipoExp.intType)));
-            appendMAC(ALM, concatString(concatString(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
+            appendMAC(ALM, stringConcat(stringConcat(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
             appendMAC(POP, intToString(t));
         }
 
@@ -1475,13 +1475,13 @@ struct TipoAttr expresion(set folset) {
             t= getTipo(TipoE.intType);
 
             if (t != tvar) {
-                appendMAC(CAST,concatString( intToString(t), intToString(tvar)));
+                appendMAC(CAST,stringConcat( intToString(t), intToString(tvar)));
             }
 
-            appendMAC(ALM, concatString(concatString(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
+            appendMAC(ALM, stringConcat(stringConcat(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
 
             appendMAC(POP, intToString(tvar));
-            appendMAC(CRVL, concatString(concatString(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
+            appendMAC(CRVL, stringConcat(stringConcat(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
 
             if (sentencia && control == 0) {
                 appendMAC(POP, intToString(tvar));
@@ -1504,9 +1504,9 @@ struct TipoAttr expresion(set folset) {
 
 
             if (tvar < t) {
-                appendMAC(CAST, concatString(intToString(tvar), intToString(t)));
+                appendMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
             } else if (tvar > t) {
-                appendKMAC(CAST, concatString(intToString(t), intToString(tvar)), nLineaCast);
+                appendKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
                 t= tvar;
             }
 
@@ -1587,9 +1587,9 @@ struct TipoAttr expresion_simple(set folset) {
 
 
         if (tvar < t) {
-            appendMAC(CAST, concatString(intToString(tvar), intToString(t)));
+            appendMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
         } else if (tvar > t) {
-            appendKMAC(CAST, concatString(intToString(t), intToString(tvar)), nLineaCast);
+            appendKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
             t= tvar;
         }
 
@@ -1659,9 +1659,9 @@ struct TipoAttr termino(set folset) {
         tvar= getTipo(TipoF.intType);
 
         if (tvar < t) {
-            appendMAC(CAST, concatString(intToString(tvar), intToString(t)));
+            appendMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
         } else if (tvar > t) {
-            appendKMAC(CAST, concatString(intToString(t), intToString(tvar)), nLineaCast);
+            appendKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
             t= tvar;
         }
 
@@ -1776,9 +1776,9 @@ struct TipoAttr factor(set folset) {
         Tipo_Retorno= constante(folset);
         t= getTipo(Tipo_Retorno.intType);
         if (t == 2) {
-            appendMAC(CRCT, concatString(intToString(t),  Tipo_Retorno.stringValue));
+            appendMAC(CRCT, stringConcat(intToString(t),  Tipo_Retorno.stringValue));
         } else {
-            appendMAC(CRCT, concatString(intToString(t), Tipo_Retorno.stringValue));
+            appendMAC(CRCT, stringConcat(intToString(t), Tipo_Retorno.stringValue));
         }
         break;
     case CCONS_STR:
@@ -1929,7 +1929,7 @@ struct TipoAttr variable(set folset) {
 
                 t= getTipo(Tipo_Retorno.intType);
 
-                appendMAC(CRVL, concatString(concatString(intToString(ts[en_tabla(lexema)].ets->desc.nivel), intToString(ts[en_tabla(lexema)].ets->desc.despl)), intToString(t)));
+                appendMAC(CRVL, stringConcat(stringConcat(intToString(ts[en_tabla(lexema)].ets->desc.nivel), intToString(ts[en_tabla(lexema)].ets->desc.despl)), intToString(t)));
 
                 if (Tipo_Retorno.intType == en_tabla("TIPOARREGLO")) {
                     Tipo_Retorno.baseType= ts[en_tabla(lexema)].ets->desc.part_var.arr.ptero_tipo_base;
