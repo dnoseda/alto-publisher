@@ -1,3 +1,5 @@
+char *newLine;
+
 int toInt(char t[]) {
     int res= 0, Ti= strlen(t)-1, piso= 0;
 
