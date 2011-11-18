@@ -1,6 +1,6 @@
-char *newLine;
+char *stringAux;
 
-int toInt(char t[]) {
+int stringToInt(char t[]) {
     int res= 0, Ti= strlen(t)-1, piso= 0;
 
     if (t[0]== '-') {
@@ -8,13 +8,13 @@ int toInt(char t[]) {
     }
 
     for (; Ti>=piso; Ti--) {
-        res+= (t[Ti]-48)*elev(10,strlen(t)-(Ti+1));
+        res+= (t[Ti]-48)*pow(10,strlen(t)-(Ti+1));
     }
 
     return (t[0]== '-')? -res : res;
 }
 
-int elev(int x, int y) {
+int pow(int x, int y) {
     int Rstado=1;
     for (; y>0; y--) {
         Rstado *= x;
@@ -22,30 +22,30 @@ int elev(int x, int y) {
     return Rstado;
 }
 
-char *deReversa(char cadena[]) {
+char *reverseString(char string[]) {
     int i;
     char temp;
 
-    for (i= 0; i < strlen(cadena)/2; i++) {
-        temp= cadena[i];
-        cadena[i]= cadena[strlen(cadena) -1 - i];
-        cadena[strlen(cadena) -1 - i]= temp;
+    for (i= 0; i < strlen(string)/2; i++) {
+        temp= string[i];
+        string[i]= string[strlen(string) -1 - i];
+        string[strlen(string) -1 - i]= temp;
     }
-    return cadena;
+    return string;
 }
 
 char *concatString(char s1[], char s2[]) {
-    newLine= (char *) calloc(1, 50);
-    strcat(newLine, s1);
-    strcat(newLine, " ");
+    stringAux= (char *) calloc(1, 50);
+    strcat(stringAux, s1);
+    strcat(stringAux, " ");
 
-    return strcat(newLine, s2);;
+    return strcat(stringAux, s2);;
 }
 
-char *unionST(char s1[], char s2[]) {
-    newLine= (char *) calloc(1, 50);
-    strcat(newLine, s1);
-    return strcat(newLine, s2);
+char *joinString(char s1[], char s2[]) {
+    stringAux= (char *) calloc(1, 50);
+    strcat(stringAux, s1);
+    return strcat(stringAux, s2);
 }
 
 
@@ -81,21 +81,21 @@ char *strmplT(char *s1) {
 
 
 
-char *iToStr(int num) {
-    char *salida= (char *)calloc (1, TAM_LEXEMA);
+char *intToString(int num) {
+    char *output= (char *)calloc (1, TAM_LEXEMA);
     int i=0;
     if (num >= 0) {
         if (num == 0) {
-            salida[0]= '0';
+            output[0]= '0';
             i= 1;
         }
         for (; num>0; i++) {
-            salida[i]=num%10+48;
+            output[i]=num%10+48;
             num/=10;
         }
-        salida[i]= 0;
-        return deReversa(salida);
+        output[i]= 0;
+        return reverseString(output);
     } else {
-        return unionST("-",iToStr(-num));
+        return joinString("-",intToString(-num));
     }
 }
