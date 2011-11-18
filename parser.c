@@ -11,6 +11,7 @@
 #include <string.h>
 #include "ts.h"
 
+#include "soporte_ejecucion.h"
 
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
@@ -31,7 +32,7 @@ void lista_declaraciones_param();
 void declaracion_parametro();
 void declarador_init();
 void lista_declacion_init();
-void constante();
+struct Tipo constante();
 void lista_inicializadores();
 void lista_proposiciones();
 void lista_declaraciones();
@@ -43,22 +44,54 @@ void proposicion_seleccion();
 void proposicion_iteracion();
 void proposicion_e_s();
 void proposicion_retorno();
-void variable();
-void expresion();
+struct Tipo variable();
+struct Tipo expresion();
 void expresion_asignacion();
 void expresion_relacional();
-void expresion_simple();
+struct Tipo expresion_simple();
 void relacion();
-void termino();
-void factor();
-void llamada_funcion();
+struct Tipo termino();
+struct Tipo factor();
+struct Tipo llamada_funcion();
 void lista_expresiones();
+char *getStringINST(int INST);
 
 
 void scanner ();
 
+/********** variables globales ************/
 
-/*************** variables auxiliares *************/
+//********************************************************
+
+
+
+
+int isReturn= 0;
+int isLlamadafuncion= 0;
+int isINOUT= 0;
+int llamolista_ini= 0;
+int isConstante= 0;
+int isdeffuncion= 0;
+extern char error;
+int vengodeIF =0;
+int sentencia= 0;
+int control= 0;
+
+char *archivo;
+
+char *codigo[15000]; //Para mostrar
+char *codigoMostrar[15000]; //Para mostrar por pantalla
+char *newLine;
+int  newLineMAC= 0;
+
+char posID= 0;
+int constEntera= -1;
+int cantConstantess= 0;
+int cantParametros= 0;
+int en_tabla_funcion= NIL;
+int en_tabla_funcion_Llama= NIL;
+
+int segVar= 2;
 
 int punteroFuncion;  // donde apunto a la funcin donde estoy metido
 int tipo_global;     // donde guardo en el caso     int a,b,c;    el tipo para b y c
@@ -70,7 +103,7 @@ int void_flag;
 
 token *sbol;
 
-//
+
 int posID;
 int posTabla;
 int cantPar;
@@ -81,8 +114,10 @@ int posicionTS;
 int esParametro = FALSE;
 tipo_inf_res *inicio; // puntero de la lista de parametros
 tipo_inf_res *cursor; // cursor
+char *archivo;
 
 
+int esIndice = 0;
 
 #define F_ESP_TIPO (CVOID|CCHAR|CINT|CFLOAT)
 #define F_CONST (CCONS_CAR|CCONS_ENT|CCONS_FLO|CCONS_STR)
@@ -118,7 +153,12 @@ tipo_inf_res *cursor; // cursor
 #define F_UNID_TRAD (F_DECL)
 
 extern FILE *yyin;
+extern int despl;
 
+extern float P[];
+extern int lp;
+extern int lc;
+extern char C[];
 void scanner() {
     int i;
     for (; (i=yylex())!= NADA && sbol->codigo == SEGUIR;);
@@ -132,6 +172,16 @@ void scanner() {
     free ( (void *) liberar);
 }
 
+//***************************funcionES DEL SET************************************
+struct Tipo {
+    enum    typeExpresion typeExpresionresion;
+    int    tipo;
+    int    tipo_base;
+    float   valor;
+    char    sValor[150];
+    int     nivel;
+    int     despl;
+};
 
 
 void test(set expected, set rec_points, int error) {
@@ -145,6 +195,8 @@ void test(set expected, set rec_points, int error) {
     }
 }
 
+char Cohersion(char tipo, char Tipo_Operado) {
+    char Tipo_Retorno= en_tabla("float");
 
 int main( int argc,char *argv[]) {
 
