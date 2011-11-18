@@ -1,4 +1,4 @@
-char *newLine;
+char *auxString;
 
 int stringToInt(char t[]) {
     int res= 0, Ti= strlen(t)-1, piso= 0;
@@ -35,17 +35,17 @@ char *stringReverse(char cadena[]) {
 }
 
 char *concatString(char s1[], char s2[]) {
-    newLine= (char *) calloc(1, 50);
-    strcat(newLine, s1);
-    strcat(newLine, " ");
+    auxString= (char *) calloc(1, 50);
+    strcat(auxString, s1);
+    strcat(auxString, " ");
 
-    return strcat(newLine, s2);;
+    return strcat(auxString, s2);;
 }
 
 char *joinString(char s1[], char s2[]) {
-    newLine= (char *) calloc(1, 50);
-    strcat(newLine, s1);
-    return strcat(newLine, s2);
+    auxString= (char *) calloc(1, 50);
+    strcat(auxString, s1);
+    return strcat(auxString, s2);
 }
 
 
