@@ -151,6 +151,17 @@ int esIndice = 0;
 #define F_ESP_DECLR (F_DEF_FUNC|F_DECL_VAR)
 #define F_UNID_TRAD (F_DECL)
 
+
+enum typeExpresion {
+    variables,
+    unaVariable,
+    Constant,
+    vars_consts,
+    funcion,
+    Const_iToStr
+};
+
+
 extern FILE *yyin;
 extern int despl;
 
@@ -173,15 +184,6 @@ void scanner() {
 
 //***************************funcionES DEL SET************************************
 
-enum typeExpresion {
-    variables,
-    unaVariable,
-    Constant,
-    vars_consts,
-    funcion,
-    Const_iToStr
-};
-
 
 struct Tipo {
     enum    typeExpresion typeExpresionresion;
@@ -194,6 +196,7 @@ struct Tipo {
 };
 
 
+//*******************************************************************************
 void test(set expected, set rec_points, int error) {
     if (sbol->codigo & expected) {
         return;
@@ -204,6 +207,389 @@ void test(set expected, set rec_points, int error) {
         scanner();
     }
 }
+
+int toInt(char t[]) {
+    int res= 0, Ti= strlen(t)-1, piso= 0;
+
+    if (t[0]== '-') {
+        piso= 1;
+    }
+
+    for (; Ti>=piso; Ti--) {
+        res+= (t[Ti]-48)*elev(10,strlen(t)-(Ti+1));
+    }
+
+    return (t[0]== '-')? -res : res;
+}
+
+int elev(int x, int y) {
+    int Rstado=1;
+    for (; y>0; y--) {
+        Rstado *= x;
+    }
+    return Rstado;
+}
+
+char *deReversa(char cadena[]) {
+    int i;
+    char temp;
+
+    for (i= 0; i < strlen(cadena)/2; i++) {
+        temp= cadena[i];
+        cadena[i]= cadena[strlen(cadena) -1 - i];
+        cadena[strlen(cadena) -1 - i]= temp;
+    }
+    return cadena;
+}
+
+char *concatString(char s1[], char s2[]) {
+    newLine= (char *) calloc(1, 50);
+    strcat(newLine, s1);
+    strcat(newLine, " ");
+
+    return strcat(newLine, s2);;
+}
+
+char *unionST(char s1[], char s2[]) {
+    newLine= (char *) calloc(1, 50);
+    strcat(newLine, s1);
+    return strcat(newLine, s2);
+}
+
+//**********************************************************
+char *strmplN(char *s1) {
+    int i,j;
+
+    for (i= 0; s1[i]!= 0; i++)
+        if (s1[i] == 92 && s1[i+1] == 'n') {
+            s1[i++]= '\n';
+            for (j= i; s1[j] && s1[j+1]; j++) {
+                s1[j]=s1[j+1];
+            }
+            s1[j]= 0;
+        }
+
+    return s1;
+}
+
+char *strmplT(char *s1) {
+    int i,j;
+
+    for (i= 0; s1[i]!= 0; i++)
+        if (s1[i] == 92 && s1[i+1] == 't') {
+            s1[i++]= '\t';
+            for (j= i; s1[j] && s1[j+1]; j++) {
+                s1[j]=s1[j+1];
+            }
+            s1[j]= 0;
+        }
+
+    return s1;
+}
+//**********************************************************
+
+
+char *iToStr(int num) {
+    char *salida= (char *)calloc (1, TAM_LEXEMA);
+    int i=0;
+    if (num >= 0) {
+        if (num == 0) {
+            salida[0]= '0';
+            i= 1;
+        }
+        for (; num>0; i++) {
+            salida[i]=num%10+48;
+            num/=10;
+        }
+        salida[i]= 0;
+        return deReversa(salida);
+    } else {
+        return unionST("-",iToStr(-num));
+    }
+}
+
+void appendMAC(int INST, char linea[]) {
+    //printf("INSTI string:  %s\n", iToStr(INST));
+    //printf("INSTI:  %d\n", INST);
+    codigo[newLineMAC]= concatString(iToStr(INST),linea);
+    //codigo[newLineMAC]= concatString(linea,iToStr(INST));
+    codigoMostrar[newLineMAC++]= concatString(getStringINST(INST),linea);
+}
+
+void appendKMAC(int INST, char linea[], int kLinea) {
+    int i;
+
+    for (i= newLineMAC-1; i >= kLinea; i--) {
+        codigo[i+1]= codigo[i];
+        codigoMostrar[i+1]= codigoMostrar[i];
+    }
+    codigo[kLinea]= concatString(iToStr(INST),linea);
+    codigoMostrar[kLinea]= concatString(getStringINST(INST),linea);
+
+    newLineMAC++;
+}
+
+void appendParam(tipo_inf_res *info_param) {
+    tipo_inf_res *cur;
+
+    cur= ts[en_tabla_funcion].ets->desc.part_var.sub.ptr_inf_res;
+
+    if (cur == NULL) {
+        ts[en_tabla_funcion].ets->desc.part_var.sub.ptr_inf_res= info_param;
+    } else {
+        while (cur->ptr_sig != NULL) {
+            cur= cur->ptr_sig;
+        }
+
+        cur->ptr_sig= info_param;
+    }
+
+}
+tipo_inf_res getParam(int k) {
+    int i;
+    tipo_inf_res *cur, salida;
+
+    cur= ts[en_tabla_funcion_Llama].ets->desc.part_var.sub.ptr_inf_res;
+
+    for (i= 1; i <= k && cur != NULL; i++) {
+        salida= *cur;
+        cur= cur->ptr_sig;
+    }
+    return salida;
+}
+
+void chequeoParam(struct Tipo parametroReal, int numParametro) {
+    tipo_inf_res parametroFormal;
+
+    //  printf("numero de parametro..........       %d\n",numParametro);
+
+    if (numParametro <= ts[en_tabla_funcion_Llama].ets->desc.part_var.sub.cant_par) {
+
+        parametroFormal = getParam(numParametro);
+
+        // printf("NUMERO PARAMETRO(%d)\n",numParametro);
+        /*
+        printf("%d\n",parametroFormal.ptero_tipo_base);
+        printf("%d\n",parametroFormal.ptero_tipo);
+        printf("%c\n",parametroFormal.tipo_pje);
+        */
+
+        if (parametroFormal.ptero_tipo == en_tabla("TIPOARREGLO")) {
+
+            if (parametroReal.typeExpresionresion != unaVariable) {
+                error_handler(91);
+            } else if (parametroReal.tipo != en_tabla("TIPOARREGLO") || (parametroReal.tipo_base != parametroFormal.ptero_tipo_base)) {
+
+                //printf("\n\n\nparametro real tipo... %d\n",parametroReal.tipo);
+                //printf("posicion del tipo arreglo... %d\n",		en_tabla("TIPOARREGLO"));
+
+                //printf("numero de parametro... %d\n\n\n\n\n",numParametro);
+                //printf("parametro real tipo base... %d\n",parametroReal.tipo_base);
+                //printf("parametro formal tipo base... %d\n",parametroFormal.ptero_tipo_base);
+
+                //printf("arribaaaaaaaaaaaaa %d\n\n\n\n\n",numParametro);
+                error_handler(90);
+            }
+        } else {
+
+            if (parametroReal.tipo == en_tabla("TIPOARREGLO")) {
+                error_handler(90);
+            } else if (parametroFormal.tipo_pje == 'r' && parametroReal.typeExpresionresion != unaVariable) {
+                error_handler(92);
+            }
+
+            if (parametroFormal.ptero_tipo == en_tabla("float") && (parametroReal.tipo == en_tabla("float") || parametroReal.tipo == en_tabla("char") || 				parametroReal.tipo == en_tabla("int"))) {
+                return;
+            } else //error_handler(90);
+
+                if (parametroFormal.ptero_tipo == en_tabla("int") && (parametroReal.tipo == en_tabla("char") || parametroReal.tipo == en_tabla("int"))) {
+                    return;
+                } else //error_handler(90);
+                    if (parametroFormal.ptero_tipo == en_tabla("char") && parametroReal.tipo == en_tabla("char") ) {
+                        return;
+                    } else {
+                        error_handler(90);
+                    }
+        }
+
+
+    }
+}
+
+float charToFloat(char num[]) {
+
+    char part_ent[strlen(num)+1], part_dec[strlen(num)+1];
+    int punto= 0;
+    float res= 0;
+    int i, decimales, piso= 0;
+
+
+    if (num[0]== '-') {
+        piso= 1;    //Si es negativo
+    }
+
+    part_ent[0]= part_dec[0]= '0';
+    part_ent[1]= part_dec[1]= 0;
+
+    for (i= piso; i <= strlen(num); i++) {
+        if (num[i] == '.') {
+            punto= 1;
+            part_ent[i-piso]= 0;
+        } else if (!punto) {
+            part_ent[i-piso]= num[i];
+        } else {
+            part_dec[i-piso - (strlen(part_ent)+1)]= num[i];
+        }
+    }
+    decimales= strlen(part_dec);
+    res= (toInt(strcat(part_ent, part_dec))+.0)/elev(10, decimales);
+
+    return (num[0]== '-')? -res : res;
+}
+void clearLMAC() {
+    codigo[newLineMAC-1]= NULL;
+    codigoMostrar[--newLineMAC]= NULL;
+}
+
+void clearKLMAC(int kLinea) {
+    int i;
+
+    codigo[kLinea]= NULL;
+    codigoMostrar[kLinea]= NULL;
+
+    for (i= kLinea; i < newLineMAC-1; i++) {
+        codigo[i]= codigo[i+1];
+        codigoMostrar[i]= codigoMostrar[i+1];
+    }
+    newLineMAC--;
+}
+
+void verInstrucciones() {
+    int i;
+
+    printf("\n\n MAC:\n\n\n");
+
+    for (i= 0; i < newLineMAC; i++) {
+        //printf("CODIGO %d: %s\n", i, codigo[i]);
+        printf("Linea %d: %s\n", i+1, codigoMostrar[i]);
+    }
+
+
+    printf("\n******************\n");
+}
+
+/*
+void generarSalida(){
+
+printf("ffffffffffffffffff");
+FILE *PObj;
+
+
+if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL){
+int i;
+
+for (i= 0; i < dameCS(); i++)
+	fprintf(PObj, "%c\n", dameC(i));
+
+//fprintf(PObj, "$ ");
+
+for (i= 0; i < newLineMAC; i++)
+	fprintf(PObj, "%s\n", codigoMostrar[i]);
+
+for (i= 0; i < newLineMAC; i++)
+	printf(dameC(i));
+
+	}
+fclose(PObj);
+}
+*/
+
+
+
+
+void generarSalida() {
+    FILE *PObj;
+    char arreglo[500];
+    int j;
+    int t;
+    int index,index2;
+    char aux;
+    char arreglo1[30];
+    char arreglo2[30];
+    int banderasa = 0;
+    if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
+        int i;
+        //printf("dameCS:_________________ %c\n", dameCS());
+        fprintf(PObj, "$ ");
+        for (i= 0; i < newLineMAC; i++) {
+            //index2=0;
+            //strcpy(arreglo1,codigo[i]);
+            //printf("arreglo: %s\n", arreglo1);
+            /*for(index = 0; arreglo1[index]!='\0'; index++){
+            	if(arreglo1[index]!= '_'){
+            		arreglo2[index2++] = arreglo1[index];
+            		banderasa=1;
+
+            	}else{
+            		banderasa=0;
+                                    printf("arreglo2: %s\n", arreglo2);
+                                    arreglo2[index2]='\0';
+            		fprintf(PObj, "%f\n", charToFloat(arreglo2));
+                                    index2=0; arreglo2[0]='\0';
+
+            	}
+
+            }*/
+            //printf("arreglo2: %s\n", codigo[i]);
+            fprintf(PObj, "%s\n", codigo[i]);
+        }
+
+        fprintf(PObj, "$ ");
+
+
+        //for(t=0;t<150;t++) printf("arreglo");
+
+        for (i= 0,j=0; i < dameCS(); i++) {
+            //for (i= 0,j=0; i < dameCS()-1; i++){
+            //aux = dameC(i);
+            //printf("dameC metodo:               %c\n", dameC(i));
+            //printf("aux:               %c\n", aux);
+            //arreglo[j] = aux;
+            fprintf(PObj, "%d\n", dameC(i));
+            //fwrite(&aux, sizeof(char), 1,PObj);
+        }
+        fprintf(PObj, "$ ");
+        //for(t=0;t<150;t++) printf("arreglo %c\n", arreglo[t]);
+        //printf("arreglo %s\n", *arreglo);
+
+        //aux =   "$";
+        //fwrite(&aux, sizeof(char), 1,PObj);
+    }
+    fclose(PObj);
+}
+
+int tam_Instr(char *Inst) {
+    int i, tam= 0;
+    for (i= 0; i < strlen(Inst); i++)
+        if (Inst[i] == ' ' && Inst[i+1] != 0) {
+            tam++;
+        }
+    return tam + 1;
+}
+
+int calcularDespl(int LineaO, int LineaSalto) {
+    int i, despl= 0;
+    if (LineaO <= LineaSalto) {
+        for (i= LineaO ; i < LineaSalto; i++) {
+            despl+= tam_Instr(codigo[i]);
+        }
+        return despl;
+    } else {
+        return -(calcularDespl(LineaSalto, LineaO)+ 2 + 3);
+    }
+}
+
+
 
 char Cohersion(char tipo, char Tipo_Operado) {
     char Tipo_Retorno= en_tabla("float");
