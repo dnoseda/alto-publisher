@@ -81,7 +81,7 @@ char *strmplT(char *s1) {
 
 
 
-char *iToStr(int num) {
+char *intToString(int num) {
     char *salida= (char *)calloc (1, TAM_LEXEMA);
     int i=0;
     if (num >= 0) {
@@ -96,6 +96,6 @@ char *iToStr(int num) {
         salida[i]= 0;
         return stringReverse(salida);
     } else {
-        return joinString("-",iToStr(-num));
+        return joinString("-",intToString(-num));
     }
 }

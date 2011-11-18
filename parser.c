@@ -199,7 +199,7 @@ struct Tipo {
 void appendMAC(int INST, char linea[]) {
 
 
-    codigo[newLineMAC]= concatString(iToStr(INST),linea);
+    codigo[newLineMAC]= concatString(intToString(INST),linea);
 
     codigoMostrar[newLineMAC++]= concatString(getStringINST(INST),linea);
 }
@@ -211,7 +211,7 @@ void appendKMAC(int INST, char linea[], int kLinea) {
         codigo[i+1]= codigo[i];
         codigoMostrar[i+1]= codigoMostrar[i];
     }
-    codigo[kLinea]= concatString(iToStr(INST),linea);
+    codigo[kLinea]= concatString(intToString(INST),linea);
     codigoMostrar[kLinea]= concatString(getStringINST(INST),linea);
 
     newLineMAC++;
@@ -1038,19 +1038,19 @@ void declarador_init(set folset) {
     inf_id->desc.despl= despl;
     despl+= inf_id->cant_byte;
 
-    appendMAC(ALOC, iToStr(inf_id->cant_byte));
+    appendMAC(ALOC, intToString(inf_id->cant_byte));
 
     if (TipoC.tipo != NIL) {
 
         t= getTipo(inf_id->ptr_tipo);
 
         if (t == 2) {
-            appendMAC(CRCT, concatString(iToStr(t), TipoC.sValor));
+            appendMAC(CRCT, concatString(intToString(t), TipoC.sValor));
         } else {
-            appendMAC(CRCT, concatString(iToStr(t), iToStr((int)TipoC.valor)));
+            appendMAC(CRCT, concatString(intToString(t), intToString((int)TipoC.valor)));
         }
-        appendMAC(ALM, concatString(concatString(iToStr(inf_id->desc.nivel),  iToStr(inf_id->desc.despl)), iToStr(t)));
-        appendMAC(POP, iToStr(t));
+        appendMAC(ALM, concatString(concatString(intToString(inf_id->desc.nivel),  intToString(inf_id->desc.despl)), intToString(t)));
+        appendMAC(POP, intToString(t));
     }
 
     insertarTS();
@@ -1091,7 +1091,7 @@ void proposicion_compuesta(set folset) {
         isdeffuncion= 0;
     }
 
-    appendMAC(ENBL, iToStr(get_nivel()));
+    appendMAC(ENBL, intToString(get_nivel()));
 
 
 
@@ -1128,7 +1128,7 @@ void proposicion_compuesta(set folset) {
         error_handler(24);
     }
 
-    appendMAC(FINB, iToStr(get_nivel()));
+    appendMAC(FINB, intToString(get_nivel()));
 
     pop_nivel();
 
@@ -1300,13 +1300,13 @@ void proposicion_seleccion(set folset) {
 
         d1= calcularDespl(lineaBIFS, newLineMAC);
 
-        appendKMAC(BIFS, iToStr(d1), lineaBIFS);
+        appendKMAC(BIFS, intToString(d1), lineaBIFS);
 
         d1= calcularDespl(lineaBIFF, lineaBIFS + 1);
 
     }
 
-    appendKMAC(BIFF, concatString(iToStr(getTipo(TipoEx.tipo)), iToStr(d1)), lineaBIFF);
+    appendKMAC(BIFF, concatString(intToString(getTipo(TipoEx.tipo)), intToString(d1)), lineaBIFF);
 }
 
 
@@ -1332,9 +1332,9 @@ void proposicion_e_s(set folset) {
 
         t= getTipo(TipoExp.tipo);
 
-        appendMAC(LEER, iToStr(getTipo(TipoExp.tipo)));
-        appendMAC(ALM, concatString(concatString(iToStr(TipoExp.nivel),  iToStr(TipoExp.despl)), iToStr(t)));
-        appendMAC(POP, iToStr(t));
+        appendMAC(LEER, intToString(getTipo(TipoExp.tipo)));
+        appendMAC(ALM, concatString(concatString(intToString(TipoExp.nivel),  intToString(TipoExp.despl)), intToString(t)));
+        appendMAC(POP, intToString(t));
 
 
 
@@ -1351,9 +1351,9 @@ void proposicion_e_s(set folset) {
 
             t= getTipo(TipoExp.tipo);
 
-            appendMAC(LEER, iToStr(getTipo(TipoExp.tipo)));
-            appendMAC(ALM, concatString(concatString(iToStr(TipoExp.nivel),  iToStr(TipoExp.despl)), iToStr(t)));
-            appendMAC(POP, iToStr(t));
+            appendMAC(LEER, intToString(getTipo(TipoExp.tipo)));
+            appendMAC(ALM, concatString(concatString(intToString(TipoExp.nivel),  intToString(TipoExp.despl)), intToString(t)));
+            appendMAC(POP, intToString(t));
         }
 
         if (sbol->codigo == CPYCOMA) {
@@ -1376,7 +1376,7 @@ void proposicion_e_s(set folset) {
         if (TipoExp.typeExpresionresion == Const_iToStr) {
             appendMAC(IMPCS,"");
         } else {
-            appendMAC(IMPR, iToStr(getTipo(TipoExp.tipo)));
+            appendMAC(IMPR, intToString(getTipo(TipoExp.tipo)));
         }
 
         while (sbol->codigo == CSHL || (sbol->codigo & F_EXPR)) {
@@ -1389,7 +1389,7 @@ void proposicion_e_s(set folset) {
             if (TipoExp.typeExpresionresion == Const_iToStr) {
                 appendMAC(IMPCS, "");
             } else {
-                appendMAC(IMPR, iToStr(getTipo(TipoExp.tipo)));
+                appendMAC(IMPR, intToString(getTipo(TipoExp.tipo)));
             }
 
         }
@@ -1484,16 +1484,16 @@ struct Tipo expresion(set folset) {
             t= getTipo(TipoE.tipo);
 
             if (t != tvar) {
-                appendMAC(CAST,concatString( iToStr(t), iToStr(tvar)));
+                appendMAC(CAST,concatString( intToString(t), intToString(tvar)));
             }
 
-            appendMAC(ALM, concatString(concatString(iToStr(Tipo_Retorno.nivel),  iToStr(Tipo_Retorno.despl)), iToStr(tvar)));
+            appendMAC(ALM, concatString(concatString(intToString(Tipo_Retorno.nivel),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
 
-            appendMAC(POP, iToStr(tvar));
-            appendMAC(CRVL, concatString(concatString(iToStr(Tipo_Retorno.nivel),  iToStr(Tipo_Retorno.despl)), iToStr(tvar)));
+            appendMAC(POP, intToString(tvar));
+            appendMAC(CRVL, concatString(concatString(intToString(Tipo_Retorno.nivel),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
 
             if (sentencia && control == 0) {
-                appendMAC(POP, iToStr(tvar));
+                appendMAC(POP, intToString(tvar));
             }
 
             break;
@@ -1513,32 +1513,32 @@ struct Tipo expresion(set folset) {
 
 
             if (tvar < t) {
-                appendMAC(CAST, concatString(iToStr(tvar), iToStr(t)));
+                appendMAC(CAST, concatString(intToString(tvar), intToString(t)));
             } else if (tvar > t) {
-                appendKMAC(CAST, concatString(iToStr(t), iToStr(tvar)), nLineaCast);
+                appendKMAC(CAST, concatString(intToString(t), intToString(tvar)), nLineaCast);
                 t= tvar;
             }
 
             switch(op) {
             case CDISTINTO:
-                appendMAC(CMNI, iToStr(t));
+                appendMAC(CMNI, intToString(t));
                 break;
             case CIGUAL:
-                appendMAC(CMIG, iToStr(t));
+                appendMAC(CMIG, intToString(t));
                 break;
             case CMENOR:
-                appendMAC(CMME, iToStr(t));
+                appendMAC(CMME, intToString(t));
 
                 break;
             case CMEIG:
-                appendMAC(CMEI, iToStr(t));
+                appendMAC(CMEI, intToString(t));
                 break;
             case CMAYOR:
-                appendMAC(CMMA, iToStr(t));
+                appendMAC(CMMA, intToString(t));
 
                 break;
             case CMAIG:
-                appendMAC(CMAI, iToStr(t));
+                appendMAC(CMAI, intToString(t));
             }
             break;
         };
@@ -1574,7 +1574,7 @@ struct Tipo expresion_simple(set folset) {
 
     if (op == CMENOS) {
         Tipo_Retorno.valor = -Tipo_Retorno.valor;
-        appendMAC(INV, iToStr(getTipo(Tipo_Retorno.tipo)));
+        appendMAC(INV, intToString(getTipo(Tipo_Retorno.tipo)));
     }
 
     if (Tipo_Retorno.typeExpresionresion == unaVariable && masMenos) {
@@ -1596,22 +1596,22 @@ struct Tipo expresion_simple(set folset) {
 
 
         if (tvar < t) {
-            appendMAC(CAST, concatString(iToStr(tvar), iToStr(t)));
+            appendMAC(CAST, concatString(intToString(tvar), intToString(t)));
         } else if (tvar > t) {
-            appendKMAC(CAST, concatString(iToStr(t), iToStr(tvar)), nLineaCast);
+            appendKMAC(CAST, concatString(intToString(t), intToString(tvar)), nLineaCast);
             t= tvar;
         }
 
 
         switch(op) {
         case CMAS:
-            appendMAC(SUM, iToStr(t));
+            appendMAC(SUM, intToString(t));
             break;
         case CMENOS:
-            appendMAC(SUB, iToStr(t));
+            appendMAC(SUB, intToString(t));
             break;
         case COR:
-            appendMAC(OR, iToStr(t));
+            appendMAC(OR, intToString(t));
         }
 
 
@@ -1668,21 +1668,21 @@ struct Tipo termino(set folset) {
         tvar= getTipo(TipoF.tipo);
 
         if (tvar < t) {
-            appendMAC(CAST, concatString(iToStr(tvar), iToStr(t)));
+            appendMAC(CAST, concatString(intToString(tvar), intToString(t)));
         } else if (tvar > t) {
-            appendKMAC(CAST, concatString(iToStr(t), iToStr(tvar)), nLineaCast);
+            appendKMAC(CAST, concatString(intToString(t), intToString(tvar)), nLineaCast);
             t= tvar;
         }
 
         switch(op) {
         case CMULT:
-            appendMAC(MUL, iToStr(t));
+            appendMAC(MUL, intToString(t));
             break;
         case CDIV:
-            appendMAC(DIV, iToStr(t));
+            appendMAC(DIV, intToString(t));
             break;
         case CAND:
-            appendMAC(AND, iToStr(t));
+            appendMAC(AND, intToString(t));
         }
 
         Tipo_Retorno.tipo= Cohersion(Tipo_Retorno.tipo, TipoF.tipo);
@@ -1785,9 +1785,9 @@ struct Tipo factor(set folset) {
         Tipo_Retorno= constante(folset);
         t= getTipo(Tipo_Retorno.tipo);
         if (t == 2) {
-            appendMAC(CRCT, concatString(iToStr(t),  Tipo_Retorno.sValor));
+            appendMAC(CRCT, concatString(intToString(t),  Tipo_Retorno.sValor));
         } else {
-            appendMAC(CRCT, concatString(iToStr(t), Tipo_Retorno.sValor));
+            appendMAC(CRCT, concatString(intToString(t), Tipo_Retorno.sValor));
         }
         break;
     case CCONS_STR:
@@ -1795,7 +1795,7 @@ struct Tipo factor(set folset) {
             error_handler(86);
         }
 
-        appendMAC(CRCTS, iToStr(dameCS()));
+        appendMAC(CRCTS, intToString(dameCS()));
         strmplN(sbol->lexema);
         strmplT(sbol->lexema);
 
@@ -1821,7 +1821,7 @@ struct Tipo factor(set folset) {
         Tipo_Retorno= expresion(folset);
         t= getTipo(Tipo_Retorno.tipo);
 
-        appendMAC(NEG, iToStr(t));
+        appendMAC(NEG, intToString(t));
         break;
     default:
         error_handler(31);
@@ -1938,7 +1938,7 @@ struct Tipo variable(set folset) {
 
                 t= getTipo(Tipo_Retorno.tipo);
 
-                appendMAC(CRVL, concatString(concatString(iToStr(ts[en_tabla(lexema)].ets->desc.nivel), iToStr(ts[en_tabla(lexema)].ets->desc.despl)), iToStr(t)));
+                appendMAC(CRVL, concatString(concatString(intToString(ts[en_tabla(lexema)].ets->desc.nivel), intToString(ts[en_tabla(lexema)].ets->desc.despl)), intToString(t)));
 
                 if (Tipo_Retorno.tipo == en_tabla("TIPOARREGLO")) {
                     Tipo_Retorno.tipo_base= ts[en_tabla(lexema)].ets->desc.part_var.arr.ptero_tipo_base;
@@ -2062,7 +2062,7 @@ struct Tipo constante(set folset) {
         break;
     case CCONS_CAR:
         Tipo_Retorno.valor= sbol->lexema[1];
-        strcpy(Tipo_Retorno.sValor, iToStr(Tipo_Retorno.valor));
+        strcpy(Tipo_Retorno.sValor, intToString(Tipo_Retorno.valor));
 
         cantConstantess++;
         scanner();
