@@ -153,12 +153,12 @@ int esIndice = 0;
 
 
 enum ExpresionType {
-    variables,
-    unaVariable,
-    Constant,
-    vars_consts,
-    funcion,
-    Const_iToStr
+    bunchOfVariables,
+    aVariable,
+    constOfExpresionType,
+    constVariable,
+    function,
+    constIntToString
 };
 
 
@@ -259,7 +259,7 @@ void chequeoParam(struct TipoAttr parametroReal, int numParametro) {
 
         if (parametroFormal.ptero_tipo == en_tabla("TIPOARREGLO")) {
 
-            if (parametroReal.typeExpresionresion != unaVariable) {
+            if (parametroReal.typeExpresionresion != aVariable) {
                 error_handler(91);
             } else if (parametroReal.tipo != en_tabla("TIPOARREGLO") || (parametroReal.tipo_base != parametroFormal.ptero_tipo_base)) {
 
@@ -277,7 +277,7 @@ void chequeoParam(struct TipoAttr parametroReal, int numParametro) {
 
             if (parametroReal.tipo == en_tabla("TIPOARREGLO")) {
                 error_handler(90);
-            } else if (parametroFormal.tipo_pje == 'r' && parametroReal.typeExpresionresion != unaVariable) {
+            } else if (parametroFormal.tipo_pje == 'r' && parametroReal.typeExpresionresion != aVariable) {
                 error_handler(92);
             }
 
@@ -1373,7 +1373,7 @@ void proposicion_e_s(set folset) {
 
 
         TipoExp= expresion(folset | CSHL|CPYCOMA | NADA | F_EXPR);
-        if (TipoExp.typeExpresionresion == Const_iToStr) {
+        if (TipoExp.typeExpresionresion == constIntToString) {
             appendMAC(IMPCS,"");
         } else {
             appendMAC(IMPR, intToString(getTipo(TipoExp.tipo)));
@@ -1386,7 +1386,7 @@ void proposicion_e_s(set folset) {
                 scanner();
             }
             TipoExp= expresion(folset | CSHL|CPYCOMA | NADA | F_EXPR);
-            if (TipoExp.typeExpresionresion == Const_iToStr) {
+            if (TipoExp.typeExpresionresion == constIntToString) {
                 appendMAC(IMPCS, "");
             } else {
                 appendMAC(IMPR, intToString(getTipo(TipoExp.tipo)));
@@ -1466,7 +1466,7 @@ struct TipoAttr expresion(set folset) {
 
         case CASIGNAC:
             scanner();
-            if (Tipo_Retorno.typeExpresionresion != unaVariable) {
+            if (Tipo_Retorno.typeExpresionresion != aVariable) {
                 error_handler(84);
             }
 
@@ -1577,8 +1577,8 @@ struct TipoAttr expresion_simple(set folset) {
         appendMAC(INV, intToString(getTipo(Tipo_Retorno.tipo)));
     }
 
-    if (Tipo_Retorno.typeExpresionresion == unaVariable && masMenos) {
-        Tipo_Retorno.typeExpresionresion= variables;
+    if (Tipo_Retorno.typeExpresionresion == aVariable && masMenos) {
+        Tipo_Retorno.typeExpresionresion= bunchOfVariables;
     }
 
     while (sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR || (sbol->codigo & F_TERM)) {
@@ -1616,11 +1616,11 @@ struct TipoAttr expresion_simple(set folset) {
 
 
         Tipo_Retorno.tipo= Cohersion(Tipo_Retorno.tipo, TipoT.tipo);
-        Tipo_Retorno.typeExpresionresion= (Tipo_Retorno.typeExpresionresion == unaVariable ||
+        Tipo_Retorno.typeExpresionresion= (Tipo_Retorno.typeExpresionresion == aVariable ||
                                            (TipoT.typeExpresionresion != Tipo_Retorno.typeExpresionresion))?
-                                          vars_consts : TipoT.typeExpresionresion;
+                                          constVariable : TipoT.typeExpresionresion;
 
-        if (Tipo_Retorno.typeExpresionresion == Constant && (Tipo_Retorno.tipo == en_tabla("int") || Tipo_Retorno.tipo == en_tabla("char"))) {
+        if (Tipo_Retorno.typeExpresionresion == constOfExpresionType && (Tipo_Retorno.tipo == en_tabla("int") || Tipo_Retorno.tipo == en_tabla("char"))) {
             switch(op) {
             case CMAS:
                 Tipo_Retorno.valor+= TipoT.valor;
@@ -1651,8 +1651,8 @@ struct TipoAttr termino(set folset) {
 
 
 
-    if (Tipo_Retorno.typeExpresionresion == variables) {
-        Tipo_Retorno.typeExpresionresion= unaVariable;
+    if (Tipo_Retorno.typeExpresionresion == bunchOfVariables) {
+        Tipo_Retorno.typeExpresionresion= aVariable;
     }
 
     while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND)|| (sbol->codigo & F_FACTOR)) {
@@ -1686,9 +1686,9 @@ struct TipoAttr termino(set folset) {
         }
 
         Tipo_Retorno.tipo= Cohersion(Tipo_Retorno.tipo, TipoF.tipo);
-        Tipo_Retorno.typeExpresionresion= (TipoF.typeExpresionresion != Tipo_Retorno.typeExpresionresion)? vars_consts : TipoF.typeExpresionresion;
+        Tipo_Retorno.typeExpresionresion= (TipoF.typeExpresionresion != Tipo_Retorno.typeExpresionresion)? constVariable : TipoF.typeExpresionresion;
 
-        if (Tipo_Retorno.typeExpresionresion == Constant && (Tipo_Retorno.tipo == en_tabla("int") || Tipo_Retorno.tipo == en_tabla("char"))) {
+        if (Tipo_Retorno.typeExpresionresion == constOfExpresionType && (Tipo_Retorno.tipo == en_tabla("int") || Tipo_Retorno.tipo == en_tabla("char"))) {
             switch(op) {
             case CMULT:
                 Tipo_Retorno.valor*= TipoF.valor;
@@ -1801,7 +1801,7 @@ struct TipoAttr factor(set folset) {
 
         pushCS(sbol->lexema);
 
-        Tipo_Retorno.typeExpresionresion= Const_iToStr;
+        Tipo_Retorno.typeExpresionresion= constIntToString;
         strcpy(Tipo_Retorno.sValor, sbol->lexema);
         scanner();
         break;
@@ -1907,7 +1907,7 @@ struct TipoAttr variable(set folset) {
                 scanner();
                 TipoE= expresion(folset |  CCOR_CIE |  NADA);
 
-                if (TipoE.typeExpresionresion == Constant) {
+                if (TipoE.typeExpresionresion == constOfExpresionType) {
                     if (TipoE.tipo == en_tabla("float") || TipoE.valor < 0) {
                         error_handler(85);
                     } else if (TipoE.valor >= ts[en_tabla(lexema)].ets->desc.part_var.arr.cant_elem) {
@@ -1946,7 +1946,7 @@ struct TipoAttr variable(set folset) {
             }
         }
 
-        Tipo_Retorno.typeExpresionresion= variables;
+        Tipo_Retorno.typeExpresionresion= bunchOfVariables;
         Tipo_Retorno.despl= ts[en_tabla(lexema)].ets->desc.despl;
         Tipo_Retorno.nivel= ts[en_tabla(lexema)].ets->desc.nivel;
     } else {
@@ -2004,7 +2004,7 @@ struct TipoAttr llamada_funcion(set folset) {
     test(folset, NADA | NADA, 72);
 
     Tipo_Retorno.tipo= Tipo_Ident(lexema);
-    Tipo_Retorno.typeExpresionresion= funcion;
+    Tipo_Retorno.typeExpresionresion= function;
 
     return Tipo_Retorno;
 }
@@ -2038,7 +2038,7 @@ void lista_expresiones(set folset) {
 struct TipoAttr constante(set folset) {
     struct TipoAttr Tipo_Retorno;
 
-    Tipo_Retorno.typeExpresionresion= Constant;
+    Tipo_Retorno.typeExpresionresion= constOfExpresionType;
 
     test(F_CONST,folset,73);
     switch (sbol->codigo) {
