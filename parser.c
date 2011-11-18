@@ -82,7 +82,6 @@ char *archivo;
 
 char *codigo[15000];
 char *codigoMostrar[15000];
-char *newLine;
 int  newLineMAC= 0;
 
 int constEntera= -1;
