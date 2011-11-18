@@ -1178,7 +1178,7 @@ void declarador_init(set folset) {
     inf_id->cant_byte = ts[inf_id->ptr_tipo].ets->cant_byte;
 
 
-    if (in(sbol->codigo,F_CONST)) {
+    if ((sbol->codigo & F_CONST)) {
         error_handler(79);
         constante(folset);
     } else
@@ -1288,8 +1288,8 @@ void lista_inicializadores(set folset) {  //OOOOOOOOOOOOOKKKKKKKKKKKKKKKKK
     F_CONST
     constante(F_CONST | folset | CCOMA | NADA);
     llamolista_ini= 0;
-    while (sbol->codigo == CCOMA||in(sbol->codigo,F_CONST)) {
-        if(in(sbol->codigo,F_CONST)) {
+    while (sbol->codigo == CCOMA||(sbol->codigo & F_CONST)) {
+        if((sbol->codigo & F_CONST)) {
             error_handler(75);
         } else {
             scanner();
@@ -1572,7 +1572,7 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
 
 
 
-        while (sbol->codigo == CSHR || in(sbol->codigo,F_VAR)) {
+        while (sbol->codigo == CSHR || (sbol->codigo & F_VAR)) {
             if (in(sbol->codigo, F_VAR)) {
                 error_handler(76);
             } else {
@@ -1613,8 +1613,8 @@ void proposicion_e_s(set folset) { // // noooooooooooooooooooooooooooooooooooooo
             appendMAC(IMPR, iToStr(getTipo(TipoExp.tipo)));
         }
 
-        while (sbol->codigo == CSHL || in(sbol->codigo,F_EXPR)) {
-            if(in(sbol->codigo,F_EXPR)) {
+        while (sbol->codigo == CSHL || (sbol->codigo & F_EXPR)) {
+            if((sbol->codigo & F_EXPR)) {
                 error_handler(77);
             } else {
                 scanner();
@@ -1889,9 +1889,9 @@ struct Tipo termino(set folset) {  // OKKKKKKKKKKKKKK
         Tipo_Retorno.typeExpresionresion= unaVariable;
     }
 
-    while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND)|| in(sbol->codigo,F_FACTOR)) {
+    while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND)|| (sbol->codigo & F_FACTOR)) {
         op= sbol->codigo;
-        if(in(sbol->codigo,F_FACTOR)) {
+        if((sbol->codigo & F_FACTOR)) {
             error_handler(78);
         } else {
             scanner();
