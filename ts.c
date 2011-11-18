@@ -104,7 +104,8 @@ void inic_tablas() {
     strcpy(inf_id->nbre, "int");
     inf_id->clase = CLASTYPE;
     inf_id->ptr_tipo = NIL;
-    inf_id->cant_byte = sizeof(int)-2;
+    inf_id->cant_byte = sizeof(int);
+    //inf_id->cant_byte = sizeof(int);
     insertarTS();
 
     // inicializo la entrada para el tipo base FLOAT
@@ -170,7 +171,8 @@ void pop_nivel () {
 };
 
 int get_nivel() {
-    return topeTB + 2;
+    //return topeTB + 2;
+    return topeTB + 1;
 }
 
 
