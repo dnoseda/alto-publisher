@@ -42,7 +42,7 @@ char *concatString(char s1[], char s2[]) {
     return strcat(newLine, s2);;
 }
 
-char *unionST(char s1[], char s2[]) {
+char *joinString(char s1[], char s2[]) {
     newLine= (char *) calloc(1, 50);
     strcat(newLine, s1);
     return strcat(newLine, s2);
@@ -96,6 +96,6 @@ char *iToStr(int num) {
         salida[i]= 0;
         return stringReverse(salida);
     } else {
-        return unionST("-",iToStr(-num));
+        return joinString("-",iToStr(-num));
     }
 }
