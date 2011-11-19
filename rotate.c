@@ -6,9 +6,8 @@
 
 int main(int argc, char *argv[]) {
 
-
-    printf(" hola y mundo es '%s'\n",stringJoin("hola ", "mundo!!!"));
-
+    slurp("lote/p4e.o");
+/** /
     if(argc != 3){
         printf("Expected:\n\t<program> [c|d] file\n");
         exit(1);
@@ -43,6 +42,7 @@ int main(int argc, char *argv[]) {
     }else{
         printf("only get c or d as option\n");
     }
+/**/
 }
 
 

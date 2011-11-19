@@ -46,7 +46,6 @@ void copyF(char *from, char *to){
     FILE *in;
     FILE *out;
     out=fopen(to,"w");
-
     in=fopen(from,"r");
 
     char f;
@@ -68,7 +67,6 @@ void encodeRotFile(char *from, char *to){
 
     char f;
     while(fscanf(in,"%c",&f) != EOF){
-        printf("obtengo '%c' y paso por '%c'\n",f,encChar(f));
         fprintf(out,"%c",encChar(f));
     }
 
@@ -87,7 +85,6 @@ void decodeRotFile(char *from, char *to){
 
     char f;
     while(fscanf(in,"%c",&f) != EOF){
-        printf("obtengo '%c' y paso por '%c'\n",f,decChar(f));
         fprintf(out,"%c",decChar(f));
     }
 

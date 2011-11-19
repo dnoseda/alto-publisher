@@ -340,7 +340,7 @@ void generarSalida() {
     }
     fclose(PObj);
 
-    slurp(filename);
+    //slurp(filename);
     /**/
 }
 
@@ -573,7 +573,7 @@ void ejecucion() {
     char cur[500];    
 
     char *filename = strcat(archivo, ".o");
-    unslurp(filename);
+    //unslurp(filename);
     if ((PObj= fopen(filename, "r")) != NULL) {
 
 
