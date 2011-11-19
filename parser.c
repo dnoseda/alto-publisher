@@ -237,7 +237,7 @@ tipo_inf_res getParam(int k) {
     return salida;
 }
 
-void chequeoParam(struct TipoAttr parametroReal, int numParametro) {
+void paramChecking(struct TipoAttr parametroReal, int numParametro) {
     tipo_inf_res parametroFormal;
 
 
@@ -1972,7 +1972,7 @@ void lista_expresiones(set folset) {
     cantParametros++;
 
 
-    chequeoParam(TipoE, cantParametros);
+    paramChecking(TipoE, cantParametros);
 
     while (sbol->codigo == CCOMA || (sbol->codigo & F_EXPR)) {
         if ((sbol->codigo & F_EXPR)) {
@@ -1984,7 +1984,7 @@ void lista_expresiones(set folset) {
         TipoE= expresion(folset | CCOMA | NADA | F_EXPR);
         cantParametros++;
 
-        chequeoParam(TipoE, cantParametros);
+        paramChecking(TipoE, cantParametros);
     }
 }
 
