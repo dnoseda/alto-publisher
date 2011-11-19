@@ -297,6 +297,7 @@ void paramChecking(struct TipoAttr current, int paramQuantity) {
 
 void clearLMAC() {
     outputCode[newLineMAC-1]= NULL;
+    strncpy(objectOut.code[newLineMAC-1],"",MAX_LARGE_INSTR);
     outputCodeToShow[--newLineMAC]= NULL;
 }
 
@@ -304,10 +305,12 @@ void clearKLMAC(int kLinea) {
     int i;
 
     outputCode[kLinea]= NULL;
+    strncpy(objectOut.code[kLinea],"",MAX_LARGE_INSTR);
     outputCodeToShow[kLinea]= NULL;
 
     for (i= kLinea; i < newLineMAC-1; i++) {
         outputCode[i]= outputCode[i+1];
+        strncpy(objectOut.code[i], objectOut.code[i],MAX_LARGE_INSTR);
         outputCodeToShow[i]= outputCodeToShow[i+1];
     }
     newLineMAC--;
