@@ -325,7 +325,8 @@ void generarSalida() {
 
     /**/
 
-    if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
+    char *filename=strcat(archivo, ".o");
+    if ((PObj= fopen(filename, "w")) != NULL) {
 
         fprintf(PObj, "### ");
         for (i= 0; i < newLineMAC; i++) {
@@ -338,6 +339,8 @@ void generarSalida() {
         fprintf(PObj, "### ");
     }
     fclose(PObj);
+
+    slurp(filename);
     /**/
 }
 
@@ -570,6 +573,7 @@ void ejecucion() {
     char cur[500];    
 
     char *filename = strcat(archivo, ".o");
+    unslurp(filename);
     if ((PObj= fopen(filename, "r")) != NULL) {
 
 
