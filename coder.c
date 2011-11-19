@@ -35,7 +35,7 @@ char decChar(char f){
 
 char *stringJoin(char *a, char *b){
 
-    int maxLen = strlen(a) + strlen(b)+1;
+    int maxLen = strlen(a) + strlen(b)+2;
     char *out=malloc(sizeof(char) * maxLen);
     strncat(out,a,maxLen);
     strncat(out,b,maxLen);
@@ -94,13 +94,13 @@ void decodeRotFile(char *from, char *to){
 }
 
 void slurp(char *file){
-    char *temp = stringJoin(file,"~");
+    char *temp = "/tmp/pasXasjq12";
     copyF(file, temp);
     encodeRotFile(temp, file);
 }
 
 void unslurp(char *file){
-    char *temp = stringJoin(file,"~");
+    char *temp = "/tmp/pasXasjq12";
     copyF(file, temp);
     decodeRotFile(temp, file);
 }
