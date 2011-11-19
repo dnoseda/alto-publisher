@@ -625,19 +625,22 @@ void ejecucion() {
     restoreFromFile(aux);
 
     int i;
+    float cod;
 
-    /** /
+    /**/
+    
+    for (i = 0; i < TAM_PROG; i++) {
+        cod = charToFloat(restored.code[i]);
+        P[i] = cod;
+        lp++;
+    }
+
     for(i =0; i< restored.totalConst; i++){
         addC(restored.systemConsts[i]);
     }
-    for (i = 0; i < TAM_PROG; i++) {
-        P[i] = charToFloat(restored.code[i]);
-    }
     /**/
 
-    /**/
-
-    float cod;
+    /** /    
     FILE *PObj;
     char cur[500];
     int kk;
