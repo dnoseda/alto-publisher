@@ -343,15 +343,15 @@ void generarSalida() {
 
     if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
 
-        fprintf(PObj, "$ ");
+        fprintf(PObj, "### ");
         for (i= 0; i < newLineMAC; i++) {
             fprintf(PObj, "%s\n", outputCode[i]);
         }
-        fprintf(PObj, "$ ");
+        fprintf(PObj, "### ");
         for (i= 0,j=0; i < dameCS(); i++) {
             fprintf(PObj, "%d\n", dameC(i));
         }
-        fprintf(PObj, "$ ");
+        fprintf(PObj, "### ");
     }
     fclose(PObj);
     /**/
@@ -609,7 +609,7 @@ void ejecucion() {
         fscanf(PObj, "%s", &cur);
         fscanf(PObj, "%s", &cur);
 
-        for (i= 0; strcmp(cur, "$"); i++) {
+        for (i= 0; strcmp(cur, "###"); i++) {
             cod= charToFloat(cur);
             P[i] = cod;
             lp++;
@@ -618,7 +618,7 @@ void ejecucion() {
 
         fscanf(PObj, "%s", &cur);
 
-        for (i= 0; strcmp(cur, "$"); i++) {
+        for (i= 0; strcmp(cur, "###"); i++) {
             addC(stringToInt(cur));
             fscanf(PObj, "%s", &cur);
         }
