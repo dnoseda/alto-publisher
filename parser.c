@@ -83,6 +83,7 @@ char *archivo;
 #define MAX_INSTR 15000
 
 char *outputCode[MAX_INSTR];
+
 char *outputCodeToShow[MAX_INSTR];
 
 int  newLineMAC= 0;
@@ -335,33 +336,15 @@ void generarSalida() {
     int banderasa = 0;
     if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
         int i;
-
         fprintf(PObj, "$ ");
         for (i= 0; i < newLineMAC; i++) {
-
             fprintf(PObj, "%s\n", outputCode[i]);
         }
-
         fprintf(PObj, "$ ");
-
-
-
-
         for (i= 0,j=0; i < dameCS(); i++) {
-
-
-
-
-
             fprintf(PObj, "%d\n", dameC(i));
-
         }
         fprintf(PObj, "$ ");
-
-
-
-
-
     }
     fclose(PObj);
 }
