@@ -13,7 +13,7 @@
 #include "utilities.h"
 
 #include "soporte_ejecucion.h"
-#include "read-write.c"
+#include "coder.c"
 
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
@@ -191,7 +191,6 @@ void appendMAC(int INST, char linea[]) {
 
 
     outputCode[newLineMAC]= stringConcat(intToString(INST),linea);
-    objectOut.program[newLineMAC] = charToFloat(outputCode[newLineMAC]);
 
     printf("\t\t\t\t\t%s\n",stringConcat(getStringINST(INST),linea));
 
@@ -203,11 +202,9 @@ void appendKMAC(int INST, char linea[], int kLinea) {
 
     for (i= newLineMAC-1; i >= kLinea; i--) {
         outputCode[i+1] = outputCode[i];
-        objectOut.program[i+1] = objectOut.program[i];
         outputCodeToShow[i+1] = outputCodeToShow[i];
     }
     outputCode[kLinea]= stringConcat(intToString(INST),linea);
-    objectOut.program[kLinea]= charToFloat(outputCode[kLinea]);
     outputCodeToShow[kLinea]= stringConcat(getStringINST(INST),linea);
 
     newLineMAC++;
@@ -288,7 +285,6 @@ void paramChecking(struct TipoAttr current, int paramQuantity) {
 
 void clearLMAC() {
     outputCode[newLineMAC-1]= NULL;
-    objectOut.program[newLineMAC-1] = -1;
     outputCodeToShow[--newLineMAC]= NULL;
 }
 
@@ -296,12 +292,10 @@ void clearKLMAC(int kLinea) {
     int i;
 
     outputCode[kLinea]= NULL;
-    objectOut.program[kLinea] = -1;
     outputCodeToShow[kLinea]= NULL;
 
     for (i= kLinea; i < newLineMAC-1; i++) {
         outputCode[i]= outputCode[i+1];
-        objectOut.program[i] = objectOut.program[i+1];
         outputCodeToShow[i]= outputCodeToShow[i+1];
     }
     newLineMAC--;
@@ -327,11 +321,7 @@ void generarSalida() {
         
     int i;
     for (i= 0; i < dameCS(); i++) {
-        objectOut.systemConsts[i] = dameC(i);
     }
-    objectOut.totalConst=dameCS();
-    objectOut.totalProg=newLineMAC;
-    dumpToFile(objectOut);
 
     /**/
 
@@ -571,26 +561,9 @@ void compilacion() {
 
 
 void ejecucion() {
-    ObjectOutput restored, *aux;
-    aux = &restored;
-
-    restoreFromFile(aux);
 
     int i;
-    float cod, codDn;
-
-    /** /
-    
-    for (i = 0; i < restored.totalProg; i++) {
-        cod = charToFloat(restored.code[i]);
-        P[i] = cod;
-        lp++;
-    }
-
-    for(i =0; i< restored.totalConst; i++){
-        addC(restored.systemConsts[i]);
-    }
-    /**/
+    float cod;
 
     /**/    
     FILE *PObj;
@@ -604,9 +577,6 @@ void ejecucion() {
 
         for (i= 0; strcmp(cur, "###"); i++) {
             cod= charToFloat(cur);
-
-            printf("Mi cod: %f el otro: '%s'(%f)\n",restored.program[i],cur,cod);
-
             P[i] = cod;
             lp++;
             fscanf(PObj, "%s", cur);            
