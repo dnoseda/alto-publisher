@@ -13,6 +13,7 @@
 #include "utilities.h"
 
 #include "soporte_ejecucion.h"
+#include "read-write.c"
 
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
@@ -62,11 +63,6 @@ void scanner ();
 
 /********** variables globales ************/
 
-
-
-
-
-
 int isReturn= 0;
 int isLlamadafuncion= 0;
 int isINOUT= 0;
@@ -79,15 +75,6 @@ int sentencia= 0;
 int control= 0;
 
 char *archivo;
-
-#define MAX_INSTR 15000
-#define MAX_LARGE_INSTR 10
-typedef struct{
-    char code[MAX_INSTR][MAX_LARGE_INSTR];
-    char systemConsts[TAM_CTES];
-    int totalConst;
-}ObjectOutput;
-ObjectOutput objectOut;
 
 
 char *outputCode[MAX_INSTR];
@@ -333,36 +320,6 @@ void verInstrucciones() {
 }
 
 
-
-
-int dumpToFile(ObjectOutput obj){
-    FILE *outFile;
-
-    /* open the file we are writing to */
-    if(!(outFile = fopen("nooo.o", "w"))){
-        return 1;
-    }
-
-    // use fwrite to write binary data to the file 
-    fwrite(&obj, sizeof(ObjectOutput), 1, outFile);
-
-    fclose(outFile);
-}
-
-int restoreFromFile(ObjectOutput *obj){
-    FILE *inFile;
-
-    if(!(inFile = fopen("nooo.o", "r"))){
-        return 1;
-    }
-
-    fread((ObjectOutput *)obj, sizeof(ObjectOutput), 1, inFile);
-
-    fclose(inFile);
-
-    return 0;
-}
-
 void generarSalida() {
     FILE *PObj;
     char arreglo[500];
@@ -379,6 +336,7 @@ void generarSalida() {
         objectOut.systemConsts[i] = dameC(i);
     }
     objectOut.totalConst=dameCS();
+    objectOut.totalProg=newLineMAC;
     dumpToFile(objectOut);
 
     /**/
@@ -627,9 +585,9 @@ void ejecucion() {
     int i;
     float cod;
 
-    /**/
+    /** /
     
-    for (i = 0; i < TAM_PROG; i++) {
+    for (i = 0; i < restored.totalProg; i++) {
         cod = charToFloat(restored.code[i]);
         P[i] = cod;
         lp++;
@@ -640,7 +598,7 @@ void ejecucion() {
     }
     /**/
 
-    /** /    
+    /**/    
     FILE *PObj;
     char cur[500];
     int kk;
