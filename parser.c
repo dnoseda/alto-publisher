@@ -339,7 +339,7 @@ int dumpToFile(ObjectOutput obj){
     FILE *outFile;
 
     /* open the file we are writing to */
-    if(!(outFile = fopen("probando.o", "w"))){
+    if(!(outFile = fopen("nooo.o", "w"))){
         return 1;
     }
 
@@ -352,7 +352,7 @@ int dumpToFile(ObjectOutput obj){
 int restoreFromFile(ObjectOutput *obj){
     FILE *inFile;
 
-    if(!(inFile = fopen("probando.o", "r"))){
+    if(!(inFile = fopen("nooo.o", "r"))){
         return 1;
     }
 
@@ -381,9 +381,10 @@ void generarSalida() {
     objectOut.totalConst=dameCS();
     dumpToFile(objectOut);
 
+    /**/
+
     if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
 
-        /**/
         fprintf(PObj, "$ ");
         for (i= 0; i < newLineMAC; i++) {
             fprintf(PObj, "%s\n", outputCode[i]);
@@ -393,9 +394,9 @@ void generarSalida() {
             fprintf(PObj, "%d\n", dameC(i));
         }
         fprintf(PObj, "$ ");
-        /**/
     }
     fclose(PObj);
+    /**/
 }
 
 int tam_Instr(char *Inst) {
@@ -634,6 +635,8 @@ void ejecucion() {
     }
     /**/
 
+    /**/
+
     float cod;
     FILE *PObj;
     char cur[500];
@@ -662,6 +665,7 @@ void ejecucion() {
 
     }
     fclose(PObj);
+    /**/
 
     interprete2();
 }
