@@ -322,15 +322,7 @@ void verInstrucciones() {
 
 void generarSalida() {
     FILE *PObj;
-    char arreglo[500];
-    int t;
-    int j;
-    int index,index2;
-    char aux;
-    char arreglo1[30];
-    char arreglo2[30];
-    int banderasa = 0;
-
+        
     int i;
     for (i= 0; i < dameCS(); i++) {
         objectOut.systemConsts[i] = dameC(i);
@@ -348,7 +340,7 @@ void generarSalida() {
             fprintf(PObj, "%s\n", outputCode[i]);
         }
         fprintf(PObj, "### ");
-        for (i= 0,j=0; i < dameCS(); i++) {
+        for (i= 0; i < dameCS(); i++) {
             fprintf(PObj, "%d\n", dameC(i));
         }
         fprintf(PObj, "### ");
