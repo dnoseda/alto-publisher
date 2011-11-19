@@ -569,7 +569,8 @@ void ejecucion() {
     FILE *PObj;
     char cur[500];    
 
-    if ((PObj= fopen(strcat(archivo, ".o"), "r")) != NULL) {
+    char *filename = strcat(archivo, ".o");
+    if ((PObj= fopen(filename, "r")) != NULL) {
 
 
         fscanf(PObj, "%s", cur);
