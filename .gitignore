@@ -5,3 +5,8 @@
 ucc
 *~
 nbproject
+.dep.inc
+error.o lex.yy.o nooo.o parser.o sistejec.o ts.o
+Makefile-Comp.mk
+lotes/p4e.o lotes/p4e.oi
+lotes/p4e.oi
