@@ -81,6 +81,12 @@ int control= 0;
 char *archivo;
 
 #define MAX_INSTR 15000
+#define MAX_LARGE_INSTR 10
+typedef struct{
+    char code[MAX_INSTR][MAX_LARGE_INSTR];
+}ObjectOutput;
+ObjectOutput objectOut;
+
 
 char *outputCode[MAX_INSTR];
 
@@ -195,6 +201,7 @@ void appendMAC(int INST, char linea[]) {
 
 
     outputCode[newLineMAC]= stringConcat(intToString(INST),linea);
+    strncpy(objectOut.code[newLineMAC], stringConcat(intToString(INST), linea), MAX_LARGE_INSTR);
 
     printf("\t\t\t\t\t%s\n",stringConcat(getStringINST(INST),linea));
 
@@ -209,6 +216,7 @@ void appendKMAC(int INST, char linea[], int kLinea) {
         outputCodeToShow[i+1]= outputCodeToShow[i];
     }
     outputCode[kLinea]= stringConcat(intToString(INST),linea);
+    strncpy(objectOut.code[kLinea], stringConcat(intToString(INST), linea), MAX_LARGE_INSTR);
     outputCodeToShow[kLinea]= stringConcat(getStringINST(INST),linea);
 
     newLineMAC++;
