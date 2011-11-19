@@ -192,6 +192,8 @@ void appendMAC(int INST, char linea[]) {
 
     codigo[newLineMAC]= stringConcat(intToString(INST),linea);
 
+    printf("\t\t\t\t\t%s\n",stringConcat(getStringINST(INST),linea));
+
     codigoMostrar[newLineMAC++]= stringConcat(getStringINST(INST),linea);
 }
 
