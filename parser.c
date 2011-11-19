@@ -253,15 +253,6 @@ void chequeoParam(struct TipoAttr parametroReal, int numParametro) {
             if (parametroReal.expresionType != aVariable) {
                 error_handler(91);
             } else if (parametroReal.intType != en_tabla("TIPOARREGLO") || (parametroReal.baseType != parametroFormal.ptero_tipo_base)) {
-
-
-
-
-
-
-
-
-
                 error_handler(90);
             }
         } else {
@@ -289,36 +280,7 @@ void chequeoParam(struct TipoAttr parametroReal, int numParametro) {
     }
 }
 
-float charToFloat(char num[]) {
 
-    char part_ent[strlen(num)+1], part_dec[strlen(num)+1];
-    int punto= 0;
-    float res= 0;
-    int i, decimales, piso= 0;
-
-
-    if (num[0]== '-') {
-        piso= 1;
-    }
-
-    part_ent[0]= part_dec[0]= '0';
-    part_ent[1]= part_dec[1]= 0;
-
-    for (i= piso; i <= strlen(num); i++) {
-        if (num[i] == '.') {
-            punto= 1;
-            part_ent[i-piso]= 0;
-        } else if (!punto) {
-            part_ent[i-piso]= num[i];
-        } else {
-            part_dec[i-piso - (strlen(part_ent)+1)]= num[i];
-        }
-    }
-    decimales= strlen(part_dec);
-    res= (stringToInt(strcat(part_ent, part_dec))+.0)/power(10, decimales);
-
-    return (num[0]== '-')? -res : res;
-}
 void clearLMAC() {
     codigo[newLineMAC-1]= NULL;
     codigoMostrar[--newLineMAC]= NULL;
