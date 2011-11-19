@@ -335,6 +335,7 @@ void generarSalida() {
     char arreglo2[30];
     int banderasa = 0;
     if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
+        /**/
         int i;
         fprintf(PObj, "$ ");
         for (i= 0; i < newLineMAC; i++) {
@@ -345,6 +346,7 @@ void generarSalida() {
             fprintf(PObj, "%d\n", dameC(i));
         }
         fprintf(PObj, "$ ");
+        /**/
     }
     fclose(PObj);
 }
