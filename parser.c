@@ -237,39 +237,39 @@ tipo_inf_res getParam(int k) {
     return salida;
 }
 
-void paramChecking(struct TipoAttr parametroReal, int numParametro) {
+void paramChecking(struct TipoAttr current, int paramQuantity) {
     tipo_inf_res parametroFormal;
 
 
 
-    if (numParametro <= ts[en_tabla_funcion_Llama].ets->desc.part_var.sub.cant_par) {
+    if (paramQuantity <= ts[en_tabla_funcion_Llama].ets->desc.part_var.sub.cant_par) {
 
-        parametroFormal = getParam(numParametro);
+        parametroFormal = getParam(paramQuantity);
 
 
 
         if (parametroFormal.ptero_tipo == en_tabla("TIPOARREGLO")) {
 
-            if (parametroReal.expresionType != aVariable) {
+            if (current.expresionType != aVariable) {
                 error_handler(91);
-            } else if (parametroReal.intType != en_tabla("TIPOARREGLO") || (parametroReal.baseType != parametroFormal.ptero_tipo_base)) {
+            } else if (current.intType != en_tabla("TIPOARREGLO") || (current.baseType != parametroFormal.ptero_tipo_base)) {
                 error_handler(90);
             }
         } else {
 
-            if (parametroReal.intType == en_tabla("TIPOARREGLO")) {
+            if (current.intType == en_tabla("TIPOARREGLO")) {
                 error_handler(90);
-            } else if (parametroFormal.tipo_pje == 'r' && parametroReal.expresionType != aVariable) {
+            } else if (parametroFormal.tipo_pje == 'r' && current.expresionType != aVariable) {
                 error_handler(92);
             }
 
-            if (parametroFormal.ptero_tipo == en_tabla("float") && (parametroReal.intType == en_tabla("float") || parametroReal.intType == en_tabla("char") || 				parametroReal.intType == en_tabla("int"))) {
+            if (parametroFormal.ptero_tipo == en_tabla("float") && (current.intType == en_tabla("float") || current.intType == en_tabla("char") || 				current.intType == en_tabla("int"))) {
                 return;
             } else
 
-                if (parametroFormal.ptero_tipo == en_tabla("int") && (parametroReal.intType == en_tabla("char") || parametroReal.intType == en_tabla("int"))) {
+                if (parametroFormal.ptero_tipo == en_tabla("int") && (current.intType == en_tabla("char") || current.intType == en_tabla("int"))) {
                     return;
-                } else if (parametroFormal.ptero_tipo == en_tabla("char") && parametroReal.intType == en_tabla("char") ) {
+                } else if (parametroFormal.ptero_tipo == en_tabla("char") && current.intType == en_tabla("char") ) {
                     return;
                 } else {
                     error_handler(90);
