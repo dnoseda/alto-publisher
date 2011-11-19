@@ -84,7 +84,8 @@ char *archivo;
 #define MAX_LARGE_INSTR 10
 typedef struct{
     char code[MAX_INSTR][MAX_LARGE_INSTR];
-    char consts[TAM_CTES];
+    char systemConsts[TAM_CTES];
+    int totalConst;
 }ObjectOutput;
 ObjectOutput objectOut;
 
@@ -366,16 +367,18 @@ void generarSalida() {
     FILE *PObj;
     char arreglo[500];
     int t;
+    int j;
     int index,index2;
     char aux;
     char arreglo1[30];
     char arreglo2[30];
     int banderasa = 0;
 
-    int i,j;
-    for (i= 0,j=0; i < dameCS(); i++) {
-        objectOut.consts[i] = dameC(i);
+    int i;
+    for (i= 0; i < dameCS(); i++) {
+        objectOut.systemConsts[i] = dameC(i);
     }
+    objectOut.totalConst=dameCS();
     dumpToFile(objectOut);
 
     if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
@@ -615,13 +618,28 @@ void compilacion() {
 
 
 void ejecucion() {
+    ObjectOutput restored, *aux;
+    aux = &restored;
+
+    restoreFromFile(aux);
+
+    int i;
+
+    /** /
+    for(i =0; i< restored.totalConst; i++){
+        addC(restored.systemConsts[i]);
+    }
+    for (i = 0; i < TAM_PROG; i++) {
+        P[i] = charToFloat(restored.code[i]);
+    }
+    /**/
+
     float cod;
     FILE *PObj;
     char cur[500];
     int kk;
 
     if ((PObj= fopen(strcat(archivo, ".o"), "r")) != NULL) {
-        int i;
 
 
         fscanf(PObj, "%s", &cur);
