@@ -80,8 +80,11 @@ int control= 0;
 
 char *archivo;
 
-char *codigo[15000];
-char *codigoMostrar[15000];
+#define MAX_INSTR 15000
+
+char *outputCode[MAX_INSTR];
+char *outputCodeToShow[MAX_INSTR];
+
 int  newLineMAC= 0;
 
 int constEntera= -1;
@@ -190,22 +193,22 @@ struct TipoAttr {
 void appendMAC(int INST, char linea[]) {
 
 
-    codigo[newLineMAC]= stringConcat(intToString(INST),linea);
+    outputCode[newLineMAC]= stringConcat(intToString(INST),linea);
 
     printf("\t\t\t\t\t%s\n",stringConcat(getStringINST(INST),linea));
 
-    codigoMostrar[newLineMAC++]= stringConcat(getStringINST(INST),linea);
+    outputCodeToShow[newLineMAC++]= stringConcat(getStringINST(INST),linea);
 }
 
 void appendKMAC(int INST, char linea[], int kLinea) {
     int i;
 
     for (i= newLineMAC-1; i >= kLinea; i--) {
-        codigo[i+1]= codigo[i];
-        codigoMostrar[i+1]= codigoMostrar[i];
+        outputCode[i+1]= outputCode[i];
+        outputCodeToShow[i+1]= outputCodeToShow[i];
     }
-    codigo[kLinea]= stringConcat(intToString(INST),linea);
-    codigoMostrar[kLinea]= stringConcat(getStringINST(INST),linea);
+    outputCode[kLinea]= stringConcat(intToString(INST),linea);
+    outputCodeToShow[kLinea]= stringConcat(getStringINST(INST),linea);
 
     newLineMAC++;
 }
@@ -284,19 +287,19 @@ void paramChecking(struct TipoAttr current, int paramQuantity) {
 
 
 void clearLMAC() {
-    codigo[newLineMAC-1]= NULL;
-    codigoMostrar[--newLineMAC]= NULL;
+    outputCode[newLineMAC-1]= NULL;
+    outputCodeToShow[--newLineMAC]= NULL;
 }
 
 void clearKLMAC(int kLinea) {
     int i;
 
-    codigo[kLinea]= NULL;
-    codigoMostrar[kLinea]= NULL;
+    outputCode[kLinea]= NULL;
+    outputCodeToShow[kLinea]= NULL;
 
     for (i= kLinea; i < newLineMAC-1; i++) {
-        codigo[i]= codigo[i+1];
-        codigoMostrar[i]= codigoMostrar[i+1];
+        outputCode[i]= outputCode[i+1];
+        outputCodeToShow[i]= outputCodeToShow[i+1];
     }
     newLineMAC--;
 }
@@ -308,7 +311,7 @@ void verInstrucciones() {
 
     for (i= 0; i < newLineMAC; i++) {
 
-        printf("Linea %d: %s\n", i+1, codigoMostrar[i]);
+        printf("Linea %d: %s\n", i+1, outputCodeToShow[i]);
     }
 
 
@@ -336,7 +339,7 @@ void generarSalida() {
         fprintf(PObj, "$ ");
         for (i= 0; i < newLineMAC; i++) {
 
-            fprintf(PObj, "%s\n", codigo[i]);
+            fprintf(PObj, "%s\n", outputCode[i]);
         }
 
         fprintf(PObj, "$ ");
@@ -376,7 +379,7 @@ int calcularDespl(int LineaO, int LineaSalto) {
     int i, despl= 0;
     if (LineaO <= LineaSalto) {
         for (i= LineaO ; i < LineaSalto; i++) {
-            despl+= tam_Instr(codigo[i]);
+            despl+= tam_Instr(outputCode[i]);
         }
         return despl;
     } else {
