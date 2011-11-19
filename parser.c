@@ -77,6 +77,7 @@ int control= 0;
 char *archivo;
 
 
+# define MAX_INSTR 5000
 char *outputCode[MAX_INSTR];
 
 char *outputCodeToShow[MAX_INSTR];
@@ -190,7 +191,7 @@ void appendMAC(int INST, char linea[]) {
 
 
     outputCode[newLineMAC]= stringConcat(intToString(INST),linea);
-    strncpy(objectOut.code[newLineMAC], stringConcat(intToString(INST), linea), MAX_LARGE_INSTR);
+    objectOut.program[newLineMAC] = charToFloat(outputCode[newLineMAC]);
 
     printf("\t\t\t\t\t%s\n",stringConcat(getStringINST(INST),linea));
 
@@ -201,11 +202,12 @@ void appendKMAC(int INST, char linea[], int kLinea) {
     int i;
 
     for (i= newLineMAC-1; i >= kLinea; i--) {
-        outputCode[i+1]= outputCode[i];
-        outputCodeToShow[i+1]= outputCodeToShow[i];
+        outputCode[i+1] = outputCode[i];
+        objectOut.program[i+1] = objectOut.program[i];
+        outputCodeToShow[i+1] = outputCodeToShow[i];
     }
     outputCode[kLinea]= stringConcat(intToString(INST),linea);
-    strncpy(objectOut.code[kLinea], stringConcat(intToString(INST), linea), MAX_LARGE_INSTR);
+    objectOut.program[kLinea]= charToFloat(outputCode[kLinea]);
     outputCodeToShow[kLinea]= stringConcat(getStringINST(INST),linea);
 
     newLineMAC++;
@@ -286,7 +288,7 @@ void paramChecking(struct TipoAttr current, int paramQuantity) {
 
 void clearLMAC() {
     outputCode[newLineMAC-1]= NULL;
-    strncpy(objectOut.code[newLineMAC-1],"",MAX_LARGE_INSTR);
+    objectOut.program[newLineMAC-1] = -1;
     outputCodeToShow[--newLineMAC]= NULL;
 }
 
@@ -294,12 +296,12 @@ void clearKLMAC(int kLinea) {
     int i;
 
     outputCode[kLinea]= NULL;
-    strncpy(objectOut.code[kLinea],"",MAX_LARGE_INSTR);
+    objectOut.program[kLinea] = -1;
     outputCodeToShow[kLinea]= NULL;
 
     for (i= kLinea; i < newLineMAC-1; i++) {
         outputCode[i]= outputCode[i+1];
-        strncpy(objectOut.code[i], objectOut.code[i],MAX_LARGE_INSTR);
+        objectOut.program[i] = objectOut.program[i+1];
         outputCodeToShow[i]= outputCodeToShow[i+1];
     }
     newLineMAC--;
@@ -575,7 +577,7 @@ void ejecucion() {
     restoreFromFile(aux);
 
     int i;
-    float cod;
+    float cod, codDn;
 
     /** /
     
@@ -592,27 +594,29 @@ void ejecucion() {
 
     /**/    
     FILE *PObj;
-    char cur[500];
-    int kk;
+    char cur[500];    
 
     if ((PObj= fopen(strcat(archivo, ".o"), "r")) != NULL) {
 
 
-        fscanf(PObj, "%s", &cur);
-        fscanf(PObj, "%s", &cur);
+        fscanf(PObj, "%s", cur);
+        fscanf(PObj, "%s", cur);
 
         for (i= 0; strcmp(cur, "###"); i++) {
             cod= charToFloat(cur);
+
+            printf("Mi cod: %f el otro: '%s'(%f)\n",restored.program[i],cur,cod);
+
             P[i] = cod;
             lp++;
-            fscanf(PObj, "%s", &cur);
+            fscanf(PObj, "%s", cur);            
         }
 
-        fscanf(PObj, "%s", &cur);
+        fscanf(PObj, "%s", cur);
 
         for (i= 0; strcmp(cur, "###"); i++) {
             addC(stringToInt(cur));
-            fscanf(PObj, "%s", &cur);
+            fscanf(PObj, "%s", cur);
         }
 
 
