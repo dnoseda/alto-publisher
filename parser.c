@@ -84,6 +84,7 @@ char *archivo;
 #define MAX_LARGE_INSTR 10
 typedef struct{
     char code[MAX_INSTR][MAX_LARGE_INSTR];
+    char consts[TAM_CTES];
 }ObjectOutput;
 ObjectOutput objectOut;
 
@@ -333,21 +334,53 @@ void verInstrucciones() {
 
 
 
+int dumpToFile(ObjectOutput obj){
+    FILE *outFile;
 
+    /* open the file we are writing to */
+    if(!(outFile = fopen("probando.o", "w"))){
+        return 1;
+    }
+
+    // use fwrite to write binary data to the file 
+    fwrite(&obj, sizeof(ObjectOutput), 1, outFile);
+
+    fclose(outFile);
+}
+
+int restoreFromFile(ObjectOutput *obj){
+    FILE *inFile;
+
+    if(!(inFile = fopen("probando.o", "r"))){
+        return 1;
+    }
+
+    fread((ObjectOutput *)obj, sizeof(ObjectOutput), 1, inFile);
+
+    fclose(inFile);
+
+    return 0;
+}
 
 void generarSalida() {
     FILE *PObj;
     char arreglo[500];
-    int j;
     int t;
     int index,index2;
     char aux;
     char arreglo1[30];
     char arreglo2[30];
     int banderasa = 0;
+
+    int i,j;
+    for (i= 0,j=0; i < dameCS(); i++) {
+        objectOut.consts[i] = dameC(i);
+    }
+    dumpToFile(objectOut);
+
     if ((PObj= fopen(strcat(archivo, ".o"), "w")) != NULL) {
+
         /**/
-        int i;
         fprintf(PObj, "$ ");
         for (i= 0; i < newLineMAC; i++) {
             fprintf(PObj, "%s\n", outputCode[i]);
