@@ -96,34 +96,26 @@ int en_tabla_funcion_Llama= NIL;
 
 token *sbol;
 
-
 int posID;
 int posTabla;
 int cantPar;
-int tamARR=0;
-char lexema[17];
-int bandera;
-int posicionTS;
-int esParametro = FALSE;
+
 tipo_inf_res *inicio;
 tipo_inf_res *cursor;
 char *archivo;
 
 
-int esIndice = 0;
-
 enum ExpresionType {
     aVariable,constOfExpresionType,bunchOfVariables, constVariable, function,constIntToString
 };
-
 
 extern FILE *yyin;
 extern int despl;
 
 extern float P[];
 extern int lp;
-extern int lc;
-extern char C[];
+
+
 void scanner() {
     int i;
     for (; (i=yylex())!= NADA && sbol->codigo == SEGUIR;);
