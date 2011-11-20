@@ -91,15 +91,14 @@ char *outputCodeToShow[MAX_INSTR];
 /**/
 
 
-token *sbol;
-
-int posID;
-int posTabla;
-int cantPar;
-
-tipo_inf_res *inicio;
+int parameterQuantity;
 tipo_inf_res *cursor;
+int idPosition;
+
+tipo_inf_res *start;
+int tablePosition;
 char *archivo;
+token *sbol;
 
 
 enum ExpresionType {
@@ -136,12 +135,12 @@ struct TipoAttr {
 };
 
 
-void appendMAC(int INST, char linea[]) {
+void insertMAC(int INST, char linea[]) {
     outputCode[indexMAC]= stringConcat(intToString(INST),linea);
     outputCodeToShow[indexMAC++]= stringConcat(getStringINST(INST),linea);
 }
 
-void appendKMAC(int INST, char linea[], int kLinea) {
+void insertKMAC(int INST, char linea[], int kLinea) {
     int i;
 
     for (i= indexMAC-1; i >= kLinea; i--) {
@@ -154,7 +153,7 @@ void appendKMAC(int INST, char linea[], int kLinea) {
     indexMAC++;
 }
 
-void appendParam(tipo_inf_res *info_param) {
+void addParam(tipo_inf_res *info_param) {
     tipo_inf_res *cur;
 
     cur= ts[inTableFunction].ets->desc.part_var.sub.ptr_inf_res;
@@ -170,59 +169,54 @@ void appendParam(tipo_inf_res *info_param) {
     }
 
 }
-tipo_inf_res getParam(int k) {
+
+tipo_inf_res getParameter(int position) {
     int i;
-    tipo_inf_res *cur, salida;
+    tipo_inf_res *cur, output;
 
     cur= ts[inInvocation].ets->desc.part_var.sub.ptr_inf_res;
 
-    for (i= 1; i <= k && cur != NULL; i++) {
-        salida= *cur;
+    for (i= 1; i <= position && cur != NULL; i++) {
+        output= *cur;
         cur= cur->ptr_sig;
     }
-    return salida;
+    return output;
 }
 
 void paramChecking(struct TipoAttr current, int paramQuantity) {
-    tipo_inf_res parametroFormal;
-
-
+    tipo_inf_res formalParameter;
 
     if (paramQuantity <= ts[inInvocation].ets->desc.part_var.sub.cant_par) {
 
-        parametroFormal = getParam(paramQuantity);
+        formalParameter = getParameter(paramQuantity);
 
-
-
-        if (parametroFormal.ptero_tipo == en_tabla("TIPOARREGLO")) {
+        if (formalParameter.ptero_tipo == en_tabla("TIPOARREGLO")) {
 
             if (current.expresionType != aVariable) {
                 error_handler(91);
-            } else if (current.intType != en_tabla("TIPOARREGLO") || (current.baseType != parametroFormal.ptero_tipo_base)) {
+            } else if (current.intType != en_tabla("TIPOARREGLO") || (current.baseType != formalParameter.ptero_tipo_base)) {
                 error_handler(90);
             }
         } else {
 
             if (current.intType == en_tabla("TIPOARREGLO")) {
                 error_handler(90);
-            } else if (parametroFormal.tipo_pje == 'r' && current.expresionType != aVariable) {
+            } else if (formalParameter.tipo_pje == 'r' && current.expresionType != aVariable) {
                 error_handler(92);
             }
 
-            if (parametroFormal.ptero_tipo == en_tabla("float") && (current.intType == en_tabla("float") || current.intType == en_tabla("char") || 				current.intType == en_tabla("int"))) {
+            if (formalParameter.ptero_tipo == en_tabla("float") && (current.intType == en_tabla("float") || current.intType == en_tabla("char") || 				current.intType == en_tabla("int"))) {
                 return;
-            } else
-
-                if (parametroFormal.ptero_tipo == en_tabla("int") && (current.intType == en_tabla("char") || current.intType == en_tabla("int"))) {
+            } else{
+                if (formalParameter.ptero_tipo == en_tabla("int") && (current.intType == en_tabla("char") || current.intType == en_tabla("int"))) {
                     return;
-                } else if (parametroFormal.ptero_tipo == en_tabla("char") && current.intType == en_tabla("char") ) {
+                } else if (formalParameter.ptero_tipo == en_tabla("char") && current.intType == en_tabla("char") ) {
                     return;
                 } else {
                     error_handler(90);
                 }
+            }
         }
-
-
     }
 }
 
@@ -249,20 +243,17 @@ void verInstrucciones() {
 #ifdef DEBUG
     int i;
 
-    printf("\n\n MAC:\n\n\n");
+    printf("instructions:\n\n\n");
 
     for (i= 0; i < indexMAC; i++) {
-
-        printf("Linea %d: %s\n", i+1, outputCodeToShow[i]);
+        printf("[%d]: %s\n", i+1, outputCodeToShow[i]);
     }
 
-
-    printf("\n******************\n");
 #endif
 }
 
 
-void generarSalida() {
+void generateObjectFile() {
     FILE *PObj;
         
     int i;
@@ -290,31 +281,9 @@ void generarSalida() {
     /**/
 }
 
-int tam_Instr(char *Inst) {
-    int i, tam= 0;
-    for (i= 0; i < strlen(Inst); i++)
-        if (Inst[i] == ' ' && Inst[i+1] != 0) {
-            tam++;
-        }
-    return tam + 1;
-}
-
-int calcularDespl(int LineaO, int LineaSalto) {
-    int i, despl= 0;
-    if (LineaO <= LineaSalto) {
-        for (i= LineaO ; i < LineaSalto; i++) {
-            despl+= tam_Instr(outputCode[i]);
-        }
-        return despl;
-    } else {
-        return -(calcularDespl(LineaSalto, LineaO)+ 2 + 3);
-    }
-}
-
-
 
 char Cohersion(char tipo, char Tipo_Operado) {
-    char Tipo_Retorno= en_tabla("float");
+    char resultingType= en_tabla("float");
 
     if (tipo == en_tabla("TIPOARREGLO") || Tipo_Operado == en_tabla("TIPOARREGLO")) {
         return en_tabla("TIPOARREGLO");
@@ -325,16 +294,16 @@ char Cohersion(char tipo, char Tipo_Operado) {
     }
 
     if (tipo == en_tabla("char")) {
-        Tipo_Retorno= Tipo_Operado;
+        resultingType= Tipo_Operado;
     } else if (tipo == en_tabla("int")) {
         if (Tipo_Operado == en_tabla("float")) {
-            Tipo_Retorno= Tipo_Operado;
+            resultingType= Tipo_Operado;
         } else {
-            Tipo_Retorno= en_tabla("int");
+            resultingType= en_tabla("int");
         }
     }
 
-    return Tipo_Retorno;
+    return resultingType;
 
 }
 
@@ -343,11 +312,31 @@ char getTipo(char tipo) {
     if (tipo == en_tabla("char")) {
         return 0;
     } else if (tipo == en_tabla("int")) {
-
         return 1;
     } else {
-
         return 2;
+    }
+}
+
+
+int getInstructionSize(char *Inst) {
+    int i, tam= 0;
+    for (i= 0; i < strlen(Inst); i++)
+        if (Inst[i] == ' ' && Inst[i+1] != 0) {
+            tam++;
+        }
+    return tam + 1;
+}
+
+int getOffset(int LineaO, int LineaSalto) {
+    int i, despl= 0;
+    if (LineaO <= LineaSalto) {
+        for (i= LineaO ; i < LineaSalto; i++) {
+            despl+= getInstructionSize(outputCode[i]);
+        }
+        return despl;
+    } else {
+        return -(getOffset(LineaSalto, LineaO)+ 2 + 3);
     }
 }
 
@@ -473,7 +462,7 @@ void compilacion() {
 
     sbol=&token1 ;
 
-    appendMAC(INPP,"");
+    insertMAC(INPP,"");
 
 
     printf("\nCompilacion:\n");
@@ -501,10 +490,10 @@ void compilacion() {
     }
     printf("\n...compilado!\n");
 
-    appendMAC(PARAR,"");
+    insertMAC(PARAR,"");
     if (error == 0) {
         verInstrucciones();
-        generarSalida();
+        generateObjectFile();
     }
 }
 
@@ -621,22 +610,22 @@ void especificador_tipo(set folset) {
     switch (sbol->codigo) {
     case CVOID: {
         scanner();
-        posID=en_tabla("void");
+        idPosition=en_tabla("void");
         break;
     }
     case CCHAR: {
         scanner();
-        posID=en_tabla("char");
+        idPosition=en_tabla("char");
         break;
     }
     case CINT: {
         scanner();
-        posID=en_tabla("int");
+        idPosition=en_tabla("int");
         break;
     }
     case CFLOAT: {
         scanner();
-        posID=en_tabla("float");
+        idPosition=en_tabla("float");
         break;
     }
     default:
@@ -669,8 +658,8 @@ void definicion_funcion(set folset) {
     isFunctionDefinition= 1;
     isReturnSentence= 0;
     inf_id->clase = CLASFUNC;
-    inf_id->ptr_tipo = posID;
-    inf_id->cant_byte = ts[posID].ets->cant_byte;
+    inf_id->ptr_tipo = idPosition;
+    inf_id->cant_byte = ts[idPosition].ets->cant_byte;
 
     inTableFunction= insertarTS();
     pushTB();
@@ -713,10 +702,10 @@ void lista_declaraciones_param(set folset) {
         declaracion_parametro(CCOMA | folset | F_DECL_PARAM);
     }
 
-    ts[posTabla].ets->desc.part_var.sub.cant_par=cantPar;
-    ts[posTabla].ets->desc.part_var.sub.ptr_inf_res=inicio;
+    ts[tablePosition].ets->desc.part_var.sub.cant_par=parameterQuantity;
+    ts[tablePosition].ets->desc.part_var.sub.ptr_inf_res=start;
 
-    inicio=NULL;
+    start=NULL;
     cursor=NULL;
 }
 
@@ -762,11 +751,11 @@ void declaracion_parametro(set folset) {
 
     inf_id->clase = CLASPAR;
 
-    if (posID == en_tabla("void")) {
+    if (idPosition == en_tabla("void")) {
         error_handler(82);
         inf_id->ptr_tipo = en_tabla("TIPOERROR");
     } else {
-        inf_id->ptr_tipo = posID;
+        inf_id->ptr_tipo = idPosition;
     }
     if (sbol->codigo == CAMPER) {
         scanner();
@@ -774,7 +763,7 @@ void declaracion_parametro(set folset) {
         inf_id->cant_byte = ts[en_tabla("int")].ets->cant_byte;
     } else {
         inf_id->desc.part_var.tipo_pje= 'v';
-        inf_id->cant_byte = ts[posID].ets->cant_byte;
+        inf_id->cant_byte = ts[idPosition].ets->cant_byte;
     }
     if (sbol->codigo == CIDENT) {
         strcpy(inf_id->nbre, sbol->lexema);
@@ -804,7 +793,7 @@ void declaracion_parametro(set folset) {
     info_res_param->tipo_pje= inf_id->desc.part_var.tipo_pje;
     info_res_param->ptero_tipo_base = inf_id->desc.part_var.arr.ptero_tipo_base ;
     info_res_param->ptr_sig= NULL;
-    appendParam(info_res_param);
+    addParam(info_res_param);
     insertarTS();
     test(folset,NADA, 55);
 }
@@ -832,11 +821,11 @@ void declarador_init(set folset) {
     TipoC.intType = NIL;
     test(F_DECL_INIT | folset, F_CONST, 58);
 
-    if (posID == en_tabla("void")) {
+    if (idPosition == en_tabla("void")) {
         error_handler(82);
         inf_id->ptr_tipo = en_tabla("TIPOERROR");
     } else {
-        inf_id->ptr_tipo = posID;
+        inf_id->ptr_tipo = idPosition;
     }
 
     inf_id->cant_byte = ts[inf_id->ptr_tipo].ets->cant_byte;
@@ -914,7 +903,7 @@ void declarador_init(set folset) {
             }
 
             inf_id->ptr_tipo = en_tabla("TIPOARREGLO");
-            inf_id->cant_byte = (inf_id->desc.part_var.arr.cant_elem)*(ts[posID].ets->cant_byte);
+            inf_id->cant_byte = (inf_id->desc.part_var.arr.cant_elem)*(ts[idPosition].ets->cant_byte);
 
             break;
         };
@@ -926,19 +915,19 @@ void declarador_init(set folset) {
     inf_id->desc.despl= despl;
     despl+= inf_id->cant_byte;
 
-    appendMAC(ALOC, intToString(inf_id->cant_byte));
+    insertMAC(ALOC, intToString(inf_id->cant_byte));
 
     if (TipoC.intType != NIL) {
 
         t= getTipo(inf_id->ptr_tipo);
 
         if (t == 2) {
-            appendMAC(CRCT, stringConcat(intToString(t), TipoC.stringValue));
+            insertMAC(CRCT, stringConcat(intToString(t), TipoC.stringValue));
         } else {
-            appendMAC(CRCT, stringConcat(intToString(t), intToString((int)TipoC.value)));
+            insertMAC(CRCT, stringConcat(intToString(t), intToString((int)TipoC.value)));
         }
-        appendMAC(ALM, stringConcat(stringConcat(intToString(inf_id->desc.nivel),  intToString(inf_id->desc.despl)), intToString(t)));
-        appendMAC(POP, intToString(t));
+        insertMAC(ALM, stringConcat(stringConcat(intToString(inf_id->desc.nivel),  intToString(inf_id->desc.despl)), intToString(t)));
+        insertMAC(POP, intToString(t));
     }
 
     insertarTS();
@@ -979,7 +968,7 @@ void proposicion_compuesta(set folset) {
         isFunctionDefinition= 0;
     }
 
-    appendMAC(ENBL, intToString(get_nivel()));
+    insertMAC(ENBL, intToString(get_nivel()));
 
 
 
@@ -1016,7 +1005,7 @@ void proposicion_compuesta(set folset) {
         error_handler(24);
     }
 
-    appendMAC(FINB, intToString(get_nivel()));
+    insertMAC(FINB, intToString(get_nivel()));
 
     pop_nivel();
 
@@ -1176,7 +1165,7 @@ void proposicion_seleccion(set folset) {
 
     proposicion(CELSE | NADA | folset | F_PROP);
 
-    d1 = calcularDespl(lineaBIFF, indexMAC);
+    d1 = getOffset(lineaBIFF, indexMAC);
 
 
 
@@ -1186,15 +1175,15 @@ void proposicion_seleccion(set folset) {
 
         proposicion(folset);
 
-        d1= calcularDespl(lineaBIFS, indexMAC);
+        d1= getOffset(lineaBIFS, indexMAC);
 
-        appendKMAC(BIFS, intToString(d1), lineaBIFS);
+        insertKMAC(BIFS, intToString(d1), lineaBIFS);
 
-        d1= calcularDespl(lineaBIFF, lineaBIFS + 1);
+        d1= getOffset(lineaBIFF, lineaBIFS + 1);
 
     }
 
-    appendKMAC(BIFF, stringConcat(intToString(getTipo(TipoEx.intType)), intToString(d1)), lineaBIFF);
+    insertKMAC(BIFF, stringConcat(intToString(getTipo(TipoEx.intType)), intToString(d1)), lineaBIFF);
 }
 
 
@@ -1220,9 +1209,9 @@ void proposicion_e_s(set folset) {
 
         t= getTipo(TipoExp.intType);
 
-        appendMAC(LEER, intToString(getTipo(TipoExp.intType)));
-        appendMAC(ALM, stringConcat(stringConcat(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
-        appendMAC(POP, intToString(t));
+        insertMAC(LEER, intToString(getTipo(TipoExp.intType)));
+        insertMAC(ALM, stringConcat(stringConcat(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
+        insertMAC(POP, intToString(t));
 
 
 
@@ -1239,9 +1228,9 @@ void proposicion_e_s(set folset) {
 
             t= getTipo(TipoExp.intType);
 
-            appendMAC(LEER, intToString(getTipo(TipoExp.intType)));
-            appendMAC(ALM, stringConcat(stringConcat(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
-            appendMAC(POP, intToString(t));
+            insertMAC(LEER, intToString(getTipo(TipoExp.intType)));
+            insertMAC(ALM, stringConcat(stringConcat(intToString(TipoExp.level),  intToString(TipoExp.despl)), intToString(t)));
+            insertMAC(POP, intToString(t));
         }
 
         if (sbol->codigo == CPYCOMA) {
@@ -1262,9 +1251,9 @@ void proposicion_e_s(set folset) {
 
         TipoExp= expresion(folset | CSHL|CPYCOMA | NADA | F_EXPR);
         if (TipoExp.expresionType == constIntToString) {
-            appendMAC(IMPCS,"");
+            insertMAC(IMPCS,"");
         } else {
-            appendMAC(IMPR, intToString(getTipo(TipoExp.intType)));
+            insertMAC(IMPR, intToString(getTipo(TipoExp.intType)));
         }
 
         while (sbol->codigo == CSHL || (sbol->codigo & F_EXPR)) {
@@ -1275,9 +1264,9 @@ void proposicion_e_s(set folset) {
             }
             TipoExp= expresion(folset | CSHL|CPYCOMA | NADA | F_EXPR);
             if (TipoExp.expresionType == constIntToString) {
-                appendMAC(IMPCS, "");
+                insertMAC(IMPCS, "");
             } else {
-                appendMAC(IMPR, intToString(getTipo(TipoExp.intType)));
+                insertMAC(IMPR, intToString(getTipo(TipoExp.intType)));
             }
 
         }
@@ -1372,16 +1361,16 @@ struct TipoAttr expresion(set folset) {
             t= getTipo(TipoE.intType);
 
             if (t != tvar) {
-                appendMAC(CAST,stringConcat( intToString(t), intToString(tvar)));
+                insertMAC(CAST,stringConcat( intToString(t), intToString(tvar)));
             }
 
-            appendMAC(ALM, stringConcat(stringConcat(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
+            insertMAC(ALM, stringConcat(stringConcat(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
 
-            appendMAC(POP, intToString(tvar));
-            appendMAC(CRVL, stringConcat(stringConcat(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
+            insertMAC(POP, intToString(tvar));
+            insertMAC(CRVL, stringConcat(stringConcat(intToString(Tipo_Retorno.level),  intToString(Tipo_Retorno.despl)), intToString(tvar)));
 
             if (isSentence && isControlSentence == 0) {
-                appendMAC(POP, intToString(tvar));
+                insertMAC(POP, intToString(tvar));
             }
 
             break;
@@ -1401,32 +1390,32 @@ struct TipoAttr expresion(set folset) {
 
 
             if (tvar < t) {
-                appendMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
+                insertMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
             } else if (tvar > t) {
-                appendKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
+                insertKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
                 t= tvar;
             }
 
             switch(op) {
             case CDISTINTO:
-                appendMAC(CMNI, intToString(t));
+                insertMAC(CMNI, intToString(t));
                 break;
             case CIGUAL:
-                appendMAC(CMIG, intToString(t));
+                insertMAC(CMIG, intToString(t));
                 break;
             case CMENOR:
-                appendMAC(CMME, intToString(t));
+                insertMAC(CMME, intToString(t));
 
                 break;
             case CMEIG:
-                appendMAC(CMEI, intToString(t));
+                insertMAC(CMEI, intToString(t));
                 break;
             case CMAYOR:
-                appendMAC(CMMA, intToString(t));
+                insertMAC(CMMA, intToString(t));
 
                 break;
             case CMAIG:
-                appendMAC(CMAI, intToString(t));
+                insertMAC(CMAI, intToString(t));
             }
             break;
         };
@@ -1462,7 +1451,7 @@ struct TipoAttr expresion_simple(set folset) {
 
     if (op == CMENOS) {
         Tipo_Retorno.value = -Tipo_Retorno.value;
-        appendMAC(INV, intToString(getTipo(Tipo_Retorno.intType)));
+        insertMAC(INV, intToString(getTipo(Tipo_Retorno.intType)));
     }
 
     if (Tipo_Retorno.expresionType == aVariable && masMenos) {
@@ -1484,22 +1473,22 @@ struct TipoAttr expresion_simple(set folset) {
 
 
         if (tvar < t) {
-            appendMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
+            insertMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
         } else if (tvar > t) {
-            appendKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
+            insertKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
             t= tvar;
         }
 
 
         switch(op) {
         case CMAS:
-            appendMAC(SUM, intToString(t));
+            insertMAC(SUM, intToString(t));
             break;
         case CMENOS:
-            appendMAC(SUB, intToString(t));
+            insertMAC(SUB, intToString(t));
             break;
         case COR:
-            appendMAC(OR, intToString(t));
+            insertMAC(OR, intToString(t));
         }
 
 
@@ -1556,21 +1545,21 @@ struct TipoAttr termino(set folset) {
         tvar= getTipo(TipoF.intType);
 
         if (tvar < t) {
-            appendMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
+            insertMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
         } else if (tvar > t) {
-            appendKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
+            insertKMAC(CAST, stringConcat(intToString(t), intToString(tvar)), nLineaCast);
             t= tvar;
         }
 
         switch(op) {
         case CMULT:
-            appendMAC(MUL, intToString(t));
+            insertMAC(MUL, intToString(t));
             break;
         case CDIV:
-            appendMAC(DIV, intToString(t));
+            insertMAC(DIV, intToString(t));
             break;
         case CAND:
-            appendMAC(AND, intToString(t));
+            insertMAC(AND, intToString(t));
         }
 
         Tipo_Retorno.intType= Cohersion(Tipo_Retorno.intType, TipoF.intType);
@@ -1673,9 +1662,9 @@ struct TipoAttr factor(set folset) {
         Tipo_Retorno= constante(folset);
         t= getTipo(Tipo_Retorno.intType);
         if (t == 2) {
-            appendMAC(CRCT, stringConcat(intToString(t),  Tipo_Retorno.stringValue));
+            insertMAC(CRCT, stringConcat(intToString(t),  Tipo_Retorno.stringValue));
         } else {
-            appendMAC(CRCT, stringConcat(intToString(t), Tipo_Retorno.stringValue));
+            insertMAC(CRCT, stringConcat(intToString(t), Tipo_Retorno.stringValue));
         }
         break;
     case CCONS_STR:
@@ -1683,7 +1672,7 @@ struct TipoAttr factor(set folset) {
             error_handler(86);
         }
 
-        appendMAC(CRCTS, intToString(dameCS()));
+        insertMAC(CRCTS, intToString(dameCS()));
         unescapeNewline(sbol->lexema);
         unescapeTab(sbol->lexema);
 
@@ -1709,7 +1698,7 @@ struct TipoAttr factor(set folset) {
         Tipo_Retorno= expresion(folset);
         t= getTipo(Tipo_Retorno.intType);
 
-        appendMAC(NEG, intToString(t));
+        insertMAC(NEG, intToString(t));
         break;
     default:
         error_handler(31);
@@ -1826,7 +1815,7 @@ struct TipoAttr variable(set folset) {
 
                 t= getTipo(Tipo_Retorno.intType);
 
-                appendMAC(CRVL, stringConcat(stringConcat(intToString(ts[en_tabla(lexema)].ets->desc.nivel), intToString(ts[en_tabla(lexema)].ets->desc.despl)), intToString(t)));
+                insertMAC(CRVL, stringConcat(stringConcat(intToString(ts[en_tabla(lexema)].ets->desc.nivel), intToString(ts[en_tabla(lexema)].ets->desc.despl)), intToString(t)));
 
                 if (Tipo_Retorno.intType == en_tabla("TIPOARREGLO")) {
                     Tipo_Retorno.baseType= ts[en_tabla(lexema)].ets->desc.part_var.arr.ptero_tipo_base;
