@@ -14,11 +14,12 @@
 
 #include "soporte_ejecucion.h"
 #include "coder.c"
+#include "first.c"
 
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
 
-
+//#define DEBUG 1
 
 typedef long long set;
 
@@ -82,7 +83,7 @@ char *outputCode[MAX_INSTR];
 
 char *outputCodeToShow[MAX_INSTR];
 
-int  newLineMAC= 0;
+int  indexMAC= 0;
 
 int constEntera= -1;
 int cantConstantess= 0;
@@ -188,26 +189,21 @@ struct TipoAttr {
 
 
 void appendMAC(int INST, char linea[]) {
-
-
-    outputCode[newLineMAC]= stringConcat(intToString(INST),linea);
-
-    printf("\t\t\t\t\t%s\n",stringConcat(getStringINST(INST),linea));
-
-    outputCodeToShow[newLineMAC++]= stringConcat(getStringINST(INST),linea);
+    outputCode[indexMAC]= stringConcat(intToString(INST),linea);
+    outputCodeToShow[indexMAC++]= stringConcat(getStringINST(INST),linea);
 }
 
 void appendKMAC(int INST, char linea[], int kLinea) {
     int i;
 
-    for (i= newLineMAC-1; i >= kLinea; i--) {
+    for (i= indexMAC-1; i >= kLinea; i--) {
         outputCode[i+1] = outputCode[i];
         outputCodeToShow[i+1] = outputCodeToShow[i];
     }
     outputCode[kLinea]= stringConcat(intToString(INST),linea);
     outputCodeToShow[kLinea]= stringConcat(getStringINST(INST),linea);
 
-    newLineMAC++;
+    indexMAC++;
 }
 
 void appendParam(tipo_inf_res *info_param) {
@@ -284,8 +280,8 @@ void paramChecking(struct TipoAttr current, int paramQuantity) {
 
 
 void clearLMAC() {
-    outputCode[newLineMAC-1]= NULL;
-    outputCodeToShow[--newLineMAC]= NULL;
+    outputCode[indexMAC-1]= NULL;
+    outputCodeToShow[--indexMAC]= NULL;
 }
 
 void clearKLMAC(int kLinea) {
@@ -294,25 +290,27 @@ void clearKLMAC(int kLinea) {
     outputCode[kLinea]= NULL;
     outputCodeToShow[kLinea]= NULL;
 
-    for (i= kLinea; i < newLineMAC-1; i++) {
+    for (i= kLinea; i < indexMAC-1; i++) {
         outputCode[i]= outputCode[i+1];
         outputCodeToShow[i]= outputCodeToShow[i+1];
     }
-    newLineMAC--;
+    indexMAC--;
 }
 
 void verInstrucciones() {
+#ifdef DEBUG
     int i;
 
     printf("\n\n MAC:\n\n\n");
 
-    for (i= 0; i < newLineMAC; i++) {
+    for (i= 0; i < indexMAC; i++) {
 
         printf("Linea %d: %s\n", i+1, outputCodeToShow[i]);
     }
 
 
     printf("\n******************\n");
+#endif
 }
 
 
@@ -329,7 +327,7 @@ void generarSalida() {
     if ((PObj= fopen(filename, "w")) != NULL) {
 
         fprintf(PObj, "### ");
-        for (i= 0; i < newLineMAC; i++) {
+        for (i= 0; i < indexMAC; i++) {
             fprintf(PObj, "%s\n", outputCode[i]);
         }
         fprintf(PObj, "### ");
@@ -1045,7 +1043,7 @@ void proposicion_compuesta(set folset) {
         lista_declaraciones(folset | F_LIST_PROP | CLLA_CIE | NADA);
     }
 
-    finBloqueVars= newLineMAC;
+    finBloqueVars= indexMAC;
     if (sbol->codigo == CLLA_ABR || sbol->codigo == CMAS ||
             sbol->codigo == CMENOS || sbol->codigo == CIDENT ||
             sbol->codigo == CPAR_ABR || sbol->codigo == CNEG ||
@@ -1225,22 +1223,22 @@ void proposicion_seleccion(set folset) {
     }
 
 
-    lineaBIFF= newLineMAC;
+    lineaBIFF= indexMAC;
 
 
     proposicion(CELSE | NADA | folset | F_PROP);
 
-    d1 = calcularDespl(lineaBIFF, newLineMAC);
+    d1 = calcularDespl(lineaBIFF, indexMAC);
 
 
 
     if (sbol->codigo == CELSE) {
-        lineaBIFS= newLineMAC;
+        lineaBIFS= indexMAC;
         scanner();
 
         proposicion(folset);
 
-        d1= calcularDespl(lineaBIFS, newLineMAC);
+        d1= calcularDespl(lineaBIFS, indexMAC);
 
         appendKMAC(BIFS, intToString(d1), lineaBIFS);
 
@@ -1396,7 +1394,7 @@ struct TipoAttr expresion(set folset) {
     control++;
 
     Tipo_Retorno=   expresion_simple(folset | F_EXPR | CASIGNAC |  CDISTINTO|CIGUAL|CMENOR|CMEIG|CMAYOR|CMAIG);
-    nLineaCast= newLineMAC;
+    nLineaCast= indexMAC;
 
     TipoE.intType= en_tabla("char");
 
@@ -1511,7 +1509,7 @@ struct TipoAttr expresion_simple(set folset) {
     }
 
     Tipo_Retorno= termino(folset | NADA | CMAS|CMENOS|COR | F_TERM);
-    nLineaCast= newLineMAC;
+    nLineaCast= indexMAC;
 
 
     if (op == CMENOS) {
@@ -1574,7 +1572,7 @@ struct TipoAttr expresion_simple(set folset) {
                 Tipo_Retorno.value= Tipo_Retorno.value || TipoT.value;
             }
         }
-        nLineaCast= newLineMAC;
+        nLineaCast= indexMAC;
     }
 
     return Tipo_Retorno;
@@ -1588,7 +1586,7 @@ struct TipoAttr termino(set folset) {
 
 
     Tipo_Retorno= factor(folset | NADA | CMULT|CDIV|CAND | F_FACTOR);
-    nLineaCast= newLineMAC;
+    nLineaCast= indexMAC;
 
 
 
@@ -1642,7 +1640,7 @@ struct TipoAttr termino(set folset) {
                 Tipo_Retorno.value= Tipo_Retorno.value && TipoF.value;
             }
         }
-        nLineaCast= newLineMAC;
+        nLineaCast= indexMAC;
     }
 
     return Tipo_Retorno;
