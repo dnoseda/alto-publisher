@@ -528,7 +528,7 @@ void compilacion() {
     appendMAC(INPP,"");
 
 
-    printf("\nCOMPILACION\n");
+    printf("\nCompilacion:\n");
 
     inic_tablas();
 
@@ -551,7 +551,7 @@ void compilacion() {
     if (sbol->codigo != CEOF) {
         error_handler(8);
     }
-    printf("\n\n\nCOMPILACION CORRECTA\n\n\n\n");
+    printf("\n...compilado!\n");
 
     appendMAC(PARAR,"");
     if (error == 0) {
