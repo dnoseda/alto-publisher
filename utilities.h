@@ -1,5 +1,13 @@
 char *auxString;
 
+int power(int x, int y) {
+    int Rstado=1;
+    for (; y>0; y--) {
+        Rstado *= x;
+    }
+    return Rstado;
+}
+
 int stringToInt(char t[]) {
     int res= 0, Ti= strlen(t)-1, piso= 0;
 
@@ -14,13 +22,6 @@ int stringToInt(char t[]) {
     return (t[0]== '-')? -res : res;
 }
 
-int power(int x, int y) {
-    int Rstado=1;
-    for (; y>0; y--) {
-        Rstado *= x;
-    }
-    return Rstado;
-}
 
 char *stringReverse(char cadena[]) {
     int i;
