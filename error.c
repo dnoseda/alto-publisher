@@ -236,61 +236,48 @@ void error_print (int ne) {
         printf("\t Error %d:  \n", ne);
         break;
     case 81:
-        printf("\t Error %d: Un arreglo no puede estar vacion, debe tener al menos un elemento \n", ne);
+        printf("\t Error %d: no se permite arreglo vacio \n", ne);
         break;
     case 82:
-        printf("\t Error %d: Una variable o un parametro no puede ser de tipo VOID \n", ne);
+        printf("\t Error %d: no se permite variable o parametro de tipo VOID \n", ne);
         break;
     case 83:
-        printf("\t Error %d: La cardinalidad del arreglo se especifica con un tipo entero \n", ne);
+        printf("\t Error %d: se espera constante para denotar cardinalidad de arreglo \n", ne);
         break;
     case 84:
-        printf("\t Error %d: A la izquierda de una asignacion debe ir una variable \n", ne);
+        printf("\t Error %d: solo se permite variable a la izquierda de una asignacion \n", ne);
         break;
     case 85:
-        printf("\t Error %d: Indices no validos del arreglo \n", ne);
+        printf("\t Error %d: indices no validos  \n", ne);
         break;
     case 86:
-        printf("\t Error %d: Un String solo puede estar en una proposicion de E/S \n", ne);
+        printf("\t Error %d: solo se permite string en una proposicion de E/S \n", ne);
         break;
     case 87:
-        printf("\t Error %d: Indice Negativo\n", ne);
+        printf("\t Error %d:  no se permite indice negativo\n", ne);
         break;
 
     case 88:
-        printf("\t Error %d: La cantidad de parametros en la invocacion debe conincidir con la cantida de la declaracion\n", ne);
+        printf("\t Error %d: no coincide cantidad de parametros de invocacion\n", ne);
         break;
     case 89:
-        printf("\t Error %d: No se puede pasar un arreglo por direccion\n", ne);
+        printf("\t Error %d: no se puede pasar un arreglo por direccion\n", ne);
         break;
     case 90:
-        printf("\t Error %d: Tipos de parametros desiguales\n", ne);
+        printf("\t Error %d: parametro no desigual\n", ne);
         break;
     case 91:
-        printf("\t Error %d: En el parámetro real sólo debe aparecer un identificador.\n", ne);
+        printf("\t Error %d: solo admite identificador como parametro real.\n", ne);
         break;
     case 92:
         printf("\t Error %d: El parámetro real debe ser una variable.\n", ne);
         break;
     case 93:
-        printf("\t Error %d: Asignacion no valida.\n", ne);
+        printf("\t Error %d: asignacion invalida.\n", ne);
         break;
     case 94:
-        printf("\t Error %d: La cantidad de elementos en la lista de inicializacion no coincide con el tamaño del arreglo.\n", ne);
+        printf("\t Error %d: demasiados elementos para el tamaño del arreglo.\n", ne);
         break;
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
 
@@ -311,13 +298,3 @@ void error_handler(int ne) {
 }
 
 
-
-
-
-/*
-
-
-void f_error() {
-   printf(" %d.- Ocurrio un error\n", linea);
-}
-*/
