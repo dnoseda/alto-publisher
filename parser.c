@@ -264,7 +264,7 @@ void showDebug() {
 
 
 void generateObjectFile() {
-    FILE *PObj;
+    FILE *objectFile;
         
     int i;
     for (i= 0; i < dameCS(); i++) {
@@ -273,19 +273,19 @@ void generateObjectFile() {
     /**/
 
     char *filename=strcat(archivo, ".o");
-    if ((PObj= fopen(filename, "w")) != NULL) {
+    if ((objectFile= fopen(filename, "w")) != NULL) {
 
-        fprintf(PObj, "### ");
+        fprintf(objectFile, "### ");
         for (i= 0; i < indexMAC; i++) {
-            fprintf(PObj, "%s\n", outputCode[i]);
+            fprintf(objectFile, "%s\n", outputCode[i]);
         }
-        fprintf(PObj, "### ");
+        fprintf(objectFile, "### ");
         for (i= 0; i < dameCS(); i++) {
-            fprintf(PObj, "%d\n", dameC(i));
+            fprintf(objectFile, "%d\n", dameC(i));
         }
-        fprintf(PObj, "### ");
+        fprintf(objectFile, "### ");
     }
-    fclose(PObj);
+    fclose(objectFile);
 
     fsave(filename);
     /**/
@@ -358,30 +358,30 @@ void execution() {
     float cod;
 
     /**/    
-    FILE *PObj;
+    FILE *objectFile;
     char cur[500];    
 
     char *filename = strcat(archivo, ".o");
     funsave(filename);
-    if ((PObj= fopen(filename, "r")) != NULL) {
-        fscanf(PObj, "%s", cur);
-        fscanf(PObj, "%s", cur);
+    if ((objectFile= fopen(filename, "r")) != NULL) {
+        fscanf(objectFile, "%s", cur);
+        fscanf(objectFile, "%s", cur);
 
         for (i= 0; strcmp(cur, "###"); i++) {
             cod= charToFloat(cur);
             P[i] = cod;
             lp++;
-            fscanf(PObj, "%s", cur);            
+            fscanf(objectFile, "%s", cur);
         }
 
-        fscanf(PObj, "%s", cur);
+        fscanf(objectFile, "%s", cur);
 
         for (i= 0; strcmp(cur, "###"); i++) {
             addC(stringToInt(cur));
-            fscanf(PObj, "%s", cur);
+            fscanf(objectFile, "%s", cur);
         }
     }
-    fclose(PObj);
+    fclose(objectFile);
     fsave(filename);
     /**/
 
@@ -713,8 +713,8 @@ void declaracion_variable(set folset) {
 void declarador_init(set folset) {
 
     char t;
-    struct TipoAttr TipoC;
-    TipoC.intType = NIL;
+    struct TipoAttr localTipoAttr;
+    localTipoAttr.intType = NIL;
     test(F_DECL_INIT | folset, F_CONST, 58);
 
     if (idPosition == en_tabla("void")) {
@@ -738,7 +738,7 @@ void declarador_init(set folset) {
                 scanner();
                 error_handler(86);
             }
-            TipoC= constante(folset);
+            localTipoAttr= constante(folset);
 
             break;
         case CCOR_ABR:
@@ -813,14 +813,14 @@ void declarador_init(set folset) {
 
     insertMAC(ALOC, intToString(inf_id->cant_byte));
 
-    if (TipoC.intType != NIL) {
+    if (localTipoAttr.intType != NIL) {
 
         t= getTipo(inf_id->ptr_tipo);
 
         if (t == 2) {
-            insertMAC(CRCT, stringConcat(intToString(t), TipoC.stringValue));
+            insertMAC(CRCT, stringConcat(intToString(t), localTipoAttr.stringValue));
         } else {
-            insertMAC(CRCT, stringConcat(intToString(t), intToString((int)TipoC.value)));
+            insertMAC(CRCT, stringConcat(intToString(t), intToString((int)localTipoAttr.value)));
         }
         insertMAC(ALM, stringConcat(stringConcat(intToString(inf_id->desc.nivel),  intToString(inf_id->desc.despl)), intToString(t)));
         insertMAC(POP, intToString(t));
