@@ -287,7 +287,7 @@ void generateObjectFile() {
     }
     fclose(PObj);
 
-    slurp(filename);
+    fsave(filename);
     /**/
 }
 
@@ -362,7 +362,7 @@ void execution() {
     char cur[500];    
 
     char *filename = strcat(archivo, ".o");
-    unslurp(filename);
+    funsave(filename);
     if ((PObj= fopen(filename, "r")) != NULL) {
         fscanf(PObj, "%s", cur);
         fscanf(PObj, "%s", cur);
@@ -382,7 +382,7 @@ void execution() {
         }
     }
     fclose(PObj);
-    slurp(filename);
+    fsave(filename);
     /**/
 
     interprete2();

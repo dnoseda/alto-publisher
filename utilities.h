@@ -1,21 +1,26 @@
 char *auxString;
 
-int power(int x, int y) {
+int power(int x, int y)
+{
     int Rstado=1;
-    for (; y>0; y--) {
+    for (; y>0; y--)
+    {
         Rstado *= x;
     }
     return Rstado;
 }
 
-int stringToInt(char t[]) {
+int stringToInt(char t[])
+{
     int res= 0, Ti= strlen(t)-1, piso= 0;
 
-    if (t[0]== '-') {
+    if (t[0]== '-')
+    {
         piso= 1;
     }
 
-    for (; Ti>=piso; Ti--) {
+    for (; Ti>=piso; Ti--)
+    {
         res+= (t[Ti]-48)*power(10,strlen(t)-(Ti+1));
     }
 
@@ -23,11 +28,13 @@ int stringToInt(char t[]) {
 }
 
 
-char *stringReverse(char cadena[]) {
+char *stringReverse(char cadena[])
+{
     int i;
     char temp;
 
-    for (i= 0; i < strlen(cadena)/2; i++) {
+    for (i= 0; i < strlen(cadena)/2; i++)
+    {
         temp= cadena[i];
         cadena[i]= cadena[strlen(cadena) -1 - i];
         cadena[strlen(cadena) -1 - i]= temp;
@@ -35,7 +42,8 @@ char *stringReverse(char cadena[]) {
     return cadena;
 }
 
-char *stringConcat(char s1[], char s2[]) {
+char *stringConcat(char s1[], char s2[])
+{
     auxString= (char *) calloc(1, 50);
     strcat(auxString, s1);
     strcat(auxString, " ");
@@ -43,20 +51,24 @@ char *stringConcat(char s1[], char s2[]) {
     return strcat(auxString, s2);;
 }
 
-char *joinString(char s1[], char s2[]) {
+char *joinString(char s1[], char s2[])
+{
     auxString= (char *) calloc(1, 50);
     strcat(auxString, s1);
     return strcat(auxString, s2);
 }
 
 
-char *unescapeNewline(char *s1) {
+char *unescapeNewline(char *s1)
+{
     int i,j;
 
     for (i= 0; s1[i]!= 0; i++)
-        if (s1[i] == 92 && s1[i+1] == 'n') {
+        if (s1[i] == 92 && s1[i+1] == 'n')
+        {
             s1[i++]= '\n';
-            for (j= i; s1[j] && s1[j+1]; j++) {
+            for (j= i; s1[j] && s1[j+1]; j++)
+            {
                 s1[j]=s1[j+1];
             }
             s1[j]= 0;
@@ -65,13 +77,16 @@ char *unescapeNewline(char *s1) {
     return s1;
 }
 
-char *unescapeTab(char *s1) {
+char *unescapeTab(char *s1)
+{
     int i,j;
 
     for (i= 0; s1[i]!= 0; i++)
-        if (s1[i] == 92 && s1[i+1] == 't') {
+        if (s1[i] == 92 && s1[i+1] == 't')
+        {
             s1[i++]= '\t';
-            for (j= i; s1[j] && s1[j+1]; j++) {
+            for (j= i; s1[j] && s1[j+1]; j++)
+            {
                 s1[j]=s1[j+1];
             }
             s1[j]= 0;
@@ -82,45 +97,59 @@ char *unescapeTab(char *s1) {
 
 
 
-char *intToString(int num) {
+char *intToString(int num)
+{
     char *result= (char *)calloc (1, TAM_LEXEMA);
     int i=0;
-    if (num >= 0) {
-        if (num == 0) {
+    if (num >= 0)
+    {
+        if (num == 0)
+        {
             result[0]= '0';
             i= 1;
         }
-        for (; num>0; i++) {
+        for (; num>0; i++)
+        {
             result[i]=num%10+48;
             num/=10;
         }
         result[i]= 0;
         return stringReverse(result);
-    } else {
+    }
+    else
+    {
         return joinString("-",intToString(-num));
     }
 }
 
-float charToFloat(char number[]) {
+float charToFloat(char number[])
+{
 
     char intSlice[strlen(number)+1], decimalSlice[strlen(number)+1];
     int punto= 0,i, decimals, floor= 0;
     float res= 0;
 
-    if (number[0]== '-') {
+    if (number[0]== '-')
+    {
         floor= 1;
     }
 
     intSlice[0]= decimalSlice[0]= '0';
     intSlice[1]= decimalSlice[1]= 0;
 
-    for (i= floor; i <= strlen(number); i++) {
-        if (number[i] == '.') {
+    for (i= floor; i <= strlen(number); i++)
+    {
+        if (number[i] == '.')
+        {
             punto= 1;
             intSlice[i-floor]= 0;
-        } else if (!punto) {
+        }
+        else if (!punto)
+        {
             intSlice[i-floor]= number[i];
-        } else {
+        }
+        else
+        {
             decimalSlice[i-floor - (strlen(intSlice)+1)]= number[i];
         }
     }

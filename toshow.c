@@ -1,8 +1,10 @@
 
-char *getStringINST(int INST) {
+char *getStringINST(int INST)
+{
     char *sINST= (char *)calloc (1, 13);
     strcpy(sINST, ">>ERROR<<");
-    switch(INST) {
+    switch(INST)
+    {
     case CRCT   :
         strcpy(sINST, sCRCT);
         break;

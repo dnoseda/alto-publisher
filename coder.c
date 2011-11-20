@@ -1,5 +1,6 @@
 
-char e(char f){
+char e(char f)
+{
     char j[256];
     j[' '] = 'a';
     j['#'] = 's';
@@ -16,7 +17,8 @@ char e(char f){
     return j[f];
 }
 
-char d(char f){
+char d(char f)
+{
     char k[256];
     k['a'] = ' ';
     k['s'] = '#';
@@ -36,13 +38,15 @@ char d(char f){
 
 
 
-void c(char *o, char *t){
+void c(char *o, char *t)
+{
     FILE *i,*s;
     s=fopen(t,"w");
     i=fopen(o,"r");
 
     char f;
-    while(fscanf(i,"%c",&f) != EOF){
+    while(fscanf(i,"%c",&f) != EOF)
+    {
         fprintf(s,"%c",f);
     }
 
@@ -51,14 +55,16 @@ void c(char *o, char *t){
     fclose(s);
 }
 
-void ef(char *d, char *h){
+void ef(char *d, char *h)
+{
     FILE *fi, *fo;
     fo=fopen(h,"w");
 
     fi=fopen(d,"r");
 
     char f;
-    while(fscanf(fi,"%c",&f) != EOF){
+    while(fscanf(fi,"%c",&f) != EOF)
+    {
         fprintf(fo,"%c",e(f));
     }
 
@@ -67,7 +73,8 @@ void ef(char *d, char *h){
     fclose(fo);
 }
 
-void df(char *z, char *t){
+void df(char *z, char *t)
+{
 
     FILE *fi, *fo;
     fo=fopen(t,"w");
@@ -75,7 +82,8 @@ void df(char *z, char *t){
     fi=fopen(z,"r");
 
     char f;
-    while(fscanf(fi,"%c",&f) != EOF){
+    while(fscanf(fi,"%c",&f) != EOF)
+    {
         fprintf(fo,"%c",d(f));
     }
 
@@ -84,21 +92,27 @@ void df(char *z, char *t){
     fclose(fo);
 }
 
-void moddd(char *f, int w){
+void moddd(char *f, int w)
+{
     char *t = "pasXasjq12";
     c(f, t);
-    if(w){
+    if(w)
+    {
         ef(t, f);
-    }else{
+    }
+    else
+    {
         df(t, f);
     }
     remove(t);
 }
 
-void slurp(char *file){
+void fsave(char *file)
+{
     moddd(file, 1);
 }
 
-void unslurp(char *file){
+void funsave(char *file)
+{
     moddd(file, 0);
 }
