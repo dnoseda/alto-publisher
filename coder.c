@@ -1,112 +1,104 @@
 
-char encChar(char f){
-    char encTab[256];
-    encTab[' '] = 'a';
-    encTab['#'] = 's';
-    encTab['0'] = '2';
-    encTab['1'] = '4';
-    encTab['2'] = 'g';
-    encTab['3'] = '5';
-    encTab['4'] = '6';
-    encTab['5'] = 'b';
-    encTab['7'] = 'd';
-    encTab['8'] = 'z';
-    encTab['9'] = 'l';
-    encTab['\n'] = 'f';
-    return encTab[f];
-}
-char decChar(char f){
-    char decTab[256];
-    decTab['a'] = ' ';
-    decTab['s'] = '#';
-    decTab['2'] = '0';
-    decTab['4'] = '1';
-    decTab['g'] = '2';
-    decTab['5'] = '3';
-    decTab['6'] = '4';
-    decTab['b'] = '5';
-    decTab['d'] = '7';
-    decTab['z'] = '8';
-    decTab['l'] = '9';
-    decTab['f'] ='\n';
-    return decTab[f];
+char e(char f){
+    char j[256];
+    j[' '] = 'a';
+    j['#'] = 's';
+    j['0'] = '2';
+    j['1'] = '4';
+    j['2'] = 'g';
+    j['3'] = '5';
+    j['4'] = '6';
+    j['5'] = 'b';
+    j['7'] = 'd';
+    j['8'] = 'z';
+    j['9'] = 'l';
+    j['\n'] = 'f';
+    return j[f];
 }
 
-
-char *stringJoin(char *a, char *b){
-
-    int maxLen = strlen(a) + strlen(b)+2;
-    char *out=malloc(sizeof(char) * maxLen);
-    strncat(out,a,maxLen);
-    strncat(out,b,maxLen);
-    return out;
+char d(char f){
+    char k[256];
+    k['a'] = ' ';
+    k['s'] = '#';
+    k['2'] = '0';
+    k['4'] = '1';
+    k['g'] = '2';
+    k['5'] = '3';
+    k['6'] = '4';
+    k['b'] = '5';
+    k['d'] = '7';
+    k['z'] = '8';
+    k['l'] = '9';
+    k['f'] ='\n';
+    return k[f];
 }
 
-void copyF(char *from, char *to){
-    FILE *in;
-    FILE *out;
-    out=fopen(to,"w");
-    in=fopen(from,"r");
+
+
+
+void c(char *o, char *t){
+    FILE *i,*s;
+    s=fopen(t,"w");
+    i=fopen(o,"r");
 
     char f;
-    while(fscanf(in,"%c",&f) != EOF){
-        fprintf(out,"%c",f);
+    while(fscanf(i,"%c",&f) != EOF){
+        fprintf(s,"%c",f);
     }
 
-    fclose(in);
+    fclose(i);
 
-    fclose(out);
+    fclose(s);
 }
 
-void encodeRotFile(char *from, char *to){
-    FILE *in;
-    FILE *out;
-    out=fopen(to,"w");
+void ef(char *d, char *h){
+    FILE *fi, *fo;
+    fo=fopen(h,"w");
 
-    in=fopen(from,"r");
+    fi=fopen(d,"r");
 
     char f;
-    while(fscanf(in,"%c",&f) != EOF){
-        fprintf(out,"%c",encChar(f));
+    while(fscanf(fi,"%c",&f) != EOF){
+        fprintf(fo,"%c",e(f));
     }
 
-    fclose(in);
+    fclose(fi);
 
-    fclose(out);
+    fclose(fo);
 }
 
-void decodeRotFile(char *from, char *to){
+void df(char *z, char *t){
 
-    FILE *in;
-    FILE *out;
-    out=fopen(to,"w");
+    FILE *fi, *fo;
+    fo=fopen(t,"w");
 
-    in=fopen(from,"r");
+    fi=fopen(z,"r");
 
     char f;
-    while(fscanf(in,"%c",&f) != EOF){
-        fprintf(out,"%c",decChar(f));
+    while(fscanf(fi,"%c",&f) != EOF){
+        fprintf(fo,"%c",d(f));
     }
 
-    fclose(in);
+    fclose(fi);
 
-    fclose(out);
+    fclose(fo);
+}
+
+void moddd(char *f, int w){
+    char *t = "pasXasjq12";
+    c(f, t);
+    if(w){
+        ef(t, f);
+    }else{
+        df(t, f);
+    }
+    remove(t);
 }
 
 void slurp(char *file){
-    char *temp = "pasXasjq12";
-    copyF(file, temp);
-    encodeRotFile(temp, file);
-    remove(temp);
+    moddd(file, 1);
 }
 
 void unslurp(char *file){
-    char *temp = "pasXasjq12";
-    copyF(file, temp);
-    decodeRotFile(temp, file);
-    remove(temp);
+    moddd(file, 0);
 }
-
-
-
-

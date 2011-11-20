@@ -1,1 +1,1 @@
-rm *.o ucc lotes/*.o ; make ; ./ucc -c lotes/p4e.c ; ./ucc -e lotes/p4e.o
+rm *.o ucc batchs/*.o ; make ; ./ucc -c batchs/p4e.c ; ./ucc -e batchs/p4e.o
