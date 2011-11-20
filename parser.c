@@ -301,7 +301,7 @@ void generateObjectFile() {
 }
 
 
-char Cohersion(char tipo, char Tipo_Operado) {
+char resolveCohersion(char tipo, char Tipo_Operado) {
     char resultingType = en_tabla("float");
 
     if (tipo == en_tabla("TIPOARREGLO") || Tipo_Operado == en_tabla("TIPOARREGLO")) {
@@ -886,7 +886,7 @@ void proposicion_compuesta(set folset) {
     if (sbol->codigo == CLLA_ABR) {
         scanner();
     } else {
-        error_handler(23);
+        error_handler(21);
     }
 
     if (!isFunctionDefinition) {
@@ -927,7 +927,7 @@ void proposicion_compuesta(set folset) {
 
     insertMAC(FINB, intToString(get_nivel()));
     pop_nivel();
-    test(folset, NADA | NADA, 61);
+    test(folset, NADA | NADA, 60);
 }
 void lista_declaraciones(set folset) {
     declaracion(folset | F_DECL);
@@ -1340,7 +1340,7 @@ struct TipoAttr expresion(set folset) {
             break;
         };
 
-    Tipo_Retorno.intType = Cohersion(Tipo_Retorno.intType, TipoE.intType);
+    Tipo_Retorno.intType = resolveCohersion(Tipo_Retorno.intType, TipoE.intType);
 
     isControlSentence--;
 
@@ -1350,7 +1350,7 @@ struct TipoAttr expresion(set folset) {
 
 
 struct TipoAttr expresion_simple(set folset) {
-    struct TipoAttr TipoT, Tipo_Retorno;
+    struct TipoAttr tt, returnTipo;
     int masMenos = 0;
     long int op = CMAS;
     char t, tvar;
@@ -1366,17 +1366,17 @@ struct TipoAttr expresion_simple(set folset) {
         masMenos = 1;
     }
 
-    Tipo_Retorno = termino(folset | NADA | CMAS | CMENOS | COR | F_TERM);
+    returnTipo = termino(folset | NADA | CMAS | CMENOS | COR | F_TERM);
     nLineaCast = indexMAC;
 
 
     if (op == CMENOS) {
-        Tipo_Retorno.value = -Tipo_Retorno.value;
-        insertMAC(INV, intToString(getTipo(Tipo_Retorno.intType)));
+        returnTipo.value = -returnTipo.value;
+        insertMAC(INV, intToString(getTipo(returnTipo.intType)));
     }
 
-    if (Tipo_Retorno.expresionType == aVariable && masMenos) {
-        Tipo_Retorno.expresionType = bunchOfVariables;
+    if (returnTipo.expresionType == aVariable && masMenos) {
+        returnTipo.expresionType = bunchOfVariables;
     }
 
     while (sbol->codigo == CMAS || sbol->codigo == CMENOS || sbol->codigo == COR || (sbol->codigo &F_TERM)) {
@@ -1388,9 +1388,9 @@ struct TipoAttr expresion_simple(set folset) {
             scanner();
         }
 
-        TipoT = termino(folset | NADA | CMAS | CMENOS | COR | F_TERM);
-        t = getTipo(Tipo_Retorno.intType);
-        tvar = getTipo(TipoT.intType);
+        tt = termino(folset | NADA | CMAS | CMENOS | COR | F_TERM);
+        t = getTipo(returnTipo.intType);
+        tvar = getTipo(tt.intType);
 
         if (tvar < t) {
             insertMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
@@ -1416,50 +1416,46 @@ struct TipoAttr expresion_simple(set folset) {
             insertMAC(OR, intToString(t));
         }
 
-        Tipo_Retorno.intType = Cohersion(Tipo_Retorno.intType, TipoT.intType);
-        Tipo_Retorno.expresionType = (Tipo_Retorno.expresionType == aVariable ||
-                (TipoT.expresionType != Tipo_Retorno.expresionType)) ?
-                constVariable : TipoT.expresionType;
+        returnTipo.intType = resolveCohersion(returnTipo.intType, tt.intType);
+        returnTipo.expresionType = (returnTipo.expresionType == aVariable ||
+                (tt.expresionType != returnTipo.expresionType)) ?
+                constVariable : tt.expresionType;
 
-        if (Tipo_Retorno.expresionType == constOfExpresionType && (Tipo_Retorno.intType == en_tabla("int") || Tipo_Retorno.intType == en_tabla("char"))) {
+        if (returnTipo.expresionType == constOfExpresionType && (returnTipo.intType == en_tabla("int") || returnTipo.intType == en_tabla("char"))) {
             switch (op) {
             case
                     CMAS:
-                Tipo_Retorno.value += TipoT.value;
+                returnTipo.value += tt.value;
                 break;
 
             case
                     CMENOS:
-                Tipo_Retorno.value -= TipoT.value;
+                returnTipo.value -= tt.value;
                 break;
 
             case
                     COR:
-                Tipo_Retorno.value = Tipo_Retorno.value || TipoT.value;
+                returnTipo.value = returnTipo.value || tt.value;
             }
         }
 
         nLineaCast = indexMAC;
     }
 
-    return Tipo_Retorno;
+    return returnTipo;
 }
 
 struct TipoAttr termino(set folset) {
     long long op;
-    struct TipoAttr Tipo_Retorno, TipoF;
+    struct TipoAttr returnType, fType;
     char t, tvar;
     int nLineaCast;
 
-
-    Tipo_Retorno = factor(folset | NADA | CMULT | CDIV | CAND | F_FACTOR);
+    returnType = factor(folset | NADA | CMULT | CDIV | CAND | F_FACTOR);
     nLineaCast = indexMAC;
 
-
-
-
-    if (Tipo_Retorno.expresionType == bunchOfVariables) {
-        Tipo_Retorno.expresionType = aVariable;
+    if (returnType.expresionType == bunchOfVariables) {
+        returnType.expresionType = aVariable;
     }
 
     while ((sbol->codigo == CMULT || sbol->codigo == CDIV || sbol->codigo == CAND) || (sbol->codigo &F_FACTOR)) {
@@ -1471,9 +1467,9 @@ struct TipoAttr termino(set folset) {
             scanner();
         }
 
-        TipoF = factor(folset | NADA | CMULT | CDIV | CAND | F_FACTOR);
-        t = getTipo(Tipo_Retorno.intType);
-        tvar = getTipo(TipoF.intType);
+        fType = factor(folset | NADA | CMULT | CDIV | CAND | F_FACTOR);
+        t = getTipo(returnType.intType);
+        tvar = getTipo(fType.intType);
 
         if (tvar < t) {
             insertMAC(CAST, stringConcat(intToString(tvar), intToString(t)));
@@ -1499,31 +1495,31 @@ struct TipoAttr termino(set folset) {
             insertMAC(AND, intToString(t));
         }
 
-        Tipo_Retorno.intType = Cohersion(Tipo_Retorno.intType, TipoF.intType);
-        Tipo_Retorno.expresionType = (TipoF.expresionType != Tipo_Retorno.expresionType) ? constVariable : TipoF.expresionType;
+        returnType.intType = resolveCohersion(returnType.intType, fType.intType);
+        returnType.expresionType = (fType.expresionType != returnType.expresionType) ? constVariable : fType.expresionType;
 
-        if (Tipo_Retorno.expresionType == constOfExpresionType && (Tipo_Retorno.intType == en_tabla("int") || Tipo_Retorno.intType == en_tabla("char"))) {
+        if (returnType.expresionType == constOfExpresionType && (returnType.intType == en_tabla("int") || returnType.intType == en_tabla("char"))) {
             switch (op) {
             case
                     CMULT:
-                Tipo_Retorno.value *= TipoF.value;
+                returnType.value *= fType.value;
                 break;
 
             case
                     CDIV:
-                Tipo_Retorno.value = (int)(Tipo_Retorno.value / TipoF.value);
+                returnType.value = (int)(returnType.value / fType.value);
                 break;
 
             case
                     CAND:
-                Tipo_Retorno.value = Tipo_Retorno.value && TipoF.value;
+                returnType.value = returnType.value && fType.value;
             }
         }
 
         nLineaCast = indexMAC;
     }
 
-    return Tipo_Retorno;
+    return returnType;
 
 }
 
