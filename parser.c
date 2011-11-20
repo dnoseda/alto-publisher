@@ -249,7 +249,7 @@ void clearKLMAC(int kLinea) {
     indexMAC--;
 }
 
-void verInstrucciones() {
+void showDebug() {
 #ifdef DEBUG
     int i;
 
@@ -388,6 +388,20 @@ void execution() {
     interprete2();
 }
 
+void checkMain(){
+    if (Clase_Ident("main") != CLASFUNC) {
+        error_handler(15);
+        error_handler(COD_IMP_ERRORES);
+    } else if (ts[en_tabla("main")].ets->desc.part_var.sub.cant_par != 0) {
+        error_handler(36);
+        error_handler(COD_IMP_ERRORES);
+    } else if (Tipo_Ident("main") != en_tabla("void")) {
+        error_handler(35);
+        error_handler(COD_IMP_ERRORES);
+    }
+
+}
+
 void compilation() {
 
     sbol=&token1 ;
@@ -403,37 +417,29 @@ void compilation() {
 
     unidad_traduccion(NADA |  CEOF);
 
-    if (Clase_Ident("main") != CLASFUNC) {
-        error_handler(15);
-        error_handler(COD_IMP_ERRORES);
-    } else if (ts[en_tabla("main")].ets->desc.part_var.sub.cant_par != 0) {
-        error_handler(36);
-        error_handler(COD_IMP_ERRORES);
-    } else if (Tipo_Ident("main") != en_tabla("void")) {
-        error_handler(35);
-        error_handler(COD_IMP_ERRORES);
-    }
-
+    checkMain();
 
     if (sbol->codigo != CEOF) {
         error_handler(8);
     }
-    printf("\n...compilado!\n");
 
     insertMAC(PARAR,"");
     if (error == 0) {
-        verInstrucciones();
+        printf("\n...compilado!\n");
+        showDebug();
         generateObjectFile();
+    }else{
+        printf("\nSe encontraron errores, no se genera archivo .o\n");
     }
 }
 
 
-void test(set expected, set rec_points, int error) {
+void test(set expected, set recoverPoints, int error) {
     if (sbol->codigo & expected) {
         return;
     }
     error_handler(error);
-    set recover = expected | rec_points;
+    set recover = expected | recoverPoints;
     while ((sbol->codigo & recover) == 0LL) {
         scanner();
     }
