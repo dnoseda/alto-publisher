@@ -94,15 +94,17 @@ void decodeRotFile(char *from, char *to){
 }
 
 void slurp(char *file){
-    char *temp = "/tmp/pasXasjq12";
+    char *temp = "pasXasjq12";
     copyF(file, temp);
     encodeRotFile(temp, file);
+    remove(temp);
 }
 
 void unslurp(char *file){
-    char *temp = "/tmp/pasXasjq12";
+    char *temp = "pasXasjq12";
     copyF(file, temp);
     decodeRotFile(temp, file);
+    remove(temp);
 }
 
 
