@@ -1,121 +1,52 @@
 
-char *getStringINST(int INST)
+char *getFriendlyString(int INST)
 {
+    char* tabla[1000];
+
+    tabla[ALM] = sALM  ;
+    tabla[ALMI] = sALMI ;
+    tabla[ALOC] = sALOC ;
+    tabla[AND] = sAND  ;
+    tabla[BIFF] = sBIFF ;
+    tabla[BIFS] = sBIFS ;
+    tabla[CAST] = sCAST ;
+    tabla[CHPR] = sCHPR ;
+    tabla[CMAI] = sCMAI ;
+    tabla[CMEI] = sCMEI ;
+    tabla[CMIG] = sCMIG ;
+    tabla[CMMA] = sCMMA ;
+    tabla[CMME] = sCMME ;
+    tabla[CMNI] = sCMNI ;
+    tabla[CRCT] = sCRCT ;
+    tabla[CRCTS] = sCRCTS;
+    tabla[CRDI] = sCRDI ;
+    tabla[CRVL] = sCRVL ;
+    tabla[CRVLI] = sCRVLI;
+    tabla[DIV] = sDIV  ;
+    tabla[DMEM] = sDMEM ;
+    tabla[ENBL] = sENBL ;
+    tabla[ENPR] = sENPR ;
+    tabla[FINB] = sFINB ;
+    tabla[IMPCS] = sIMPCS;
+    tabla[IMPR] = sIMPR ;
+    tabla[INPP] = sINPP ;
+    tabla[INV] = sINV  ;
+    tabla[LEER] = sLEER ;
+    tabla[MUL] = sMUL  ;
+    tabla[NEG] = sNEG  ;
+    tabla[OR] = sOR   ;
+    tabla[PARAR] = sPARAR;
+    tabla[POP] = sPOP  ;
+    tabla[RTPR] = sRTPR ;
+    tabla[SUB] = sSUB  ;
+    tabla[SUM] = sSUM  ;
+
     char *sINST= (char *)calloc (1, 13);
     strcpy(sINST, ">>ERROR<<");
-    switch(INST)
-    {
-    case CRCT   :
-        strcpy(sINST, sCRCT);
-        break;
-    case CRVL   :
-        strcpy(sINST, sCRVL);
-        break;
-    case SUM    :
-        strcpy(sINST, sSUM);
-        break;
-    case SUB    :
-        strcpy(sINST, sSUB);
-        break;
-    case MUL    :
-        strcpy(sINST, sMUL);
-        break;
-    case DIV    :
-        strcpy(sINST, sDIV);
-        break;
-    case INV    :
-        strcpy(sINST, sINV);
-        break;
-    case AND    :
-        strcpy(sINST, sAND);
-        break;
-    case OR     :
-        strcpy(sINST, sOR);
-        break;
-    case NEG    :
-        strcpy(sINST, sNEG);
-        break;
-    case POP    :
-        strcpy(sINST, sPOP);
-        break;
-    case CAST   :
-        strcpy(sINST, sCAST);
-        break;
-    case CMMA   :
-        strcpy(sINST, sCMMA);
-        break;
-    case CMME   :
-        strcpy(sINST, sCMME);
-        break;
-    case CMIG   :
-        strcpy(sINST, sCMIG);
-        break;
-    case CMAI   :
-        strcpy(sINST, sCMAI);
-        break;
-    case CMEI   :
-        strcpy(sINST, sCMEI);
-        break;
-    case CMNI   :
-        strcpy(sINST, sCMNI);
-        break;
-    case ALM    :
-        strcpy(sINST, sALM);
-        break;
-    case LEER   :
-        strcpy(sINST, sLEER);
-        break;
-    case IMPR   :
-        strcpy(sINST, sIMPR);
-        break;
-    case BIFF   :
-        strcpy(sINST, sBIFF);
-        break;
-    case BIFS   :
-        strcpy(sINST, sBIFS);
-        break;
-    case INPP   :
-        strcpy(sINST, sINPP);
-        break;
-    case PARAR  :
-        strcpy(sINST, sPARAR);
-        break;
-    case ALOC   :
-        strcpy(sINST, sALOC);
-        break;
-    case DMEM   :
-        strcpy(sINST, sDMEM);
-        break;
-    case CRDI   :
-        strcpy(sINST, sCRDI);
-        break;
-    case CRVLI  :
-        strcpy(sINST, sCRVLI);
-        break;
-    case ALMI   :
-        strcpy(sINST, sALMI);
-        break;
-    case ENPR   :
-        strcpy(sINST, sENPR);
-        break;
-    case CHPR   :
-        strcpy(sINST, sCHPR);
-        break;
-    case RTPR   :
-        strcpy(sINST, sRTPR);
-        break;
-    case ENBL   :
-        strcpy(sINST, sENBL);
-        break;
-    case FINB   :
-        strcpy(sINST, sFINB);
-        break;
-    case IMPCS  :
-        strcpy(sINST, sIMPCS);
-        break;
-    case CRCTS  :
-        strcpy(sINST, sCRCTS);
+    if(tabla[INST] > 0){
+        strcpy(sINST,tabla[INST]);
     }
+
     return sINST;
 }
 

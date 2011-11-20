@@ -20,7 +20,7 @@
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
 
-//#define DEBUG 1
+#define DEBUG 1
 
 typedef long long set;
 
@@ -138,7 +138,7 @@ struct TipoAttr {
 void insertMAC(int INST, char linea[]) {
     outputCode[indexMAC]= stringConcat(intToString(INST),linea);
 #ifdef DEBUG
-    outputCodeToShow[indexMAC]= stringConcat(getStringINST(INST),linea);
+    outputCodeToShow[indexMAC]= stringConcat(getFriendlyString(INST),linea);
 #endif
     indexMAC++;
 }
@@ -154,7 +154,7 @@ void insertKMAC(int INST, char linea[], int kLinea) {
     }
     outputCode[kLinea]= stringConcat(intToString(INST),linea);
 #ifdef DEBUG
-    outputCodeToShow[kLinea]= stringConcat(getStringINST(INST),linea);
+    outputCodeToShow[kLinea]= stringConcat(getFriendlyString(INST),linea);
 #endif
     indexMAC++;
 }
