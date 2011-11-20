@@ -15,6 +15,7 @@
 #include "soporte_ejecucion.h"
 #include "coder.c"
 #include "first.c"
+#include "toshow.c"
 
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
@@ -57,7 +58,6 @@ struct TipoAttr termino();
 struct TipoAttr factor();
 struct TipoAttr llamada_funcion();
 void lista_expresiones();
-char *getStringINST(int INST);
 
 
 void scanner ();
@@ -137,7 +137,10 @@ struct TipoAttr {
 
 void insertMAC(int INST, char linea[]) {
     outputCode[indexMAC]= stringConcat(intToString(INST),linea);
-    outputCodeToShow[indexMAC++]= stringConcat(getStringINST(INST),linea);
+#ifdef DEBUG
+    outputCodeToShow[indexMAC]= stringConcat(getStringINST(INST),linea);
+#endif
+    indexMAC++;
 }
 
 void insertKMAC(int INST, char linea[], int kLinea) {
@@ -145,11 +148,14 @@ void insertKMAC(int INST, char linea[], int kLinea) {
 
     for (i= indexMAC-1; i >= kLinea; i--) {
         outputCode[i+1] = outputCode[i];
+#ifdef DEBUG
         outputCodeToShow[i+1] = outputCodeToShow[i];
+#endif
     }
     outputCode[kLinea]= stringConcat(intToString(INST),linea);
+#ifdef DEBUG
     outputCodeToShow[kLinea]= stringConcat(getStringINST(INST),linea);
-
+#endif
     indexMAC++;
 }
 
@@ -230,11 +236,15 @@ void clearKLMAC(int kLinea) {
     int i;
 
     outputCode[kLinea]= NULL;
+    #ifdef DEBUG
     outputCodeToShow[kLinea]= NULL;
+    #endif
 
     for (i= kLinea; i < indexMAC-1; i++) {
         outputCode[i]= outputCode[i+1];
+        #ifdef DEBUG
         outputCodeToShow[i]= outputCodeToShow[i+1];
+        #endif
     }
     indexMAC--;
 }
@@ -338,124 +348,6 @@ int getOffset(int LineaO, int LineaSalto) {
     } else {
         return -(getOffset(LineaSalto, LineaO)+ 2 + 3);
     }
-}
-
-char *getStringINST(int INST) {
-    char *sINST= (char *)calloc (1, 13);
-    strcpy(sINST, ">>ERROR<<");
-    switch(INST) {
-    case CRCT   :
-        strcpy(sINST, sCRCT);
-        break;
-    case CRVL   :
-        strcpy(sINST, sCRVL);
-        break;
-    case SUM    :
-        strcpy(sINST, sSUM);
-        break;
-    case SUB    :
-        strcpy(sINST, sSUB);
-        break;
-    case MUL    :
-        strcpy(sINST, sMUL);
-        break;
-    case DIV    :
-        strcpy(sINST, sDIV);
-        break;
-    case INV    :
-        strcpy(sINST, sINV);
-        break;
-    case AND    :
-        strcpy(sINST, sAND);
-        break;
-    case OR     :
-        strcpy(sINST, sOR);
-        break;
-    case NEG    :
-        strcpy(sINST, sNEG);
-        break;
-    case POP    :
-        strcpy(sINST, sPOP);
-        break;
-    case CAST   :
-        strcpy(sINST, sCAST);
-        break;
-    case CMMA   :
-        strcpy(sINST, sCMMA);
-        break;
-    case CMME   :
-        strcpy(sINST, sCMME);
-        break;
-    case CMIG   :
-        strcpy(sINST, sCMIG);
-        break;
-    case CMAI   :
-        strcpy(sINST, sCMAI);
-        break;
-    case CMEI   :
-        strcpy(sINST, sCMEI);
-        break;
-    case CMNI   :
-        strcpy(sINST, sCMNI);
-        break;
-    case ALM    :
-        strcpy(sINST, sALM);
-        break;
-    case LEER   :
-        strcpy(sINST, sLEER);
-        break;
-    case IMPR   :
-        strcpy(sINST, sIMPR);
-        break;
-    case BIFF   :
-        strcpy(sINST, sBIFF);
-        break;
-    case BIFS   :
-        strcpy(sINST, sBIFS);
-        break;
-    case INPP   :
-        strcpy(sINST, sINPP);
-        break;
-    case PARAR  :
-        strcpy(sINST, sPARAR);
-        break;
-    case ALOC   :
-        strcpy(sINST, sALOC);
-        break;
-    case DMEM   :
-        strcpy(sINST, sDMEM);
-        break;
-    case CRDI   :
-        strcpy(sINST, sCRDI);
-        break;
-    case CRVLI  :
-        strcpy(sINST, sCRVLI);
-        break;
-    case ALMI   :
-        strcpy(sINST, sALMI);
-        break;
-    case ENPR   :
-        strcpy(sINST, sENPR);
-        break;
-    case CHPR   :
-        strcpy(sINST, sCHPR);
-        break;
-    case RTPR   :
-        strcpy(sINST, sRTPR);
-        break;
-    case ENBL   :
-        strcpy(sINST, sENBL);
-        break;
-    case FINB   :
-        strcpy(sINST, sFINB);
-        break;
-    case IMPCS  :
-        strcpy(sINST, sIMPCS);
-        break;
-    case CRCTS  :
-        strcpy(sINST, sCRCTS);
-    }
-    return sINST;
 }
 
 
