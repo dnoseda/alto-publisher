@@ -119,40 +119,6 @@ char *archivo;
 
 int esIndice = 0;
 
-#define F_ESP_TIPO (CVOID|CCHAR|CINT|CFLOAT)
-#define F_CONST (CCONS_CAR|CCONS_ENT|CCONS_FLO|CCONS_STR)
-#define F_LLAMADA_FUNC (CIDENT)
-#define F_VAR (CIDENT)
-#define F_REL (CIGUAL|CDISTINTO|CMENOR|CMAYOR|CMEIG|CMAIG)
-#define F_PROP_E_S (CIN|COUT)
-#define F_PROP_SEL (CIF)
-#define F_PROP_IT (CWHILE)
-#define F_PROP_RET (CRETURN)
-#define F_DECL_INIT (CASIGNAC|CCOR_ABR)
-#define F_LIST_DECL_INIT (CIDENT)
-#define F_DEF_FUNC (CPAR_ABR)
-#define F_PROP_COMP (CLLA_ABR)
-
-#define F_DECL_PARAM (F_ESP_TIPO)
-#define F_LIST_DECL_PARAM (F_DECL_PARAM)
-#define F_DECL_VAR (F_DECL_INIT|CCOMA|CPYCOMA)
-#define F_LIST_INIC (F_CONST)
-
-
-#define F_FACTOR (F_VAR|F_CONST|CNEG|CPAR_ABR|F_LLAMADA_FUNC|CCONS_STR)
-#define F_TERM (F_FACTOR)
-#define F_EXP_SIMPLE (CMAS|CMENOS|F_TERM)
-#define F_EXPR (F_EXP_SIMPLE)
-#define F_LIST_EXPR (F_EXPR)
-#define F_PROP_EXPR (F_EXPR|CPYCOMA)
-#define F_DECL (F_ESP_TIPO)
-#define F_LIST_DECL (F_DECL)
-#define F_PROP (F_PROP_EXPR|F_PROP_COMP|F_PROP_SEL|F_PROP_IT|F_PROP_E_S|F_PROP_RET)
-#define F_LIST_PROP (F_PROP)
-#define F_ESP_DECLR (F_DEF_FUNC|F_DECL_VAR)
-#define F_UNID_TRAD (F_DECL)
-
-
 enum ExpresionType {
     aVariable,constOfExpresionType,bunchOfVariables, constVariable, function,constIntToString
 };
