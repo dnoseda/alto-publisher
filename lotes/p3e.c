@@ -2,10 +2,11 @@
 
 void main() {
 
-char caracter = 'Z';
+char caracter = 'A';
 int entero =7;
-float real = 7.333;
-float resul;
+int real = 8;
+int resul;
+
 
   if (entero + (resul = real + caracter)) {
     cout << "resul tiene el valor" << resul;
