@@ -497,12 +497,6 @@ void interprete2() {
                     break;
                 }
 
-
-
-
-
-
-
                 ls -= tipo;
                 for (i = 0; i < tipo; i++) {
                     if (ls >= TAM_STACK) {
