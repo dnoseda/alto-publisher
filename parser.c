@@ -91,10 +91,6 @@ int cantParametros= 0;
 int en_tabla_funcion= NIL;
 int en_tabla_funcion_Llama= NIL;
 
-int tipo_global;
-int flag_hay_return;
-int void_flag;
-
 /********** variables globales ************/
 
 
