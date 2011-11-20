@@ -364,8 +364,6 @@ void execution() {
     char *filename = strcat(archivo, ".o");
     unslurp(filename);
     if ((PObj= fopen(filename, "r")) != NULL) {
-
-
         fscanf(PObj, "%s", cur);
         fscanf(PObj, "%s", cur);
 
@@ -382,8 +380,6 @@ void execution() {
             addC(stringToInt(cur));
             fscanf(PObj, "%s", cur);
         }
-
-
     }
     fclose(PObj);
     slurp(filename);
