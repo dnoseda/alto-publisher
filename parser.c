@@ -20,7 +20,7 @@
 #define TRUE (1 == 1)
 #define FALSE (!TRUE)
 
-#define DEBUG 1
+//#define DEBUG 1
 
 typedef long long set;
 
