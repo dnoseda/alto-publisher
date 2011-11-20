@@ -64,14 +64,14 @@ void scanner ();
 
 /********** variables globales ************/
 
-int isReturn= 0;
-int isLlamadafuncion= 0;
+int isReturnSentence= 0;
+int isFunctionInvocation= 0;
 int isINOUT= 0;
 int llamolista_ini= 0;
-int isConstante= 0;
+
 int isdeffuncion= 0;
 extern char error;
-int vengodeIF =0;
+
 int sentencia= 0;
 int control= 0;
 
@@ -91,9 +91,6 @@ int cantParametros= 0;
 int en_tabla_funcion= NIL;
 int en_tabla_funcion_Llama= NIL;
 
-int segVar= 2;
-
-int punteroFuncion;
 int tipo_global;
 int flag_hay_return;
 int void_flag;
@@ -685,7 +682,7 @@ void especificador_declaracion(set folset) {
 
 void definicion_funcion(set folset) {
     isdeffuncion= 1;
-    isReturn= 0;
+    isReturnSentence= 0;
     inf_id->clase = CLASFUNC;
     inf_id->ptr_tipo = posID;
     inf_id->cant_byte = ts[posID].ets->cant_byte;
@@ -1025,7 +1022,7 @@ void proposicion_compuesta(set folset) {
 
     if (sbol->codigo == CLLA_CIE) {
 
-        if (en_tabla_funcion != NIL && (ts[en_tabla_funcion].ets->ptr_tipo != en_tabla("void")) && (!isReturn)) {
+        if (en_tabla_funcion != NIL && (ts[en_tabla_funcion].ets->ptr_tipo != en_tabla("void")) && (!isReturnSentence)) {
             error_handler(37);
         }
 
@@ -1323,7 +1320,7 @@ void proposicion_retorno(set folset) {
     } else {
         error_handler(22);
     }
-    isReturn= 1;
+    isReturnSentence= 1;
     test(folset,NADA | NADA,65);
 }
 
@@ -1835,7 +1832,7 @@ struct TipoAttr variable(set folset) {
 
 
                 }
-            } else if (Tipo_Ident(lexema) == en_tabla("TIPOARREGLO")&&!isLlamadafuncion) {
+            } else if (Tipo_Ident(lexema) == en_tabla("TIPOARREGLO")&&!isFunctionInvocation) {
                 error_handler(43);
             } else {
 
@@ -1868,7 +1865,7 @@ struct TipoAttr variable(set folset) {
 struct TipoAttr llamada_funcion(set folset) {
     char lexema[TAM_LEXEMA];
     struct TipoAttr Tipo_Retorno;
-    isLlamadafuncion= 1;
+    isFunctionInvocation= 1;
 
     en_tabla_funcion_Llama= en_tabla(sbol->lexema);
 
@@ -1905,7 +1902,7 @@ struct TipoAttr llamada_funcion(set folset) {
         error_handler(20);
     }
 
-    isLlamadafuncion= 0;
+    isFunctionInvocation= 0;
 
     test(folset, NADA | NADA, 72);
 
