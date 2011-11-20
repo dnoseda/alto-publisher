@@ -137,7 +137,7 @@ void error_print (int ne) {
         printf("\t Error %d: No hoy mas memoria....\n", ne);
         break;
     case 43:
-        printf("\t Error %d: La variable es de tipo Arreglo, se esperan conchetes\n", ne);
+        printf("\t Error %d: La variable es de tipo Arreglo, se esperan []\n", ne);
         break;
 
 

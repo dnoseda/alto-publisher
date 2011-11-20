@@ -458,47 +458,9 @@ char *getStringINST(int INST) {
     return sINST;
 }
 
-void compilacion() {
-
-    sbol=&token1 ;
-
-    insertMAC(INPP,"");
 
 
-    printf("\nCompilacion:\n");
-
-    inic_tablas();
-
-    scanner();
-
-    unidad_traduccion(NADA |  CEOF);
-
-    if (Clase_Ident("main") != CLASFUNC) {
-        error_handler(15);
-        error_handler(COD_IMP_ERRORES);
-    } else if (ts[en_tabla("main")].ets->desc.part_var.sub.cant_par != 0) {
-        error_handler(36);
-        error_handler(COD_IMP_ERRORES);
-    } else if (Tipo_Ident("main") != en_tabla("void")) {
-        error_handler(35);
-        error_handler(COD_IMP_ERRORES);
-    }
-
-
-    if (sbol->codigo != CEOF) {
-        error_handler(8);
-    }
-    printf("\n...compilado!\n");
-
-    insertMAC(PARAR,"");
-    if (error == 0) {
-        verInstrucciones();
-        generateObjectFile();
-    }
-}
-
-
-void ejecucion() {
+void execution() {
 
     int i;
     float cod;
@@ -538,6 +500,46 @@ void ejecucion() {
     interprete2();
 }
 
+void compilation() {
+
+    sbol=&token1 ;
+
+    insertMAC(INPP,"");
+
+
+    printf("\nCompilacion:\n");
+
+    inic_tablas();
+
+    scanner();
+
+    unidad_traduccion(NADA |  CEOF);
+
+    if (Clase_Ident("main") != CLASFUNC) {
+        error_handler(15);
+        error_handler(COD_IMP_ERRORES);
+    } else if (ts[en_tabla("main")].ets->desc.part_var.sub.cant_par != 0) {
+        error_handler(36);
+        error_handler(COD_IMP_ERRORES);
+    } else if (Tipo_Ident("main") != en_tabla("void")) {
+        error_handler(35);
+        error_handler(COD_IMP_ERRORES);
+    }
+
+
+    if (sbol->codigo != CEOF) {
+        error_handler(8);
+    }
+    printf("\n...compilado!\n");
+
+    insertMAC(PARAR,"");
+    if (error == 0) {
+        verInstrucciones();
+        generateObjectFile();
+    }
+}
+
+
 void test(set expected, set rec_points, int error) {
     if (sbol->codigo & expected) {
         return;
@@ -573,11 +575,11 @@ int main( int argc,char *argv[]) {
     }
 
     if (argv[1][1] == 'c') {
-        compilacion();
+        compilation();
 
     } else if (argv[1][1] == 'e') {
 
-        ejecucion();
+        execution();
 
     }
 }
@@ -851,7 +853,7 @@ void declarador_init(set folset) {
             if (sbol->codigo == CCONS_ENT) {
                 intConstant= stringToInt(sbol->lexema);
                 if (intConstant <= 0) {
-                    error_handler(80);
+                    error_handler(81);
                 }
                 scanner();
             } else {
