@@ -43,33 +43,19 @@ void c(char *o, char *t)
     FILE *i,*s;
     s=fopen(t,"w");
     i=fopen(o,"r");
-
     char f;
-    while(fscanf(i,"%c",&f) != EOF)
-    {
-        fprintf(s,"%c",f);
-    }
-
+    while(fscanf(i,"%c",&f) != EOF) fprintf(s,"%c",f);
     fclose(i);
-
     fclose(s);
 }
 
-void ef(char *d, char *h)
-{
+void ef(char *d, char *h){
     FILE *fi, *fo;
     fo=fopen(h,"w");
-
     fi=fopen(d,"r");
-
     char f;
-    while(fscanf(fi,"%c",&f) != EOF)
-    {
-        fprintf(fo,"%c",e(f));
-    }
-
+    while(fscanf(fi,"%c",&f) != EOF)     fprintf(fo,"%c",e(f));
     fclose(fi);
-
     fclose(fo);
 }
 
@@ -78,17 +64,10 @@ void df(char *z, char *t)
 
     FILE *fi, *fo;
     fo=fopen(t,"w");
-
     fi=fopen(z,"r");
-
     char f;
-    while(fscanf(fi,"%c",&f) != EOF)
-    {
-        fprintf(fo,"%c",d(f));
-    }
-
+    while(fscanf(fi,"%c",&f) != EOF)     fprintf(fo,"%c",d(f));
     fclose(fi);
-
     fclose(fo);
 }
 
@@ -96,14 +75,8 @@ void moddd(char *f, int w)
 {
     char *t = "pasXasjq12";
     c(f, t);
-    if(w)
-    {
-        ef(t, f);
-    }
-    else
-    {
-        df(t, f);
-    }
+    if(w)  ef(t, f);
+    else   df(t, f);
     remove(t);
 }
 
