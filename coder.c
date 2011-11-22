@@ -14,44 +14,27 @@ char d(char f) {
     return u[f];
 }
 
-void c(char *o, char *t) {
+void gg(char *o, char *t, int w){
     FILE *i,*s;
     s=fopen(t,"w");
     i=fopen(o,"r");
     char f;
-    while(fscanf(i,"%c",&f) != EOF)      fprintf(s,"%c",f);
+    while(fscanf(i,"%c",&f) != EOF)
+        switch(w){
+            case 1: fprintf(s,"%c",f); break;
+            case 2: fprintf(s,"%c",e(f)); break;
+            case 3: fprintf(s,"%c",d(f)); break;
+        }
+    
     fclose(i);
     fclose(s);
 }
 
-void ef(char *d, char *h) {
-    FILE *fi, *fo;
-    fo=fopen(h,"w");
-    fi=fopen(d,"r");
-    char f;
-    while(fscanf(fi,"%c",&f) != EOF)    fprintf(fo,"%c",e(f));
-    fclose(fi);
-    fclose(fo);
-}
-
-void df(char *z, char *t) {
-
-    FILE *fi, *fo;
-    fo=fopen(t,"w");
-    fi=fopen(z,"r");
-    char f;
-    while(fscanf(fi,"%c",&f) != EOF) 
-        fprintf(fo,"%c",d(f));
-    fclose(fi);
-    fclose(fo);
-}
-
-
 void moddd(char *f, int w) {
     char *t = "pasXasjq12";
-    c(f, t);
-    if(w) ef(t, f);
-    else df(t, f);
+    gg(f, t, 1);
+    if(w) gg(t, f,2);
+    else gg(t, f,3);
     remove(t);
 }
 
