@@ -13,7 +13,6 @@ void gg(char *o, char *t, int w){
     switch(w){case 1: fprintf(s,"%c",f); break;
     case 2: fprintf(s,"%c",m(f,0)); break;
     case 3: fprintf(s,"%c",m(f,1)); break; }
-    
     fclose(i);fclose(s);
 }
 
