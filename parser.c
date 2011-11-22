@@ -894,7 +894,7 @@ void proposicion_compuesta(set folset) {
     if (sbol->codigo == CLLA_ABR) {
         scanner();
     } else {
-        error_handler(21);
+        error_handler(23);
     }
 
     if (!isFunctionDefinition) {
@@ -935,7 +935,7 @@ void proposicion_compuesta(set folset) {
 
     insertMAC(FINB, intToString(get_nivel()));
     pop_nivel();
-    test(folset, NADA | NADA, 60);
+    test(folset, NADA | NADA, 61);
 }
 void lista_declaraciones(set folset) {
     declaracion(folset | F_DECL);
