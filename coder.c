@@ -1,24 +1,16 @@
 
 
 char e(char f) {
-    char j[256];
-    char u[261];
+    char j[256], u[261];
     int i;
-    for(i=0; i<256;i++){
-        j[i]=i+3;
-        u[i+3]=i;
-    }
+    for(i=0; i<256;i++){int a =i+3; j[i]=a; u[a]=i; }
     return j[f];
 }
 
 char d(char f) {
-    char j[256];
-    char u[261];
+    char j[256], u[261];
     int i;
-    for(i=0; i<256;i++){
-        j[i]=i+3;
-        u[i+3]=i;
-    }
+    for(i=0; i<256;i++){int a =i+3; j[i]=a; u[a]=i; }
     return u[f];
 }
 
@@ -58,7 +50,7 @@ void df(char *z, char *t) {
     fclose(fi);
     fclose(fo);
 }
-#define nodelete
+//#define nodelete
 
 
 void moddd(char *f, int w) {
