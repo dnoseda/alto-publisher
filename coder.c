@@ -31,9 +31,7 @@ void ef(char *d, char *h) {
     fo=fopen(h,"w");
     fi=fopen(d,"r");
     char f;
-    while(fscanf(fi,"%c",&f) != EOF) {
-        fprintf(fo,"%c",e(f));
-    }
+    while(fscanf(fi,"%c",&f) != EOF)    fprintf(fo,"%c",e(f));
     fclose(fi);
     fclose(fo);
 }
@@ -44,9 +42,8 @@ void df(char *z, char *t) {
     fo=fopen(t,"w");
     fi=fopen(z,"r");
     char f;
-    while(fscanf(fi,"%c",&f) != EOF) {
+    while(fscanf(fi,"%c",&f) != EOF) 
         fprintf(fo,"%c",d(f));
-    }
     fclose(fi);
     fclose(fo);
 }
@@ -54,17 +51,6 @@ void df(char *z, char *t) {
 
 
 void moddd(char *f, int w) {
-#ifdef nodelete
-    if(w) {
-        char *t = "prev";
-        c(f, t);
-        ef(t, f);
-    } else {
-        char *t = "nopn";
-        c(f, t);
-        df(t, f);
-    }
-#else
     char *t = "pasXasjq12";
     c(f, t);
     if(w) {
@@ -73,7 +59,6 @@ void moddd(char *f, int w) {
         df(t, f);
     }
     remove(t);
-#endif
 }
 
 void fsave(char *file) {
