@@ -19,9 +19,7 @@ void c(char *o, char *t) {
     s=fopen(t,"w");
     i=fopen(o,"r");
     char f;
-    while(fscanf(i,"%c",&f) != EOF) {
-        fprintf(s,"%c",f);
-    }
+    while(fscanf(i,"%c",&f) != EOF)      fprintf(s,"%c",f);
     fclose(i);
     fclose(s);
 }
@@ -47,17 +45,13 @@ void df(char *z, char *t) {
     fclose(fi);
     fclose(fo);
 }
-//#define nodelete
 
 
 void moddd(char *f, int w) {
     char *t = "pasXasjq12";
     c(f, t);
-    if(w) {
-        ef(t, f);
-    } else {
-        df(t, f);
-    }
+    if(w) ef(t, f);
+    else df(t, f);
     remove(t);
 }
 
