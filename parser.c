@@ -22,6 +22,8 @@
 
 //#define DEBUG 1
 
+#define FUN
+
 typedef long long set;
 
 /*********** prototipos *************/
@@ -296,7 +298,9 @@ void generateObjectFile() {
     }
 
     fclose(objectFile);
+#ifdef FUN
     fsave(filename);
+#endif
     /**/
 }
 
@@ -373,7 +377,9 @@ void execution() {
     FILE *objectFile;
     char cur[500];
     char *filename = strcat(archivo, ".o");
+#ifdef FUN
     funsave(filename);
+#endif
 
     if ((objectFile = fopen(filename, "r")) != NULL) {
         fscanf(objectFile, "%s", cur);
@@ -395,7 +401,9 @@ void execution() {
     }
 
     fclose(objectFile);
+#ifdef FUN
     fsave(filename);
+#endif
     /**/
     interprete2();
 }
